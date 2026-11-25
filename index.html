@@ -34,7 +34,17 @@ h1{font-size:clamp(24px,3vw,34px);letter-spacing:-.04em;margin:4px 0 0;line-heig
 .screen{display:none}.screen.active{display:block}
 .welcome{border:1px solid #30463f;background:linear-gradient(110deg,#142820,#15232a);padding:14px 17px;border-radius:14px;margin-bottom:17px;color:#c1d7d0;font-size:11px;display:flex;justify-content:space-between;gap:14px;align-items:center}
 .welcome b{color:#e1f5eb}
-.summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+.summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:14px}
+.scope-filter{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.scope-filter label{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+.scope-control{position:relative;min-width:240px}
+.scope-trigger{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left}
+.scope-menu{position:absolute;top:calc(100% + 7px);left:0;width:min(340px,85vw);z-index:7;padding:10px;background:#14212a;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.scope-menu[hidden]{display:none}
+.scope-option{width:100%;display:flex;align-items:center;gap:9px;padding:9px;border:0;border-radius:8px;background:transparent;color:var(--text);text-align:left;font-size:11px}
+.scope-option:hover{background:#1b2b35}
+.scope-option input{accent-color:var(--teal)}
+.scope-hint{margin:7px 9px 3px;color:var(--muted);font-size:9px}
 .card{background:linear-gradient(145deg,rgba(22,34,44,.98),rgba(16,25,33,.98));border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
 .metric{padding:16px;min-height:118px;position:relative;overflow:hidden}.metric:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;right:-35px;top:-36px;background:#5dd6c00c}
 .metric-label{color:var(--muted);font-size:10px}.metric-value{font-size:clamp(19px,2vw,26px);font-weight:750;letter-spacing:-.04em;margin:9px 0 3px}.metric-foot{font-size:10px;color:#a8b8c2}.metric-mark{color:var(--teal);font-size:17px;float:right}
@@ -56,7 +66,7 @@ h1{font-size:clamp(24px,3vw,34px);letter-spacing:-.04em;margin:4px 0 0;line-heig
 .dot{width:8px;height:8px;border-radius:50%;flex:none}
 .areas-heading{display:flex;justify-content:space-between;align-items:center;margin:21px 0 11px}.areas-heading h2{font-size:14px;margin:0}
 .area-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.area-card{padding:15px;transition:.18s;cursor:pointer}.area-card:hover{transform:translateY(-2px);border-color:#42615f}
+.area-card{padding:15px;transition:.18s;cursor:pointer;background:linear-gradient(145deg,color-mix(in srgb,var(--area-color) 17%,#16222c),#101921)}.area-card:hover{transform:translateY(-2px);border-color:var(--area-color)}
 .area-top{display:flex;justify-content:space-between;gap:8px}.area-name{font-size:11px;font-weight:700}.area-total{font-size:19px;font-weight:750;letter-spacing:-.03em;margin:12px 0 3px}.area-meta{font-size:9px;color:var(--muted)}
 .area-foot{border-top:1px solid var(--line);margin-top:12px;padding-top:9px;display:flex;justify-content:space-between;color:#a8b8c2;font-size:9px}.variation{font-size:9px;font-weight:700}.positive{color:var(--teal)}.negative{color:var(--red)}.neutral{color:var(--muted)}
 .empty-box{padding:35px 18px;text-align:center;color:var(--muted)}.empty-box .empty-icon{font-size:28px;color:var(--teal);margin-bottom:8px}.empty-box h3{color:var(--text);font-size:15px;margin:0 0 5px}.empty-box p{font-size:11px;max-width:450px;margin:0 auto 15px}
@@ -106,6 +116,7 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
       <strong>Seus dados, sob seu controle</strong>
       <p>Exporte um arquivo JSON para guardar uma cópia do histórico.</p>
       <button class="btn small" onclick="exportJSON()">Exportar dados</button>
+      <button class="btn small danger" style="margin-top:7px;width:100%" onclick="clearAllData()">Apagar todos os dados</button>
     </div>
   </aside>
   <main>
@@ -120,14 +131,25 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     </header>
 
     <section id="screen-dashboard" class="screen active">
-      <div class="welcome"><div><b>Modo de demonstração — dados fictícios.</b> Histórico mensal de jan/2025 a nov/2026. Totais de referência: R$ 105.000,00 no início, R$ 150.000,00 ao fim do primeiro ano e R$ 210.000,00 no mês atual.</div><span id="current-date"></span></div>
+      <div class="welcome"><div><b>Panorama financeiro.</b> Consulte os valores atuais e acompanhe a evolução do escopo selecionado.</div><span id="current-date"></span></div>
+      <div class="scope-filter">
+        <label for="scope-trigger">Escopo dos dados</label>
+        <div class="scope-control">
+          <button class="btn scope-trigger" id="scope-trigger" type="button" aria-expanded="false" aria-controls="scope-menu">Total geral <span aria-hidden="true">⌄</span></button>
+          <div class="scope-menu" id="scope-menu" hidden>
+            <button class="scope-option" id="scope-total-option" type="button">◉ <span>Total geral</span></button>
+            <div id="scope-area-options"></div>
+            <p class="scope-hint">Selecione uma ou mais áreas para filtrar o panorama.</p>
+          </div>
+        </div>
+      </div>
       <div class="summary-grid" id="summary-grid"></div>
       <div class="layout-main">
         <div class="card panel">
           <div class="panel-head">
             <div><h2 class="panel-title">Evolução patrimonial</h2><p class="panel-sub">Fotografia de referência do último mês disponível em cada período.</p></div>
             <div class="chart-tools">
-              <select class="chart-select" id="series-select" aria-label="Selecionar série do gráfico"></select>
+
               <div class="chart-tools" id="period-tools">
                 <button class="chip active" data-period="month">Mês</button><button class="chip" data-period="quarter">Trimestre</button><button class="chip" data-period="year">Ano</button>
               </div>
@@ -143,7 +165,7 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
           <div class="chart-legend" id="trend-legend"></div>
         </div>
         <div class="card panel">
-          <div class="panel-head"><div><h2 class="panel-title">Distribuição por área</h2><p class="panel-sub" id="distribution-total">Total representado: —</p></div></div>
+          <div class="panel-head"><div><h2 class="panel-title" id="distribution-title">Distribuição por área</h2><p class="panel-sub" id="distribution-total">Total representado: —</p></div></div>
           <div id="distribution"></div>
         </div>
       </div>
@@ -264,7 +286,8 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
   }
   let db=buildDemoDatabase();
   let activePeriod="month";
-  let activeSeries="all";
+  let scopeMode="total";
+  let selectedAreaIds=[];
   let activeRange="all";
   let pendingDelete=null;
 
@@ -321,6 +344,26 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     });
     return [...groups.values()];
   }
+  function scopeAreaList(){
+    if(scopeMode==="total")return db.areas;
+    return db.areas.filter(a=>selectedAreaIds.includes(a.id));
+  }
+  function scopeCurrentTotal(){
+    return scopeAreaList().reduce((sum,a)=>sum+totalValues(currentValues(a)),0);
+  }
+  function scopeMonthTotal(row){
+    if(!row)return 0;
+    if(scopeMode==="total")return row.total;
+    return scopeAreaList().reduce((sum,a)=>sum+(Number(row.byArea[a.id])||0),0);
+  }
+  function renderScopeFilter(){
+    selectedAreaIds=selectedAreaIds.filter(id=>db.areas.some(a=>a.id===id));
+    if(scopeMode==="areas"&&!selectedAreaIds.length)scopeMode="total";
+    const names=scopeAreaList().map(a=>a.name);
+    $("scope-trigger").innerHTML=`${scopeMode==="total"?"Total geral":esc(names.join(", "))}<span aria-hidden="true">⌄</span>`;
+    $("scope-trigger").setAttribute("aria-expanded",String(!$("scope-menu").hidden));
+    $("scope-area-options").innerHTML=db.areas.map(a=>`<label class="scope-option"><input type="checkbox" data-scope-area="${esc(a.id)}" ${scopeMode==="areas"&&selectedAreaIds.includes(a.id)?"checked":""}><span>${esc(a.name)}</span></label>`).join("");
+  }
   function shortMoney(n){
     const abs=Math.abs(n);
     if(abs>=1000000)return (n/1000000).toLocaleString("pt-BR",{maximumFractionDigits:1})+" mi";
@@ -335,13 +378,11 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
   }
   function renderChart(){
     const el=$("trend-chart"),legend=$("trend-legend"),data=getGroupedData();
-    renderSeriesSelector();
     if(!data.length){el.innerHTML='<div class="chart-empty">O gráfico aparecerá após o primeiro registro mensal.</div>';legend.innerHTML="";return}
     const W=840,H=270,L=58,R=18,T=18,B=36,innerW=W-L-R,innerH=H-T-B;
     let series=[];
-    if(activeSeries==="all")series=db.areas.map(a=>({id:a.id,name:a.name,color:areaColor(a.id),values:data.map(d=>Number(d.byArea[a.id])||0)}));
-    else if(activeSeries==="total")series=[{id:"total",name:"Total geral",color:"#edf3f6",values:data.map(d=>d.total)}];
-    else{const area=db.areas.find(a=>a.id===activeSeries);if(area)series=[{id:area.id,name:area.name,color:areaColor(area.id),values:data.map(d=>Number(d.byArea[area.id])||0)}]}
+    if(scopeMode==="total")series=[{id:"total",name:"Total geral",color:"#edf3f6",values:data.map(d=>d.total)}];
+    else series=scopeAreaList().map(a=>({id:a.id,name:a.name,color:areaColor(a.id),values:data.map(d=>Number(d.byArea[a.id])||0)}));
     const allValues=series.flatMap(s=>s.values);
     const max=Math.max(0,...allValues),min=Math.min(0,...allValues),range=max-min||1;
     const x=i=>data.length===1?L+innerW/2:L+i*innerW/(data.length-1);
@@ -362,21 +403,30 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
   }
   function renderDistribution(){
     const el=$("distribution");
-    const vals=db.areas.map(a=>({id:a.id,name:a.name,value:totalValues(currentValues(a))})).filter(x=>x.value>0);
-    const total=vals.reduce((s,x)=>s+x.value,0);
+    const selected=scopeAreaList();
+    const singleArea=scopeMode==="areas"&&selected.length===1?selected[0]:null;
+    let vals;
+    if(singleArea){
+      vals=singleArea.subareas.map((sub,i)=>({name:sub.name,value:Number(currentValues(singleArea)[sub.id])||0,color:COLORS[i%COLORS.length]})).filter(x=>x.value>0);
+      $("distribution-title").textContent=`Distribuição — ${singleArea.name}`;
+    }else{
+      vals=selected.map(a=>({id:a.id,name:a.name,value:totalValues(currentValues(a)),color:areaColor(a.id)})).filter(x=>x.value>0);
+      $("distribution-title").textContent=scopeMode==="total"?"Distribuição por área":"Distribuição das áreas selecionadas";
+    }
+    const total=vals.reduce((sum,item)=>sum+item.value,0);
     $("distribution-total").textContent=`Total representado: ${fmtMoney(total)}`;
-    if(!vals.length){el.innerHTML='<div class="chart-empty">Cadastre áreas e registre valores para visualizar a distribuição.</div>';return}
-    const ring=vals.map(v=>{
-      const index=db.areas.findIndex(a=>a.id===v.id);
-      const start=vals.slice(0,vals.indexOf(v)).reduce((s,x)=>s+x.value,0)/total*100;
-      const end=(start*total/100+v.value)/total*100;
-      return `${COLORS[(index<0?0:index)%COLORS.length]} ${start}% ${end}%`;
+    if(!vals.length){el.innerHTML='<div class="chart-empty">Não há valores registrados para este escopo.</div>';return}
+    let cumulative=0;
+    const ring=vals.map(item=>{
+      const start=cumulative/total*100;
+      cumulative+=item.value;
+      return `${item.color} ${start}% ${cumulative/total*100}%`;
     }).join(",");
-    const legend=vals.map(v=>{
-      const pct=v.value/total*100;
-      return `<div class="legend-row"><div class="legend-name"><i class="dot" style="background:${areaColor(v.id)}"></i><span>${esc(v.name)}</span></div><span class="legend-value">${fmtMoney(v.value)}<small>${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%</small></span></div>`;
+    const legend=vals.map(item=>{
+      const pct=item.value/total*100;
+      return `<div class="legend-row"><div class="legend-name"><i class="dot" style="background:${item.color}"></i><span>${esc(item.name)}</span></div><span class="legend-value">${fmtMoney(item.value)}<small>${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%</small></span></div>`;
     }).join("");
-    el.innerHTML=`<div class="donut-layout"><div class="donut" role="img" aria-label="Gráfico de distribuição por área"><div class="donut-center"><strong>${shortMoney(total)}</strong><span>Total geral</span></div></div><div class="legend">${legend}</div></div>`;
+    el.innerHTML=`<div class="donut-layout"><div class="donut" role="img" aria-label="${esc($("distribution-title").textContent)}"><div class="donut-center"><strong>${shortMoney(total)}</strong><span>Total do escopo</span></div></div><div class="legend">${legend}</div></div>`;
     const donut=el.querySelector(".donut");
     donut.style.background=`conic-gradient(${ring})`;
     donut.style.mask="radial-gradient(farthest-side,transparent calc(100% - 16px),#000 calc(100% - 15px))";
@@ -384,16 +434,14 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
   }
   function renderDashboard(){
     $("current-date").textContent=localNow().toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"});
-    const total=currentTotal(),currentMonth=nowMonth();
-    const prior=monthlyData().filter(x=>x.key<currentMonth).at(-1);
-    const delta=prior?variation(total,prior.total):null;
-    const subCount=db.areas.reduce((n,a)=>n+a.subareas.length,0);
-    const updated=db.areas.filter(a=>getLatest(a.id,currentMonth)).length;
+    renderScopeFilter();
+    const total=scopeCurrentTotal(),currentMonth=nowMonth();
+    const prior=monthlyData().filter(row=>row.key<currentMonth).at(-1);
+    const priorTotal=prior?scopeMonthTotal(prior):null;
+    const delta=prior?variation(total,priorTotal):null;
     $("summary-grid").innerHTML=`
-      <div class="card metric"><span class="metric-mark">◈</span><div class="metric-label">Total geral atual</div><div class="metric-value">${fmtMoney(total)}</div><div class="metric-foot">${db.areas.length} áreas cadastradas</div></div>
-      <div class="card metric"><span class="metric-mark">⌁</span><div class="metric-label">Variação vs. mês anterior</div><div class="metric-value">${delta===null?"—":`${delta>0?"+":""}${delta.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`}</div><div class="metric-foot">${prior?"Comparação mensal":"Registre mais de um mês"}</div></div>
-      <div class="card metric"><span class="metric-mark">▤</span><div class="metric-label">Subáreas cadastradas</div><div class="metric-value">${subCount}</div><div class="metric-foot">Itens acompanhados</div></div>
-      <div class="card metric"><span class="metric-mark">◷</span><div class="metric-label">Áreas atualizadas neste mês</div><div class="metric-value">${updated}<span style="font-size:12px;color:var(--muted)"> / ${db.areas.length}</span></div><div class="metric-foot">Mês de referência: ${monthLabel(currentMonth)}</div></div>`;
+      <div class="card metric"><span class="metric-mark">◈</span><div class="metric-label">Total geral atual</div><div class="metric-value">${fmtMoney(total)}</div><div class="metric-foot">${scopeMode==="total"?"Todas as áreas":scopeAreaList().map(a=>esc(a.name)).join(" + ")}</div></div>
+      <div class="card metric"><span class="metric-mark">⌁</span><div class="metric-label">Variação em relação ao mês anterior</div><div class="metric-value">${delta===null?"—":`${delta>0?"+":""}${delta.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`}</div><div class="metric-foot">${prior?"Comparação do escopo selecionado":"Registre mais de um mês"}</div></div>`;
     renderChart();renderDistribution();
     if(!db.areas.length){$("areas-grid").innerHTML='<div class="card empty-box" style="grid-column:1/-1"><div class="empty-icon">＋</div><h3>Comece criando sua primeira área</h3><p>Cadastre uma área financeira, adicione seus subníveis e registre a primeira fotografia dos valores.</p><button class="btn primary" onclick="showScreen(\'structure\')">Criar primeira área</button></div>';return}
     const previousMonth=monthlyData().filter(x=>x.key<currentMonth).at(-1);
@@ -401,7 +449,7 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
       const amount=totalValues(currentValues(a)),last=getLatest(a.id);
       const prevValues=previousMonth?valuesForMonth(a.id,previousMonth.key):null;
       const change=previousMonth?variation(amount,prevValues?totalValues(prevValues):0):null;
-      return `<div class="card area-card" onclick="openAreaUpdate('${a.id}')"><div class="area-top"><div class="area-name">${esc(a.name)}</div><span class="dot" style="background:${areaColor(a.id)}"></span></div><div class="area-total">${fmtMoney(amount)}</div><div class="area-meta">${a.subareas.length} subárea${a.subareas.length===1?"":"s"}${last?` · atualizado ${fmtDate(last.date)}`:" · sem atualização"}</div><div class="area-foot"><span>Variação mensal</span>${variationHTML(change)}</div></div>`;
+      return `<div class="card area-card" style="--area-color:${areaColor(a.id)}" onclick="openAreaUpdate('${a.id}')"><div class="area-top"><div class="area-name">${esc(a.name)}</div><span class="dot" style="background:${areaColor(a.id)}"></span></div><div class="area-total">${fmtMoney(amount)}</div><div class="area-meta">${a.subareas.length} subárea${a.subareas.length===1?"":"s"}${last?` · atualizado ${fmtDate(last.date)}`:" · sem atualização"}</div><div class="area-foot"><span>Variação mensal</span>${variationHTML(change)}</div></div>`;
     }).join("");
   }
   function renderUpdate(){
@@ -466,6 +514,14 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     const name=prompt("Novo nome da área:",area.name);if(name===null)return;
     if(!name.trim()||nameExists(name,areaId)){toast("Nome vazio ou já utilizado.");return}
     area.name=name.trim();renderAll();renderStructure();toast("Área renomeada.");
+  }
+  function clearAllData(){
+    confirmAction("Apagar todos os dados?", "Esta ação é irreversível. Todas as áreas, subáreas e fotografias históricas serão apagadas. Deseja continuar?", ()=>{
+      db={version:1,areas:[],snapshots:[]};
+      selectedAreaIds=[];scopeMode="total";
+      renderAll();toast("Todos os dados foram apagados.");
+    });
+    $("modal-confirm").textContent="Apagar tudo";
   }
   function confirmAction(title,text,fn){
     $("modal-title").textContent=title;$("modal-text").textContent=text;$("modal-backdrop").classList.add("open");
@@ -541,12 +597,29 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
   }
   function renderAll(){renderDashboard();renderUpdate();renderStructure();renderHistory()}
   document.querySelectorAll(".nav button").forEach(button=>button.addEventListener("click",()=>showScreen(button.dataset.screen)));
+  $("scope-trigger").addEventListener("click",()=>{
+    $("scope-menu").hidden=!$("scope-menu").hidden;
+    $("scope-trigger").setAttribute("aria-expanded",String(!$("scope-menu").hidden));
+  });
+  $("scope-total-option").addEventListener("click",()=>{
+    scopeMode="total";selectedAreaIds=[];$("scope-menu").hidden=true;renderDashboard();
+  });
+  $("scope-menu").addEventListener("change",event=>{
+    if(!event.target.matches("[data-scope-area]"))return;
+    scopeMode="areas";
+    selectedAreaIds=[...$("scope-menu").querySelectorAll("[data-scope-area]:checked")].map(input=>input.dataset.scopeArea);
+    if(!selectedAreaIds.length)scopeMode="total";
+    $("scope-menu").hidden=true;renderDashboard();
+  });
+  document.addEventListener("click",event=>{
+    if(!event.target.closest(".scope-filter")){$("scope-menu").hidden=true;$("scope-trigger").setAttribute("aria-expanded","false")}
+  });
   document.querySelectorAll("#period-tools .chip").forEach(button=>button.addEventListener("click",()=>{
     activePeriod=button.dataset.period;
     document.querySelectorAll("#period-tools .chip").forEach(item=>item.classList.toggle("active",item===button));
     renderChart();
   }));
-  $("series-select").addEventListener("change",event=>{activeSeries=event.target.value;renderChart()});
+
   $("chart-range").addEventListener("change",event=>{
     activeRange=event.target.value;
     $("range-count").hidden=activeRange!=="recent";
@@ -560,7 +633,7 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(error=>console.error("Falha ao registrar service worker:",error)));
   }
   $("current-date").textContent=localNow().toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"});
-  window.showScreen=showScreen;window.exportJSON=exportJSON;window.addArea=addArea;window.addSubarea=addSubarea;window.renameArea=renameArea;window.deleteArea=deleteArea;window.deleteSubarea=deleteSubarea;window.saveUpdate=saveUpdate;window.renderHistory=renderHistory;window.editRecord=editRecord;window.openAreaUpdate=openAreaUpdate;window.closeModal=closeModal;window.toggleSidebar=toggleSidebar;
+  window.showScreen=showScreen;window.exportJSON=exportJSON;window.addArea=addArea;window.addSubarea=addSubarea;window.renameArea=renameArea;window.deleteArea=deleteArea;window.deleteSubarea=deleteSubarea;window.clearAllData=clearAllData;window.saveUpdate=saveUpdate;window.renderHistory=renderHistory;window.editRecord=editRecord;window.openAreaUpdate=openAreaUpdate;window.closeModal=closeModal;window.toggleSidebar=toggleSidebar;
   renderAll();
 })();
 </script>
