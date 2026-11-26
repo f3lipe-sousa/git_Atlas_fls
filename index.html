@@ -19,7 +19,7 @@ aside{background:rgba(13,21,28,.96);border-right:1px solid var(--line);padding:2
 .sidebar-toggle{margin-left:auto;width:30px;height:30px;flex:none;border:1px solid var(--line);background:#14212a;color:var(--text);border-radius:8px;font-size:16px;line-height:1}
 .nav-label{font-size:9px;color:#718594;text-transform:uppercase;letter-spacing:.15em;padding:0 10px;margin-bottom:5px;white-space:nowrap}
 .nav{display:grid;gap:5px}
-.nav button{background:transparent;color:#9aabb8;border:0;text-align:left;padding:10px;border-radius:10px;display:flex;gap:10px;align-items:center;transition:.18s;white-space:nowrap;overflow:hidden}
+.nav button{background:transparent;color:#9aabb8;border:0;text-align:left;padding:10px;border-radius:10px;display:flex;gap:10px;align-items:center;transition:.18s;white-space:nowrap;overflow:hidden;min-height:42px}
 .nav button:hover,.nav button.active{background:#1a2a33;color:var(--text)}.nav button.active{box-shadow:inset 3px 0 var(--teal)}
 .nav-icon{font-size:16px;width:20px;text-align:center;flex:none}
 .side-bottom{margin-top:auto;border:1px solid var(--line);background:linear-gradient(145deg,#14242a,#10191f);border-radius:14px;padding:12px}
@@ -40,6 +40,7 @@ h1{font-size:clamp(18px,2.2vw,25px);letter-spacing:-.03em;margin:3px 0 0;line-he
 .scope-card-name{font-size:11px;font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .scope-card-mark{width:9px;height:9px;border-radius:50%;background:var(--area-color);flex:none}
 .scope-card-value{font-size:17px;font-weight:750;letter-spacing:-.03em;margin-top:10px;white-space:nowrap}
+.scope-card{min-height:66px}
 .scope-card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:3px;color:var(--muted);font-size:9px}
 .scope-card-action{position:absolute;right:11px;bottom:10px;border:1px solid var(--line);background:#0e171e;color:var(--text);border-radius:7px;padding:4px 7px;font-size:9px;font-weight:750}
 .scope-card-action:hover{border-color:var(--area-color);color:var(--area-color)}
@@ -72,6 +73,62 @@ h1{font-size:clamp(18px,2.2vw,25px);letter-spacing:-.03em;margin:3px 0 0;line-he
 .subarea-bar-track{height:9px;background:#0c151b;border-radius:10px;overflow:hidden;border:1px solid #1d2a32}
 .subarea-bar-fill{height:100%;min-width:0;border-radius:10px}
 .subarea-bar-value{text-align:right;color:#dce6eb;font-variant-numeric:tabular-nums;white-space:nowrap}
+.goal-editor{border-top:1px solid var(--line);margin-top:12px;padding-top:12px}
+.goal-editor-title{font-size:10px;font-weight:700;margin:0 0 8px;color:#d0dbe1}
+.goal-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;align-items:end}
+.goal-fields .field{margin:0}
+.goal-fields .field label{font-size:9px}
+.goal-fields input{min-width:0}
+.goal-actions{display:flex;align-items:center;gap:10px;margin-top:9px;flex-wrap:wrap}
+.goal-deadline{font-size:9px;color:var(--muted)}
+.goal-legend-line{height:0;width:15px;border-top:2px dashed var(--gold);border-radius:0;flex:none}
+@media(max-width:680px){.goal-fields{grid-template-columns:1fr 1fr}.goal-fields .field:first-child{grid-column:1/-1}}
+.goal-panel{margin:0 0 18px}
+.goal-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px}
+.goal-card{--area-color:var(--teal);border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,rgba(22,34,44,.98),rgba(16,25,33,.98));color:var(--text);padding:14px;text-align:left;cursor:pointer;transition:.18s;min-width:0}
+.goal-card:hover{border-color:var(--area-color);transform:translateY(-2px)}
+.goal-card-head{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11px;font-weight:750}
+.goal-card-head span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.goal-card-value{font-size:16px;font-weight:750;margin:12px 0 3px}
+.goal-card-meta{color:var(--muted);font-size:9px}
+.goal-progress-track{height:8px;background:#0c151b;border:1px solid #1d2a32;border-radius:9px;overflow:hidden;margin:10px 0 6px}
+.goal-progress-fill{height:100%;border-radius:9px;background:var(--area-color)}
+.goal-card-foot{display:flex;justify-content:space-between;gap:8px;color:#a8b8c2;font-size:9px}
+.goal-card-empty{color:var(--muted);font-size:10px;margin-top:12px}
+.goal-detail{display:none}
+.goal-detail.active{display:block}
+.goal-detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.goal-detail-title{font-size:16px;font-weight:750;margin:0}
+.goal-detail-actions{display:flex;gap:8px;flex-wrap:wrap}
+.goal-detail-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,.85fr);gap:14px;margin-bottom:14px}
+.goal-detail-chart{height:300px;position:relative}
+.goal-detail-chart svg{width:100%;height:100%;display:block}
+.goal-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.goal-stat{border:1px solid var(--line);background:#101920;border-radius:11px;padding:11px;min-width:0}
+.goal-stat-label{font-size:9px;color:var(--muted)}
+.goal-stat-value{font-size:14px;font-weight:750;margin-top:5px;overflow-wrap:anywhere}
+.goal-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:13px 0}
+.goal-kpi{min-width:0;border:1px solid var(--line);background:#101920;border-radius:12px;padding:11px}
+.goal-kpi span,.goal-kpi small{display:block;color:var(--muted);font-size:9px}
+.goal-kpi strong{display:block;font-size:clamp(14px,1.5vw,19px);line-height:1.25;margin:6px 0;overflow-wrap:anywhere}
+.goal-kpi-main{border-color:#5dd6c080;background:linear-gradient(145deg,#17332f,#101920)}
+.goal-kpi-main strong{color:var(--teal)}
+.goal-kpi-target{border-color:#84b9ff70}
+.goal-kpi-target strong{color:#a9ceff}
+.goal-kpi-remain{border-color:#e7bb7280;background:linear-gradient(145deg,#33291b,#101920)}
+.goal-kpi-remain strong{color:var(--gold)}
+.goal-pace-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}
+.goal-pace-card{border:1px solid var(--line);background:#101920;border-radius:11px;padding:11px}
+.goal-pace-card span,.goal-pace-card small{display:block;color:var(--muted);font-size:9px}
+.goal-pace-card strong{display:block;font-size:13px;margin:5px 0}
+.goal-pace-status{grid-column:1/-1;color:#dce6eb;font-size:10px;padding:9px 11px;border-radius:9px;background:#17242b}
+.goal-pace-status.ahead{color:#9ce4cf;background:#15302a}
+.goal-pace-status.behind{color:#f3c879;background:#302719}
+@media(max-width:520px){.goal-kpi-grid{grid-template-columns:1fr}.goal-pace-grid{grid-template-columns:1fr}.goal-pace-status{grid-column:auto}}
+.goal-detail-progress{margin-top:14px}
+.goal-detail-progress .goal-progress-track{height:12px}
+.goal-detail-note{font-size:10px;color:var(--muted);margin-top:9px;line-height:1.6}
+@media(max-width:760px){.goal-detail-grid{grid-template-columns:1fr}.goal-detail-chart{height:250px}}
 .areas-heading{display:flex;justify-content:space-between;align-items:center;margin:21px 0 11px}.areas-heading h2{font-size:14px;margin:0}
 .empty-box{padding:35px 18px;text-align:center;color:var(--muted)}.empty-box .empty-icon{font-size:28px;color:var(--teal);margin-bottom:8px}.empty-box h3{color:var(--text);font-size:15px;margin:0 0 5px}.empty-box p{font-size:11px;max-width:450px;margin:0 auto 15px}
 .section-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(270px,.8fr);gap:14px}.form-card{padding:19px}
@@ -94,7 +151,8 @@ aside,.sidebar-collapsed aside{position:sticky;top:0;z-index:5;padding:8px 10px;
 .brand,.sidebar-collapsed .brand{padding:0;flex-wrap:nowrap;justify-content:flex-start}.brand-mark{width:32px;height:32px}
 .brand-copy,.sidebar-collapsed .brand-copy{display:block}.brand-sub{display:none}.sidebar-toggle,.sidebar-collapsed .sidebar-toggle{margin-left:0}
 aside>div:nth-child(2){flex:1;min-width:0}.nav-label,.sidebar-collapsed .nav-label,.side-bottom,.sidebar-collapsed .side-bottom{display:none}
-.nav,.sidebar-collapsed .nav{display:flex;justify-content:flex-end;gap:2px}.nav button,.sidebar-collapsed .nav button{padding:8px;justify-content:center}.nav button .nav-text,.sidebar-collapsed .nav button .nav-text{display:none}
+.nav,.sidebar-collapsed .nav{display:flex;justify-content:flex-end;gap:3px}.nav button,.sidebar-collapsed .nav button{width:42px;height:44px;padding:8px;justify-content:center;flex:none}.nav button .nav-text,.sidebar-collapsed .nav button .nav-text{display:none}.nav-icon{font-size:20px;width:24px}
+.top-actions .btn{min-height:44px}
 main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column;margin-bottom:16px}.top-actions{width:100%}
 .scope-cards{grid-template-columns:repeat(auto-fit,minmax(min(100%,145px),1fr));gap:8px}.scope-card{padding:11px}.scope-card-value{font-size:15px}
 .summary-grid{gap:8px}.metric{padding:12px;min-height:108px}.metric-value{font-size:18px}.section-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}
@@ -134,14 +192,16 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
         <h1 id="page-title"></h1>
       </div>
       <div class="top-actions">
-        <button class="btn" onclick="document.getElementById('import-file').click()">Importar JSON</button>
-        <button class="btn" onclick="exportJSON()">Exportar JSON</button>
+        <button class="btn" onclick="document.getElementById('import-file').click()">Importar</button>
+        <button class="btn" onclick="exportJSON()">Exportar</button>
+        <button class="btn danger" onclick="clearAllData()">Apagar dados</button>
         <input id="import-file" type="file" accept=".json,application/json" hidden>
         <button class="btn primary" onclick="showScreen('updates')">＋ Atualizar valores</button>
       </div>
     </header>
 
     <section id="screen-dashboard" class="screen active">
+      <div id="dashboard-overview">
       <div class="scope-cards" id="scope-cards" aria-label="Selecionar escopo do painel"></div>
       <div class="summary-grid" id="summary-grid"></div>
       <div class="layout-main">
@@ -172,7 +232,19 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
         <div class="panel-head"><div><h2 class="panel-title" id="subarea-chart-title">Valores por subárea</h2><p class="panel-sub">Comparação dos valores atuais dentro do escopo selecionado.</p></div></div>
         <div id="subarea-bars"></div>
       </div>
+      <div class="card panel goal-panel">
+        <div class="panel-head"><div><h2 class="panel-title">Painel de metas</h2><p class="panel-sub">Acompanhe o progresso de cada área até o valor definido.</p></div><button class="btn small" onclick="showScreen('structure')">Gerenciar metas</button></div>
+        <div id="goal-cards" class="goal-cards"></div>
+      </div>
       <div class="areas-heading"><h2>Áreas financeiras</h2><button class="btn small" onclick="showScreen('structure')">Gerenciar áreas</button></div>
+      </div>
+      <div id="goal-detail" class="goal-detail">
+        <div class="goal-detail-head">
+          <div><div class="eyebrow">Painel de metas · Detalhamento</div><h2 id="goal-detail-title" class="goal-detail-title"></h2></div>
+          <div class="goal-detail-actions"><button class="btn" onclick="closeGoalDetail()">← Voltar ao painel</button><button class="btn" onclick="showScreen('structure')">Editar meta</button></div>
+        </div>
+        <div id="goal-detail-content"></div>
+      </div>
     </section>
 
     <section id="screen-updates" class="screen">
@@ -236,6 +308,7 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
   const makeId=()=>Math.random().toString(36).slice(2,10);
   const localNow=()=>new Date();
   const nowMonth=()=>{const d=localNow();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`};
+  const todayDate=()=>{const d=localNow();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
   const fmtMoney=n=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(n)||0);
   const fmtDate=s=>{if(!s)return "—";const [y,m,d]=s.split("-");return `${d}/${m}/${y}`};
   const monthLabel=m=>{if(!m)return "";const [y,mo]=m.split("-");return new Date(Number(y),Number(mo)-1,1).toLocaleDateString("pt-BR",{month:"short",year:"2-digit"}).replace(".","")};
@@ -265,12 +338,34 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     });
     return {version:1,areas:structuredClone(areas),snapshots};
   }
-  let db=buildDemoDatabase();
+  let db={version:1,areas:[],snapshots:[]};
   let activePeriod="month";
   let activeScope="all";
   let activeRange="all";
+  let activeGoalAreaId=null;
 
   function areaName(aid){return db.areas.find(a=>a.id===aid)?.name||"Área removida"}
+  function goalDeadline(startDate,durationMonths){
+    if(!startDate||!durationMonths)return "";
+    const [year,month,day]=startDate.split("-").map(Number);
+    const targetIndex=month-1+Number(durationMonths),targetYear=year+Math.floor(targetIndex/12),targetMonth=targetIndex%12;
+    const lastDay=new Date(targetYear,targetMonth+1,0).getDate();
+    const date=new Date(targetYear,targetMonth,Math.min(day,lastDay));
+    return `${String(date.getDate()).padStart(2,"0")}/${String(date.getMonth()+1).padStart(2,"0")}/${date.getFullYear()}`;
+  }
+  function renderGoalEditor(area){
+    const goal=area.goal||{};
+    return `<div class="goal-editor"><h3 class="goal-editor-title">Meta financeira</h3><div class="goal-fields"><div class="field"><label for="goal-amount-${esc(area.id)}">Valor da meta (R$)</label><input id="goal-amount-${esc(area.id)}" type="number" min="0.01" step="0.01" placeholder="Ex.: 50000" value="${goal.amount??""}"></div><div class="field"><label for="goal-start-${esc(area.id)}">Data de início</label><input id="goal-start-${esc(area.id)}" type="date" value="${esc(goal.startDate||todayDate())}"></div><div class="field"><label for="goal-duration-${esc(area.id)}">Prazo (meses)</label><input id="goal-duration-${esc(area.id)}" type="number" min="1" max="1200" step="1" placeholder="Ex.: 12" value="${goal.durationMonths??12}"></div></div><div class="goal-actions"><button class="btn small" onclick="saveAreaGoal('${esc(area.id)}')">${goal.amount?"Salvar alterações":"Cadastrar meta"}</button>${goal.amount&&goal.startDate&&goal.durationMonths?`<span class="goal-deadline">Prazo final estimado: ${goalDeadline(goal.startDate,goal.durationMonths)}</span>`:""}</div></div>`;
+  }
+  function saveAreaGoal(areaId){
+    const area=db.areas.find(item=>item.id===areaId);if(!area)return;
+    const amount=Number($(`goal-amount-${areaId}`).value),startDate=$(`goal-start-${areaId}`).value,durationMonths=Number($(`goal-duration-${areaId}`).value);
+    if(!Number.isFinite(amount)||amount<=0){toast("Informe um valor de meta maior que zero.");return}
+    if(!startDate||Number.isNaN(new Date(`${startDate}T00:00:00`).getTime())){toast("Escolha a data de início da meta.");return}
+    if(!Number.isInteger(durationMonths)||durationMonths<1||durationMonths>1200){toast("Informe um prazo inteiro entre 1 e 1200 meses.");return}
+    area.goal={amount,startDate,durationMonths};
+    renderAll();renderStructure();toast("Meta salva.");
+  }
   function areaColor(areaId){const index=db.areas.findIndex(a=>a.id===areaId);return COLORS[(index<0?0:index)%COLORS.length]}
   function subareaColor(subareaId){
     const index=db.areas.flatMap(area=>area.subareas).findIndex(sub=>sub.id===subareaId);
@@ -310,33 +405,48 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     });
     return [...groups.values()];
   }
-  function selectedArea(){return db.areas.find(a=>a.id===activeScope)||null}
-  function scopeCurrentTotal(){const area=selectedArea();return area?totalValues(currentValues(area)):currentTotal()}
-  function scopeMonthTotal(row){const area=selectedArea();return area?Number(row?.byArea[area.id])||0:Number(row?.total)||0}
+  function selectedAreas(){
+    return activeScope==="all"?db.areas:(Array.isArray(activeScope)?db.areas.filter(area=>activeScope.includes(area.id)):[]);
+  }
+  function selectedArea(){const areas=selectedAreas();return areas.length===1?areas[0]:null}
+  function scopeCurrentTotal(){return selectedAreas().reduce((sum,area)=>sum+totalValues(currentValues(area)),0)}
+  function scopeMonthTotal(row){return selectedAreas().reduce((sum,area)=>sum+(Number(row?.byArea[area.id])||0),0)}
   function shortMoney(n){const abs=Math.abs(n);if(abs>=1000000)return (n/1000000).toLocaleString("pt-BR",{maximumFractionDigits:1})+" mi";if(abs>=1000)return (n/1000).toLocaleString("pt-BR",{maximumFractionDigits:0})+" mil";return n.toLocaleString("pt-BR",{maximumFractionDigits:0})}
-  function selectScope(scope){activeScope=scope==="all"||db.areas.some(a=>a.id===scope)?scope:"all";renderDashboard()}
+  function selectScope(scope){
+    if(scope==="all")activeScope="all";
+    else if(db.areas.some(area=>area.id===scope)){
+      const selected=activeScope==="all"?db.areas.map(area=>area.id):(Array.isArray(activeScope)?[...activeScope]:[]);
+      activeScope=selected.includes(scope)?selected.filter(id=>id!==scope):[...selected,scope];
+    }
+    renderDashboard();
+  }
   function renderScopeCards(){
-    if(activeScope!=="all"&&!db.areas.some(a=>a.id===activeScope))activeScope="all";
-    const cards=[`<button type="button" class="scope-card ${activeScope==="all"?"selected":""}" style="--area-color:var(--teal)" onclick="selectScope('all')" aria-pressed="${activeScope==="all"}"><span class="scope-card-top"><span class="scope-card-name">Geral</span><i class="scope-card-mark"></i></span><span class="scope-card-value">${fmtMoney(currentTotal())}</span><span class="scope-card-foot"><span>Todas as áreas</span></span></button>`];
+    if(Array.isArray(activeScope))activeScope=activeScope.filter(id=>db.areas.some(area=>area.id===id));
+    const selected=selectedAreas(),allSelected=db.areas.length>0&&selected.length===db.areas.length;
+    const cards=[`<button type="button" class="scope-card ${allSelected?"selected":""}" style="--area-color:var(--teal)" onclick="selectScope('all')" aria-pressed="${allSelected}"><span class="scope-card-top"><span class="scope-card-name">Geral</span><i class="scope-card-mark"></i></span><span class="scope-card-foot"><span>Selecionar todas</span></span></button>`];
     db.areas.forEach(a=>{
-      const color=areaColor(a.id),total=totalValues(currentValues(a)),isSelected=activeScope===a.id;
-      cards.push(`<button type="button" class="scope-card ${isSelected?"selected":""}" style="--area-color:${color}" onclick="selectScope('${esc(a.id)}')" aria-pressed="${isSelected}"><span class="scope-card-top"><span class="scope-card-name">${esc(a.name)}</span><i class="scope-card-mark"></i></span><span class="scope-card-value">${fmtMoney(total)}</span><span class="scope-card-foot"><span>${a.subareas.length} subárea${a.subareas.length===1?"":"s"}</span></span><span class="scope-card-action" role="button" tabindex="0" title="Atualizar valores desta área" onclick="event.stopPropagation();openAreaUpdate('${esc(a.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();openAreaUpdate('${esc(a.id)}')}">AV</span></button>`);
+      const color=areaColor(a.id),isSelected=selected.some(area=>area.id===a.id);
+      cards.push(`<button type="button" class="scope-card ${isSelected?"selected":""}" style="--area-color:${color}" onclick="selectScope('${esc(a.id)}')" aria-pressed="${isSelected}"><span class="scope-card-top"><span class="scope-card-name">${esc(a.name)}</span><i class="scope-card-mark"></i></span><span class="scope-card-foot"><span>${a.subareas.length} subárea${a.subareas.length===1?"":"s"}</span></span><span class="scope-card-action" role="button" tabindex="0" title="Atualizar valores desta área" onclick="event.stopPropagation();openAreaUpdate('${esc(a.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();openAreaUpdate('${esc(a.id)}')}">AV</span></button>`);
     });
     $("scope-cards").innerHTML=cards.join("");
   }
   function renderChart(){
     const el=$("trend-chart"),legend=$("trend-legend"),data=getGroupedData();
     if(!data.length){el.innerHTML='<div class="chart-empty">O gráfico aparecerá após o primeiro registro mensal.</div>';legend.innerHTML="";return}
-    const area=selectedArea();
+    const areas=selectedAreas(),area=areas.length===1?areas[0]:null;
+    if(!areas.length){el.innerHTML='<div class="chart-empty">Selecione uma ou mais áreas para visualizar a evolução.</div>';legend.innerHTML="";return}
     let series=[];
-    if(!area){
-      series=[{id:"total",name:"Total geral",color:"#edf3f6",values:data.map(d=>d.total)}];
-      db.areas.forEach(a=>series.push({id:a.id,name:a.name,color:areaColor(a.id),values:data.map(d=>Number(d.byArea[a.id])||0)}));
-    }else{
+    if(areas.length===1){
       series=[{id:area.id,name:area.name,color:areaColor(area.id),values:data.map(d=>Number(d.byArea[area.id])||0)}];
       area.subareas.forEach(sub=>series.push({id:sub.id,name:sub.name,color:subareaColor(sub.id),values:data.map(d=>Number(d.bySubarea[sub.id])||0)}));
+    }else{
+      series=[{id:"scope-total",name:"Total selecionado",color:"#edf3f6",values:data.map(d=>areas.reduce((sum,item)=>sum+(Number(d.byArea[item.id])||0),0))}];
+      areas.forEach(item=>series.push({id:item.id,name:item.name,color:areaColor(item.id),values:data.map(d=>Number(d.byArea[item.id])||0)}));
     }
     const W=840,H=270,L=58,R=18,T=18,B=36,innerW=W-L-R,innerH=H-T-B;
+    areas.filter(item=>item.goal&&Number(item.goal.amount)>0).forEach(item=>{
+      series.push({id:`goal-${item.id}`,type:"goal",name:`Meta — ${item.name}`,color:areaColor(item.id),values:data.map(()=>Number(item.goal.amount))});
+    });
     const allValues=series.flatMap(s=>s.values),max=Math.max(0,...allValues),min=Math.min(0,...allValues),range=max-min||1;
     const x=i=>data.length===1?L+innerW/2:L+i*innerW/(data.length-1),y=v=>T+innerH-(v-min)/range*innerH;
     let grid="";
@@ -345,18 +455,21 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     const lines=series.map(s=>{
       const points=s.values.map((v,i)=>`${x(i)},${y(v)}`).join(" ");
       const dots=s.values.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3.2" fill="${s.color}" stroke="#14232b" stroke-width="1.5"><title>${esc(s.name)} — ${esc(data[i].label)}: ${fmtMoney(v)}</title></circle>`).join("");
-      return `<polyline points="${points}" fill="none" stroke="${s.color}" stroke-width="${s.id==="total"||s.id===area?.id?3:2.3}" stroke-linecap="round" stroke-linejoin="round"/>${dots}`;
+      const linePoints=s.type==="goal"?`${L},${y(s.values[0])} ${W-R},${y(s.values[0])}`:points;
+      const dash=s.type==="goal"?' stroke-dasharray="7 5"':"";
+      const lineDots=s.type==="goal"?"":dots;
+      return `<polyline points="${linePoints}" fill="none" stroke="${s.color}" stroke-width="${s.type==="goal"?2.5:s.id==="total"||s.id==="scope-total"||s.id===area?.id?3:2.3}"${dash} stroke-linecap="round" stroke-linejoin="round"/>${lineDots}`;
     }).join("");
     el.innerHTML=`<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Gráfico de evolução patrimonial">${grid}${lines}${labels}</svg>`;
-    legend.innerHTML=series.map(s=>`<span class="chart-legend-item"><i class="chart-legend-line" style="background:${s.color}"></i>${esc(s.name)}</span>`).join("");
+    legend.innerHTML=series.map(s=>`<span class="chart-legend-item"><i class="${s.type==="goal"?"goal-legend-line":"chart-legend-line"}" style="${s.type==="goal"?`border-top-color:${s.color}`:`background:${s.color}`}"></i>${esc(s.name)}</span>`).join("");
   }
   function renderDistribution(){
-    const el=$("distribution"),area=selectedArea();
+    const el=$("distribution"),areas=selectedAreas(),area=areas.length===1?areas[0]:null;
     let vals;
     if(area)vals=area.subareas.map(sub=>({name:sub.name,value:Number(currentValues(area)[sub.id])||0,color:subareaColor(sub.id)})).filter(x=>x.value>0);
-    else vals=db.areas.map(a=>({name:a.name,value:totalValues(currentValues(a)),color:areaColor(a.id)})).filter(x=>x.value>0);
+    else vals=areas.flatMap(item=>[{name:item.name,value:totalValues(currentValues(item)),color:areaColor(item.id)}]).filter(x=>x.value>0);
     const total=vals.reduce((sum,x)=>sum+x.value,0);
-    $("distribution-title").textContent=area?`Distribuição — ${area.name}`:"Distribuição por área";
+    $("distribution-title").textContent=area?`Distribuição — ${area.name}`:"Distribuição das áreas selecionadas";
     $("distribution-total").textContent=`Total representado: ${fmtMoney(total)}`;
     if(!vals.length){el.innerHTML='<div class="chart-empty">Não há valores registrados para este escopo.</div>';return}
     let cumulative=0;
@@ -369,9 +482,9 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     donut.style.webkitMask="radial-gradient(farthest-side,transparent calc(100% - 16px),#000 calc(100% - 15px))";
   }
   function renderSubareaBars(){
-    const holder=$("subarea-bars"),area=selectedArea();
-    const groups=area?[area]:db.areas;
-    $("subarea-chart-title").textContent=area?`Subáreas — ${area.name}`:"Subáreas de todas as áreas";
+    const holder=$("subarea-bars"),areas=selectedAreas(),area=areas.length===1?areas[0]:null;
+    const groups=areas;
+    $("subarea-chart-title").textContent=area?`Subáreas — ${area.name}`:"Subáreas das áreas selecionadas";
     const entries=groups.flatMap(a=>a.subareas.map(sub=>({area:a,sub,value:Number(currentValues(a)[sub.id])||0,color:subareaColor(sub.id)})));
     if(!entries.length){holder.innerHTML='<div class="chart-empty">Cadastre áreas e subáreas para visualizar este gráfico.</div>';return}
     const max=Math.max(0,...entries.map(x=>x.value));
@@ -387,10 +500,71 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     $("page-title").textContent=localNow().toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"});
     renderScopeCards();
     const total=scopeCurrentTotal(),currentMonth=nowMonth(),prior=monthlyData().filter(x=>x.key<currentMonth).at(-1),priorTotal=prior?scopeMonthTotal(prior):null,delta=prior?variation(total,priorTotal):null,area=selectedArea();
+    const scopeLabel=area?"Total da área selecionada":selectedAreas().length===db.areas.length?"Total geral atual":"Total das áreas selecionadas";
     $("summary-grid").innerHTML=`
-      <div class="card metric"><span class="metric-mark">◈</span><div class="metric-label">${area?"Total da área selecionada":"Total geral atual"}</div><div class="metric-value">${fmtMoney(total)}</div><div class="metric-foot">${area?esc(area.name):`${db.areas.length} áreas cadastradas`}</div></div>
+      <div class="card metric"><span class="metric-mark">◈</span><div class="metric-label">${scopeLabel}</div><div class="metric-value">${fmtMoney(total)}</div><div class="metric-foot">${area?esc(area.name):`${selectedAreas().length} áreas selecionadas`}</div></div>
       <div class="card metric"><span class="metric-mark">⌁</span><div class="metric-label">Variação em relação ao mês anterior</div><div class="metric-value">${delta===null?"—":`${delta>0?"+":""}${delta.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`}</div><div class="metric-foot">${prior?"Comparação do escopo selecionado":"Registre mais de um mês"}</div></div>`;
-    renderChart();renderDistribution();renderSubareaBars();
+    renderChart();renderDistribution();renderSubareaBars();renderGoalPanel();
+    if(activeGoalAreaId)renderGoalDetail();
+  }
+  function goalStats(area){
+    const goal=area.goal||{},target=Number(goal.amount)||0,current=totalValues(currentValues(area));
+    const startDate=goal.startDate||todayDate(),startMonth=startDate.slice(0,7),duration=Math.max(1,Number(goal.durationMonths)||12);
+    const rows=monthlyData().filter(row=>row.key<=nowMonth()&&row.key>=startMonth&&row.byArea[area.id]!==undefined);
+    const history=rows.length?rows:monthlyData().filter(row=>row.key<=nowMonth()&&row.byArea[area.id]!==undefined);
+    const first=history[0],last=history.at(-1),previous=history.length>1?history.at(-2):null;
+    const [startYear,startMonthNum]=startMonth.split("-").map(Number),[currentYear,currentMonthNum]=nowMonth().split("-").map(Number);
+    const elapsedMonths=Math.max(0,(currentYear-startYear)*12+currentMonthNum-startMonthNum);
+    const remainingMonths=Math.max(0,duration-elapsedMonths);
+    const progress=target>0?current/target*100:0;
+    const expectedProgress=Math.min(100,elapsedMonths/duration*100);
+    const requiredMonthlyPct=remainingMonths>0?Math.max(0,100-progress)/remainingMonths:0;
+    const actualMonthlyPct=progress/Math.max(1,elapsedMonths);
+    const monthlyRequiredAmount=remainingMonths>0?Math.max(0,target-current)/remainingMonths:0;
+    return {goal,target,current,progress,history,firstValue:first?Number(first.byArea[area.id])||0:0,lastValue:last?Number(last.byArea[area.id])||0:current,previousValue:previous?Number(previous.byArea[area.id])||0:null,elapsedMonths,remainingMonths,expectedProgress,requiredMonthlyPct,actualMonthlyPct,monthlyRequiredAmount};
+  }
+  function renderGoalPanel(){
+    const holder=$("goal-cards");
+    if(!db.areas.length){holder.innerHTML='<div class="empty-box"><p>Cadastre uma área para acompanhar suas metas.</p></div>';return}
+    holder.innerHTML=db.areas.map(area=>{
+      const stats=goalStats(area),color=areaColor(area.id);
+      if(!stats.target)return `<button type="button" class="goal-card" style="--area-color:${color}" onclick="openGoalDetail('${esc(area.id)}')"><span class="goal-card-head"><span>${esc(area.name)}</span><i class="scope-card-mark"></i></span><div class="goal-card-empty">Meta não cadastrada · Clique para configurar</div></button>`;
+      const pct=stats.progress,bar=Math.max(0,Math.min(100,pct));
+      return `<button type="button" class="goal-card" style="--area-color:${color}" onclick="openGoalDetail('${esc(area.id)}')"><span class="goal-card-head"><span>${esc(area.name)}</span><i class="scope-card-mark"></i></span><div class="goal-card-value">${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%</div><div class="goal-card-meta">${fmtMoney(stats.current)} de ${fmtMoney(stats.target)}</div><div class="goal-progress-track"><div class="goal-progress-fill" style="width:${bar}%"></div></div><div class="goal-card-foot"><span>${pct>=100?"Meta atingida":`Faltam ${fmtMoney(Math.max(0,stats.target-stats.current))}`}</span><span>${stats.goal.durationMonths} meses</span></div></button>`;
+    }).join("");
+  }
+  function openGoalDetail(areaId){
+    const area=db.areas.find(item=>item.id===areaId);if(!area)return;
+    if(!area.goal||!Number(area.goal.amount)){showScreen("structure");toast("Cadastre a meta desta área para ver o detalhamento.");return}
+    activeGoalAreaId=areaId;$("dashboard-overview").style.display="none";$("goal-detail").classList.add("active");
+    $("page-eyebrow").textContent="Painel de metas";$("page-title").textContent=area.name;
+    renderGoalDetail();
+  }
+  function closeGoalDetail(){
+    activeGoalAreaId=null;$("dashboard-overview").style.display="";$("goal-detail").classList.remove("active");
+    const title=localNow().toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"});
+    $("page-eyebrow").textContent="Visão consolidada";$("page-title").textContent=title;
+  }
+  function renderGoalDetail(){
+    const area=db.areas.find(item=>item.id===activeGoalAreaId);if(!area||!area.goal)return;
+    const stats=goalStats(area),goal=stats.goal,pct=stats.progress,bar=Math.max(0,Math.min(100,pct));
+    const previous=stats.previousValue,trend=previous===null?null:variation(stats.lastValue,previous);
+    const change=stats.firstValue?variation(stats.current,stats.firstValue):null;
+    const remaining=Math.max(0,stats.target-stats.current);
+    $("goal-detail-title").textContent=area.name;
+    const W=840,H=280,L=68,R=20,T=20,B=40,innerW=W-L-R,innerH=H-T-B;
+    const points=stats.history.map((row,index)=>({x:stats.history.length===1?L+innerW/2:L+index*innerW/(stats.history.length-1),value:Number(row.byArea[area.id])||0,label:monthLabel(row.key)}));
+    const max=Math.max(stats.target,...points.map(point=>point.value),1)*1.08,y=value=>T+innerH-(value/max)*innerH;
+    let grid="";
+    for(let i=0;i<5;i++){const value=max*i/4,yy=y(value);grid+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#263640"/><text x="${L-8}" y="${yy+4}" text-anchor="end" fill="#80939f" font-size="10">${shortMoney(value)}</text>`}
+    const labels=points.map((point,index)=>index===0||index===points.length-1||index%Math.ceil(points.length/6)===0?`<text x="${point.x}" y="${H-9}" text-anchor="middle" fill="#81939f" font-size="10">${esc(point.label)}</text>`:"").join("");
+    const linePoints=points.map(point=>`${point.x},${y(point.value)}`).join(" ");
+    const dots=points.map(point=>`<circle cx="${point.x}" cy="${y(point.value)}" r="3.5" fill="${areaColor(area.id)}"><title>${esc(point.label)}: ${fmtMoney(point.value)}</title></circle>`).join("");
+    const chart=points.length?`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Evolução da área ${esc(area.name)} em relação à meta">${grid}<line x1="${L}" y1="${y(stats.target)}" x2="${W-R}" y2="${y(stats.target)}" stroke="${areaColor(area.id)}" stroke-width="2.5" stroke-dasharray="7 5"/><polyline points="${linePoints}" fill="none" stroke="${areaColor(area.id)}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${dots}${labels}</svg>`:'<div class="chart-empty">Ainda não há registros históricos para exibir a evolução.</div>';
+    const paceGap=stats.actualMonthlyPct-stats.requiredMonthlyPct;
+    const paceStatus=stats.progress>=100?"Meta atingida.":stats.remainingMonths===0?"Prazo encerrado; a meta ainda não foi atingida.":paceGap>=0?"O ritmo médio observado está no ritmo necessário ou acima.":"O ritmo médio observado está abaixo do necessário.";
+    const paceClass=stats.progress>=100||paceGap>=0?"ahead":"behind";
+    $("goal-detail-content").innerHTML=`<div class="goal-detail-grid"><div class="card panel"><div class="panel-head"><div><h3 class="panel-title">Evolução da área e linha da meta</h3><p class="panel-sub">Início da meta: ${fmtDate(goal.startDate)} · Prazo estimado: ${goalDeadline(goal.startDate,goal.durationMonths)}</p></div></div><div class="goal-detail-chart">${chart}</div><div class="chart-legend"><span class="chart-legend-item"><i class="chart-legend-line" style="background:${areaColor(area.id)}"></i>Valor da área</span><span class="chart-legend-item"><i class="goal-legend-line" style="border-top-color:${areaColor(area.id)}"></i>Meta: ${fmtMoney(stats.target)}</span></div></div><div class="card panel"><h3 class="panel-title">Evolução rumo à meta</h3><div class="goal-kpi-grid"><div class="goal-kpi goal-kpi-main"><span>Acumulados</span><strong>${fmtMoney(stats.current)}</strong><small>${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}% da meta</small></div><div class="goal-kpi goal-kpi-target"><span>Meta</span><strong>${fmtMoney(stats.target)}</strong><small>Valor-alvo definido</small></div><div class="goal-kpi goal-kpi-remain"><span>Faltam</span><strong>${fmtMoney(remaining)}</strong><small>${Math.max(0,100-pct).toLocaleString("pt-BR",{maximumFractionDigits:1})}% da meta</small></div></div><div class="goal-detail-progress"><div class="goal-card-foot"><span>Progresso atual</span><strong>${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%</strong></div><div class="goal-progress-track"><div class="goal-progress-fill" style="width:${bar}%;--area-color:${areaColor(area.id)};background:${areaColor(area.id)}"></div></div><div class="goal-card-foot"><span>Início: ${fmtMoney(stats.firstValue)}</span><span>${stats.remainingMonths} meses restantes</span></div></div><div class="goal-pace-grid"><div class="goal-pace-card"><span>Ritmo necessário daqui em diante</span><strong>${stats.requiredMonthlyPct.toLocaleString("pt-BR",{maximumFractionDigits:2})}% da meta/mês</strong><small>${fmtMoney(stats.monthlyRequiredAmount)} por mês, em média</small></div><div class="goal-pace-card"><span>Ritmo real médio até hoje</span><strong>${stats.actualMonthlyPct.toLocaleString("pt-BR",{maximumFractionDigits:2})}% da meta/mês</strong><small>Progresso acumulado dividido pelos meses transcorridos</small></div><div class="goal-pace-status ${paceClass}">${paceStatus} Trajetória prevista até hoje: ${stats.expectedProgress.toLocaleString("pt-BR",{maximumFractionDigits:1})}% · Real: ${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%.</div></div><div class="goal-stat-grid" style="margin-top:12px"><div class="goal-stat"><div class="goal-stat-label">Valor no início do histórico disponível</div><div class="goal-stat-value">${fmtMoney(stats.firstValue)}</div></div><div class="goal-stat"><div class="goal-stat-label">Prazo total</div><div class="goal-stat-value">${goal.durationMonths} meses</div></div></div><p class="goal-detail-note">Os ritmos mensais são expressos como percentual do valor-alvo por mês. A projeção compara o progresso real com uma trajetória linear; os valores históricos dependem das fotografias registradas.</p></div></div>`;
   }
   function renderUpdate(){
     const sel=$("update-area"),previous=sel.value;
@@ -465,7 +639,7 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     const area=db.areas.find(a=>a.id===areaId);if(!area)return;
     confirmAction("Excluir área?",`A área “${area.name}”, suas subáreas e todos os registros históricos associados serão removidos.`,()=>{
       db.areas=db.areas.filter(a=>a.id!==areaId);db.snapshots=db.snapshots.filter(s=>s.areaId!==areaId);
-      if(activeScope===areaId)activeScope="all";
+      if(Array.isArray(activeScope))activeScope=activeScope.filter(id=>id!==areaId);
       renderAll();renderStructure();renderUpdate();toast("Área removida.");
     });
   }
@@ -479,7 +653,7 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
   function renderStructure(){
     const holder=$("structure-list");
     if(!db.areas.length){holder.innerHTML='<div class="empty-box"><p>Nenhuma área cadastrada.</p></div>';return}
-    holder.innerHTML=db.areas.map(a=>`<div class="structure-area"><div class="structure-area-head"><strong>${esc(a.name)}</strong><div><button class="btn small" onclick="renameArea('${esc(a.id)}')">Renomear</button> <button class="btn small danger" onclick="deleteArea('${esc(a.id)}')">Excluir</button></div></div><div class="sublist">${a.subareas.map(s=>`<span class="subtag">${esc(s.name)} <button aria-label="Excluir ${esc(s.name)}" onclick="deleteSubarea('${esc(a.id)}','${esc(s.id)}')" style="border:0;background:none;color:#f08e8e;padding:0 0 0 5px">×</button></span>`).join("")||'<span class="muted" style="font-size:9px">Ainda sem subáreas</span>'}</div><div class="inline-form"><input id="sub-${esc(a.id)}" placeholder="Nome da subárea"><button class="btn small" onclick="addSubarea('${esc(a.id)}','sub-${esc(a.id)}')">Adicionar subárea</button></div></div>`).join("");
+    holder.innerHTML=db.areas.map(a=>`<div class="structure-area"><div class="structure-area-head"><strong>${esc(a.name)}</strong><div><button class="btn small" onclick="renameArea('${esc(a.id)}')">Renomear</button> <button class="btn small danger" onclick="deleteArea('${esc(a.id)}')">Excluir</button></div></div>${renderGoalEditor(a)}<div class="sublist">${a.subareas.map(s=>`<span class="subtag">${esc(s.name)} <button aria-label="Excluir ${esc(s.name)}" onclick="deleteSubarea('${esc(a.id)}','${esc(s.id)}')" style="border:0;background:none;color:#f08e8e;padding:0 0 0 5px">×</button></span>`).join("")||'<span class="muted" style="font-size:9px">Ainda sem subáreas</span>'}</div><div class="inline-form"><input id="sub-${esc(a.id)}" placeholder="Nome da subárea"><button class="btn small" onclick="addSubarea('${esc(a.id)}','sub-${esc(a.id)}')">Adicionar subárea</button></div></div>`).join("");
   }
   function renderHistory(){
     const filter=$("history-filter"),chosen=filter.value||"all";
@@ -517,7 +691,7 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
         const validSnaps=data.snapshots.every(s=>s&&typeof s.areaId==="string"&&typeof s.month==="string"&&s.values&&typeof s.values==="object");
         if(!validAreas||!validSnaps)throw new Error("Estrutura inválida");
         db={version:1,areas:data.areas,snapshots:data.snapshots};
-        if(activeScope!=="all"&&!db.areas.some(a=>a.id===activeScope))activeScope="all";
+        if(Array.isArray(activeScope))activeScope=activeScope.filter(id=>data.areas.some(area=>area.id===id));
         renderAll();toast("Dados importados com sucesso.");
       }catch(e){toast("Não foi possível importar: verifique o arquivo JSON.")}
     };
@@ -543,7 +717,7 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
   $("update-month").addEventListener("change",renderUpdateValues);
   $("import-file").addEventListener("change",event=>{if(event.target.files[0])importJSON(event.target.files[0]);event.target.value=""});
   if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(error=>console.error("Falha ao registrar service worker:",error)));
-  window.showScreen=showScreen;window.exportJSON=exportJSON;window.addArea=addArea;window.addSubarea=addSubarea;window.renameArea=renameArea;window.deleteArea=deleteArea;window.deleteSubarea=deleteSubarea;window.clearAllData=clearAllData;window.saveUpdate=saveUpdate;window.renderHistory=renderHistory;window.editRecord=editRecord;window.openAreaUpdate=openAreaUpdate;window.closeModal=closeModal;window.toggleSidebar=toggleSidebar;window.selectScope=selectScope;
+  window.showScreen=showScreen;window.closeGoalDetail=closeGoalDetail;window.openGoalDetail=openGoalDetail;window.exportJSON=exportJSON;window.addArea=addArea;window.addSubarea=addSubarea;window.renameArea=renameArea;window.deleteArea=deleteArea;window.deleteSubarea=deleteSubarea;window.clearAllData=clearAllData;window.saveUpdate=saveUpdate;window.renderHistory=renderHistory;window.editRecord=editRecord;window.openAreaUpdate=openAreaUpdate;window.closeModal=closeModal;window.toggleSidebar=toggleSidebar;window.selectScope=selectScope;window.saveAreaGoal=saveAreaGoal;
   renderAll();
 })();
 </script>

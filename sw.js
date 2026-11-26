@@ -1,4 +1,4 @@
-const CACHE_NAME = "atlas-financeiro-v3";
+const CACHE_NAME = "atlas-financeiro-v4";
 const APP_FILES = [
   "./index.html",
   "./manifest.json",
