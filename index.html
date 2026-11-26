@@ -1,163 +1,259 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head><script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
+<head>
+<script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0b1117">
+<meta name="theme-color" content="#07090d">
 <link rel="manifest" href="./manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>Atlas — Painel Financeiro</title>
 <style>
-:root{--bg:#0b1117;--panel:#111a22;--line:#24333f;--muted:#8fa2b1;--text:#edf3f6;--teal:#5dd6c0;--gold:#e7bb72;--red:#f17f7f;--shadow:0 14px 38px rgba(0,0,0,.2)}
+:root{
+  --bg:#07090d;--bg2:#0c1016;--panel:#10151d;--panel2:#141a24;
+  --line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.12);
+  --text:#eef1f5;--muted:#8a94a6;--soft:#c3cad6;
+  --teal:#3ee6b5;--gold:#e6c587;--red:#ff7a85;--blue:#8ab4ff;
+  --radius:18px;--shadow:0 1px 0 rgba(255,255,255,.04) inset,0 20px 50px -20px rgba(0,0,0,.7);
+  --ease:cubic-bezier(.2,.8,.2,1)
+}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at 80% -10%,#152d34 0,transparent 38%),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
-button,input,select{font:inherit}button{cursor:pointer}
-.shell{min-height:100vh;display:grid;grid-template-columns:220px minmax(0,1fr);transition:grid-template-columns .22s ease}
-aside{background:rgba(13,21,28,.96);border-right:1px solid var(--line);padding:20px 13px;display:flex;flex-direction:column;gap:24px;min-width:0;transition:padding .22s ease}
-.brand{display:flex;align-items:center;gap:10px;padding:2px 8px;min-height:40px}
-.brand-mark{width:36px;height:36px;border-radius:12px;background:linear-gradient(145deg,#79e1ca,#178c83);display:grid;place-items:center;color:#08201f;font-weight:900;font-size:18px;flex:none;box-shadow:0 8px 22px #1b9c9140}
-.brand-name{font-weight:750;letter-spacing:.04em;font-size:15px}.brand-sub{font-size:9px;color:var(--muted);letter-spacing:.13em;text-transform:uppercase}
-.sidebar-toggle{margin-left:auto;width:30px;height:30px;flex:none;border:1px solid var(--line);background:#14212a;color:var(--text);border-radius:8px;font-size:16px;line-height:1}
-.nav-label{font-size:9px;color:#718594;text-transform:uppercase;letter-spacing:.15em;padding:0 10px;margin-bottom:5px;white-space:nowrap}
-.nav{display:grid;gap:5px}
-.nav button{background:transparent;color:#9aabb8;border:0;text-align:left;padding:10px;border-radius:10px;display:flex;gap:10px;align-items:center;transition:.18s;white-space:nowrap;overflow:hidden;min-height:42px}
-.nav button:hover,.nav button.active{background:#1a2a33;color:var(--text)}.nav button.active{box-shadow:inset 3px 0 var(--teal)}
-.nav-icon{font-size:16px;width:20px;text-align:center;flex:none}
-.side-bottom{margin-top:auto;border:1px solid var(--line);background:linear-gradient(145deg,#14242a,#10191f);border-radius:14px;padding:12px}
-.side-bottom strong{font-size:11px;display:block;margin-bottom:5px}.side-bottom p{font-size:10px;color:var(--muted);margin:0 0 10px}
-main{padding:26px clamp(18px,3vw,46px) 42px;max-width:1720px;width:100%;margin:0 auto;min-width:0}
-.topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:19px}
-.eyebrow{color:var(--teal);text-transform:uppercase;letter-spacing:.15em;font-size:10px;font-weight:700}
-h1{font-size:clamp(18px,2.2vw,25px);letter-spacing:-.03em;margin:3px 0 0;line-height:1.2}
-.top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.btn{border:1px solid var(--line);background:#14212a;color:var(--text);padding:9px 12px;border-radius:10px;font-size:11px;font-weight:650;transition:.18s}
-.btn:hover{border-color:#49606e;background:#1b2b35}.btn.primary{background:var(--teal);color:#08211e;border-color:var(--teal)}.btn.primary:hover{background:#83e5d2}.btn.danger{color:#ffaaaa}.btn.small{padding:6px 9px;font-size:10px}
-.screen{display:none}.screen.active{display:block}
-.scope-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,175px),1fr));gap:10px;margin:0 0 14px}
-.scope-card{--area-color:var(--teal);position:relative;min-width:0;padding:13px 14px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,rgba(22,34,44,.98),rgba(16,25,33,.98));box-shadow:var(--shadow);color:var(--text);text-align:left;transition:.18s;cursor:pointer}
-.scope-card:hover{transform:translateY(-2px);border-color:var(--area-color)}
-.scope-card.selected{border-color:var(--area-color);box-shadow:inset 0 0 0 1px var(--area-color),var(--shadow);background:linear-gradient(145deg,color-mix(in srgb,var(--area-color) 18%,#16222c),#101921)}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--text);font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+  background:
+   radial-gradient(900px 500px at 85% -10%,rgba(62,230,181,.09),transparent 60%),
+   radial-gradient(700px 400px at 0% 100%,rgba(230,197,135,.06),transparent 60%),var(--bg)}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#1f2733;border-radius:8px}
+.num,.metric-value,.scope-card-value,.legend-value,.subarea-bar-value,td.money,.goal-card-value,.goal-kpi strong{font-variant-numeric:tabular-nums}
+
+/* ===== Shell ===== */
+.shell{min-height:100vh;display:grid;grid-template-columns:248px minmax(0,1fr);transition:grid-template-columns .3s var(--ease)}
+aside{position:sticky;top:0;height:100vh;padding:22px 14px;display:flex;flex-direction:column;gap:26px;min-width:0;
+  background:linear-gradient(180deg,rgba(16,21,29,.85),rgba(10,13,18,.85));backdrop-filter:blur(18px);border-right:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;padding:0 6px;min-height:42px}
+.brand-mark{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;flex:none;font-weight:800;font-size:18px;color:#04140f;
+  background:linear-gradient(140deg,#7ff5d2,#1fb58a 55%,#c9a86a);box-shadow:0 10px 30px -8px rgba(62,230,181,.55)}
+.brand-name{font-weight:800;letter-spacing:.22em;font-size:14px}
+.brand-sub{font-size:10px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+.sidebar-toggle{margin-left:auto;width:30px;height:30px;flex:none;border:1px solid var(--line2);background:transparent;border-radius:9px;color:var(--muted);transition:.2s}
+.sidebar-toggle:hover{color:var(--text);border-color:var(--teal)}
+.nav-label{font-size:10px;color:#5d6778;text-transform:uppercase;letter-spacing:.18em;padding:0 12px;margin-bottom:8px;white-space:nowrap}
+.nav{display:grid;gap:4px}
+.nav button{position:relative;display:flex;align-items:center;gap:12px;min-height:44px;padding:10px 12px;border:0;border-radius:12px;background:transparent;color:var(--muted);text-align:left;white-space:nowrap;overflow:hidden;font-weight:500;transition:.2s var(--ease)}
+.nav button:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.nav button.active{background:linear-gradient(90deg,rgba(62,230,181,.14),rgba(62,230,181,.02));color:var(--text)}
+.nav button.active::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:var(--teal);box-shadow:0 0 12px var(--teal)}
+.nav-icon{font-size:17px;width:22px;text-align:center;flex:none}
+.side-bottom{margin-top:auto;display:grid;gap:6px;padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.02)}
+.side-bottom strong{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.side-bottom .btn{width:100%;justify-content:flex-start}
+
+/* ===== Main ===== */
+main{padding:30px clamp(18px,3vw,48px) 48px;max-width:1680px;width:100%;margin:0 auto;min-width:0}
+.topbar{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:24px}
+.eyebrow{color:var(--teal);text-transform:uppercase;letter-spacing:.2em;font-size:10px;font-weight:700}
+h1{font-size:clamp(22px,2.4vw,30px);font-weight:700;letter-spacing:-.03em;margin:6px 0 0;line-height:1.15;text-transform:capitalize}
+.top-actions{display:flex;gap:8px;align-items:center}
+
+/* ===== Buttons ===== */
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:rgba(255,255,255,.03);padding:10px 15px;border-radius:12px;font-size:12px;font-weight:600;transition:.2s var(--ease)}
+.btn:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.2)}
+.btn.primary{border:0;color:#04140f;background:linear-gradient(135deg,#6ff3cc,#22c495);box-shadow:0 10px 28px -10px rgba(62,230,181,.7)}
+.btn.primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.danger{color:var(--red)}.btn.danger:hover{border-color:rgba(255,122,133,.5);background:rgba(255,122,133,.08)}
+.btn.small{padding:7px 11px;font-size:11px;border-radius:10px}
+.screen{display:none;animation:fade .35s var(--ease)}.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ===== Cards ===== */
+.card{background:linear-gradient(160deg,rgba(22,28,38,.9),rgba(14,18,25,.9));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(10px)}
+.panel{padding:20px;min-width:0}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.panel-title{font-size:14px;font-weight:700;letter-spacing:-.01em;margin:0}
+.panel-sub{color:var(--muted);font-size:11.5px;margin:4px 0 0}
+
+/* Scope cards */
+.scope-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px;margin-bottom:16px}
+.scope-card{--area-color:var(--teal);position:relative;min-height:78px;padding:15px 16px;text-align:left;border:1px solid var(--line);border-radius:16px;background:linear-gradient(160deg,rgba(22,28,38,.9),rgba(14,18,25,.9));transition:.25s var(--ease);overflow:hidden}
+.scope-card::after{content:"";position:absolute;inset:auto -30% -60% auto;width:120px;height:120px;border-radius:50%;background:var(--area-color);opacity:0;filter:blur(40px);transition:.3s}
+.scope-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--area-color) 50%,transparent)}
+.scope-card.selected{border-color:color-mix(in srgb,var(--area-color) 70%,transparent);background:linear-gradient(160deg,color-mix(in srgb,var(--area-color) 14%,#141a24),#0e1219)}
+.scope-card.selected::after{opacity:.25}
 .scope-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.scope-card-name{font-size:11px;font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.scope-card-mark{width:9px;height:9px;border-radius:50%;background:var(--area-color);flex:none}
-.scope-card-value{font-size:17px;font-weight:750;letter-spacing:-.03em;margin-top:10px;white-space:nowrap}
-.scope-card{min-height:66px}
-.scope-card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:3px;color:var(--muted);font-size:9px}
-.scope-card-action{position:absolute;right:11px;bottom:10px;border:1px solid var(--line);background:#0e171e;color:var(--text);border-radius:7px;padding:4px 7px;font-size:9px;font-weight:750}
-.scope-card-action:hover{border-color:var(--area-color);color:var(--area-color)}
-.summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:14px}
-.card{background:linear-gradient(145deg,rgba(22,34,44,.98),rgba(16,25,33,.98));border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
-.metric{padding:16px;min-height:118px;position:relative;overflow:hidden}.metric:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;right:-35px;top:-36px;background:#5dd6c00c}
-.metric-label{color:var(--muted);font-size:10px}.metric-value{font-size:clamp(19px,2vw,26px);font-weight:750;letter-spacing:-.04em;margin:9px 0 3px}.metric-foot{font-size:10px;color:#a8b8c2}.metric-mark{color:var(--teal);font-size:17px;float:right}
-.layout-main{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(300px,.9fr);gap:14px;margin-bottom:14px;align-items:stretch}
-.panel{padding:17px;min-width:0}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px;flex-wrap:wrap}
-.panel-title{font-size:13px;font-weight:700;margin:0}.panel-sub{color:var(--muted);font-size:10px;margin:3px 0 0}
-.chart-tools{display:flex;gap:5px;flex-wrap:wrap;align-items:center}.chip{border:1px solid var(--line);background:#101920;color:#9aabb7;border-radius:8px;padding:6px 8px;font-size:9px}.chip.active{color:#06201c;border-color:var(--teal);background:var(--teal);font-weight:700}
-.chart-select{border:1px solid var(--line);background:#101920;color:#d7e1e6;border-radius:8px;padding:6px 8px;font-size:10px;max-width:180px}
-.chart-wrap{height:280px;position:relative;min-width:0}svg.chart{width:100%;height:100%;overflow:visible;display:block}.chart-empty{height:100%;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:11px;padding:18px}
-.chart-legend{display:flex;gap:12px;flex-wrap:wrap;margin:3px 0 0;padding:0 4px}.chart-legend-item{display:flex;align-items:center;gap:6px;color:#b8c7ce;font-size:9px}.chart-legend-line{height:3px;width:15px;border-radius:4px;flex:none}
-.donut-layout{display:grid;grid-template-columns:minmax(115px,145px) minmax(0,1fr);align-items:center;gap:13px;min-height:210px}
-.donut{width:145px;height:145px;position:relative;border-radius:50%;flex:none}
-.donut-center{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none}
-.donut-center strong{font-size:16px;letter-spacing:-.03em}.donut-center span{font-size:9px;color:var(--muted)}
-.legend{display:grid;gap:9px;max-height:220px;overflow:auto;padding-right:3px}
-.legend-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;font-size:9px}
-.legend-name{display:flex;gap:7px;align-items:center;color:#c4d0d7;min-width:0}.legend-name span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.legend-value{text-align:right;color:#dce6eb;font-variant-numeric:tabular-nums;white-space:nowrap}.legend-value small{display:block;color:var(--muted);font-size:9px}
-.dot{width:8px;height:8px;border-radius:50%;flex:none}
-.subarea-panel{margin-bottom:18px}
-.subarea-bars{display:grid;gap:9px;max-height:390px;overflow:auto;padding:3px 4px 3px 0}
-.subarea-group{display:grid;gap:7px}
-.subarea-group-title{display:flex;justify-content:space-between;gap:10px;align-items:center;color:#cbd6dc;font-size:10px;font-weight:700;border-bottom:1px solid var(--line);padding-bottom:5px}
-.subarea-bar-row{display:grid;grid-template-columns:minmax(110px,190px) minmax(50px,1fr) minmax(80px,120px);gap:9px;align-items:center;font-size:9px}
-.subarea-bar-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#becbd2}
-.subarea-bar-track{height:9px;background:#0c151b;border-radius:10px;overflow:hidden;border:1px solid #1d2a32}
-.subarea-bar-fill{height:100%;min-width:0;border-radius:10px}
-.subarea-bar-value{text-align:right;color:#dce6eb;font-variant-numeric:tabular-nums;white-space:nowrap}
-.goal-editor{border-top:1px solid var(--line);margin-top:12px;padding-top:12px}
-.goal-editor-title{font-size:10px;font-weight:700;margin:0 0 8px;color:#d0dbe1}
-.goal-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;align-items:end}
-.goal-fields .field{margin:0}
-.goal-fields .field label{font-size:9px}
-.goal-fields input{min-width:0}
-.goal-actions{display:flex;align-items:center;gap:10px;margin-top:9px;flex-wrap:wrap}
-.goal-deadline{font-size:9px;color:var(--muted)}
-.goal-legend-line{height:0;width:15px;border-top:2px dashed var(--gold);border-radius:0;flex:none}
-@media(max-width:680px){.goal-fields{grid-template-columns:1fr 1fr}.goal-fields .field:first-child{grid-column:1/-1}}
-.goal-panel{margin:0 0 18px}
-.goal-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px}
-.goal-card{--area-color:var(--teal);border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,rgba(22,34,44,.98),rgba(16,25,33,.98));color:var(--text);padding:14px;text-align:left;cursor:pointer;transition:.18s;min-width:0}
-.goal-card:hover{border-color:var(--area-color);transform:translateY(-2px)}
-.goal-card-head{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11px;font-weight:750}
+.scope-card-name{font-size:12.5px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.scope-card-mark{width:9px;height:9px;border-radius:50%;background:var(--area-color);box-shadow:0 0 10px var(--area-color);flex:none}
+.scope-card-value{font-size:18px;font-weight:700;margin-top:10px;white-space:nowrap}
+.scope-card-foot{display:flex;justify-content:space-between;margin-top:6px;color:var(--muted);font-size:11px}
+.scope-card-action{position:absolute;right:12px;bottom:11px;z-index:1;padding:4px 8px;border-radius:8px;border:1px solid var(--line2);background:rgba(0,0,0,.25);font-size:10px;font-weight:700;letter-spacing:.06em;transition:.2s}
+.scope-card-action:hover{color:var(--area-color);border-color:var(--area-color)}
+
+/* Metrics */
+.summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.metric{padding:20px 22px;min-height:124px;position:relative;overflow:hidden}
+.metric::before{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(62,230,181,.16),transparent 70%)}
+.metric:nth-child(2)::before{background:radial-gradient(circle,rgba(230,197,135,.16),transparent 70%)}
+.metric-label{color:var(--muted);font-size:11.5px;font-weight:500}
+.metric-value{font-size:clamp(24px,2.4vw,34px);font-weight:750;letter-spacing:-.035em;margin:10px 0 4px}
+.metric-foot{font-size:11px;color:var(--soft)}
+.metric-mark{float:right;font-size:18px;color:var(--teal)}.metric:nth-child(2) .metric-mark{color:var(--gold)}
+
+/* Layout */
+.layout-main{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(320px,.9fr);gap:16px;margin-bottom:16px}
+.chart-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+#period-tools{padding:3px;border:1px solid var(--line);border-radius:11px;background:rgba(0,0,0,.25);gap:2px}
+.chip{border:0;background:transparent;color:var(--muted);border-radius:8px;padding:6px 11px;font-size:11px;font-weight:600;transition:.2s}
+.chip:hover{color:var(--text)}.chip.active{background:var(--teal);color:#04140f}
+.chart-select{border:1px solid var(--line);background:rgba(0,0,0,.25);border-radius:10px;padding:7px 10px;font-size:11px;max-width:180px;outline:0}
+.chart-select option{background:var(--panel)}
+.chart-wrap{height:300px;position:relative}
+svg.chart{width:100%;height:100%;overflow:visible;display:block}
+.chart-empty{height:100%;min-height:140px;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:12px;padding:20px}
+.chart-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px}
+.chart-legend-item{display:flex;align-items:center;gap:7px;color:var(--soft);font-size:11px}
+.chart-legend-line{height:3px;width:16px;border-radius:4px}
+.goal-legend-line{height:0;width:16px;border-top:2px dashed var(--gold)}
+
+/* Donut */
+.donut-layout{display:grid;grid-template-columns:160px minmax(0,1fr);align-items:center;gap:18px;min-height:220px}
+.donut{width:160px;height:160px;position:relative;border-radius:50%;filter:drop-shadow(0 10px 25px rgba(0,0,0,.4))}
+.donut-center{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.donut-center strong{font-size:19px;letter-spacing:-.03em}.donut-center span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.legend{display:grid;gap:10px;max-height:240px;overflow:auto;padding-right:4px}
+.legend-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;font-size:12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.legend-name{display:flex;gap:8px;align-items:center;color:var(--soft);min-width:0}.legend-name span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.legend-value{text-align:right;white-space:nowrap}.legend-value small{display:block;color:var(--muted);font-size:10px}
+.dot{width:9px;height:9px;border-radius:50%;flex:none}
+
+/* Subárea bars */
+.subarea-panel,.goal-panel{margin-bottom:16px}
+.subarea-bars{display:grid;gap:18px;max-height:420px;overflow:auto;padding-right:4px}
+.subarea-group{display:grid;gap:9px}
+.subarea-group-title{display:flex;justify-content:space-between;font-size:12px;font-weight:650;padding-bottom:7px;border-bottom:1px solid var(--line)}
+.subarea-bar-row{display:grid;grid-template-columns:minmax(110px,200px) minmax(50px,1fr) minmax(90px,130px);gap:12px;align-items:center;font-size:11.5px}
+.subarea-bar-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--soft)}
+.subarea-bar-track{height:8px;background:rgba(255,255,255,.05);border-radius:10px;overflow:hidden}
+.subarea-bar-fill{height:100%;border-radius:10px;transition:width .6s var(--ease)}
+.subarea-bar-value{text-align:right;white-space:nowrap}
+
+/* Goals */
+.goal-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.goal-card{--area-color:var(--teal);padding:16px;text-align:left;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.02);transition:.25s var(--ease);min-width:0}
+.goal-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--area-color) 60%,transparent)}
+.goal-card-head{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px;font-weight:650}
 .goal-card-head span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.goal-card-value{font-size:16px;font-weight:750;margin:12px 0 3px}
-.goal-card-meta{color:var(--muted);font-size:9px}
-.goal-progress-track{height:8px;background:#0c151b;border:1px solid #1d2a32;border-radius:9px;overflow:hidden;margin:10px 0 6px}
-.goal-progress-fill{height:100%;border-radius:9px;background:var(--area-color)}
-.goal-card-foot{display:flex;justify-content:space-between;gap:8px;color:#a8b8c2;font-size:9px}
-.goal-card-empty{color:var(--muted);font-size:10px;margin-top:12px}
-.goal-detail{display:none}
-.goal-detail.active{display:block}
-.goal-detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
-.goal-detail-title{font-size:16px;font-weight:750;margin:0}
+.goal-card-value{font-size:18px;font-weight:750;margin:12px 0 2px}
+.goal-card-meta,.goal-card-empty{color:var(--muted);font-size:11px}.goal-card-empty{margin-top:12px}
+.goal-progress-track{height:8px;background:rgba(255,255,255,.05);border-radius:9px;overflow:hidden;margin:12px 0 8px}
+.goal-progress-fill{height:100%;border-radius:9px;background:linear-gradient(90deg,color-mix(in srgb,var(--area-color) 60%,transparent),var(--area-color));box-shadow:0 0 12px var(--area-color)}
+.goal-card-foot{display:flex;justify-content:space-between;gap:8px;color:var(--soft);font-size:11px}
+.goal-detail{display:none}.goal-detail.active{display:block;animation:fade .35s var(--ease)}
+.goal-detail-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.goal-detail-title{font-size:22px;font-weight:750;letter-spacing:-.02em;margin:6px 0 0}
 .goal-detail-actions{display:flex;gap:8px;flex-wrap:wrap}
-.goal-detail-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,.85fr);gap:14px;margin-bottom:14px}
-.goal-detail-chart{height:300px;position:relative}
-.goal-detail-chart svg{width:100%;height:100%;display:block}
-.goal-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.goal-stat{border:1px solid var(--line);background:#101920;border-radius:11px;padding:11px;min-width:0}
-.goal-stat-label{font-size:9px;color:var(--muted)}
-.goal-stat-value{font-size:14px;font-weight:750;margin-top:5px;overflow-wrap:anywhere}
-.goal-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:13px 0}
-.goal-kpi{min-width:0;border:1px solid var(--line);background:#101920;border-radius:12px;padding:11px}
-.goal-kpi span,.goal-kpi small{display:block;color:var(--muted);font-size:9px}
-.goal-kpi strong{display:block;font-size:clamp(14px,1.5vw,19px);line-height:1.25;margin:6px 0;overflow-wrap:anywhere}
-.goal-kpi-main{border-color:#5dd6c080;background:linear-gradient(145deg,#17332f,#101920)}
-.goal-kpi-main strong{color:var(--teal)}
-.goal-kpi-target{border-color:#84b9ff70}
-.goal-kpi-target strong{color:#a9ceff}
-.goal-kpi-remain{border-color:#e7bb7280;background:linear-gradient(145deg,#33291b,#101920)}
-.goal-kpi-remain strong{color:var(--gold)}
-.goal-pace-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}
-.goal-pace-card{border:1px solid var(--line);background:#101920;border-radius:11px;padding:11px}
-.goal-pace-card span,.goal-pace-card small{display:block;color:var(--muted);font-size:9px}
-.goal-pace-card strong{display:block;font-size:13px;margin:5px 0}
-.goal-pace-status{grid-column:1/-1;color:#dce6eb;font-size:10px;padding:9px 11px;border-radius:9px;background:#17242b}
-.goal-pace-status.ahead{color:#9ce4cf;background:#15302a}
-.goal-pace-status.behind{color:#f3c879;background:#302719}
-@media(max-width:520px){.goal-kpi-grid{grid-template-columns:1fr}.goal-pace-grid{grid-template-columns:1fr}.goal-pace-status{grid-column:auto}}
-.goal-detail-progress{margin-top:14px}
-.goal-detail-progress .goal-progress-track{height:12px}
-.goal-detail-note{font-size:10px;color:var(--muted);margin-top:9px;line-height:1.6}
-@media(max-width:760px){.goal-detail-grid{grid-template-columns:1fr}.goal-detail-chart{height:250px}}
-.areas-heading{display:flex;justify-content:space-between;align-items:center;margin:21px 0 11px}.areas-heading h2{font-size:14px;margin:0}
-.empty-box{padding:35px 18px;text-align:center;color:var(--muted)}.empty-box .empty-icon{font-size:28px;color:var(--teal);margin-bottom:8px}.empty-box h3{color:var(--text);font-size:15px;margin:0 0 5px}.empty-box p{font-size:11px;max-width:450px;margin:0 auto 15px}
-.section-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(270px,.8fr);gap:14px}.form-card{padding:19px}
-.field{display:grid;gap:6px;margin-bottom:13px}.field label{font-size:10px;color:#b6c4cd;font-weight:650}
-.field input,.field select,.select{width:100%;border:1px solid var(--line);background:#0e171e;color:var(--text);border-radius:9px;padding:9px 10px;outline:0}.field input:focus,.field select:focus{border-color:var(--teal)}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:11px}.helper{font-size:9px;color:var(--muted);margin-top:-7px;margin-bottom:13px}
-.values-list{border-top:1px solid var(--line);margin:16px 0 13px;padding-top:13px}.value-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(125px,.55fr);align-items:center;gap:11px;margin-bottom:9px}
-.value-row label{font-size:10px;color:#d0dbe1;overflow-wrap:anywhere}.value-row input{width:100%;border:1px solid var(--line);background:#0e171e;color:var(--text);border-radius:8px;padding:8px 9px;outline:0}.value-row input:focus{border-color:var(--teal)}
-.structure-list{display:grid;gap:10px}.structure-area{padding:13px;border:1px solid var(--line);border-radius:12px;background:#101920}.structure-area-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.structure-area-head strong{font-size:11px}.sublist{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.subtag{font-size:9px;background:#1c2a33;border:1px solid #2a3b46;border-radius:7px;padding:4px 7px;color:#c0cdd4}.inline-form{display:flex;gap:7px;margin-top:10px}.inline-form input{min-width:0;flex:1;background:#0e171e;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 9px;outline:0}
-.history-toolbar{display:flex;justify-content:space-between;gap:11px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.table-wrap{overflow:auto}
-table{border-collapse:collapse;width:100%;min-width:610px}th,td{text-align:left;padding:10px 11px;border-bottom:1px solid var(--line);font-size:10px}th{font-size:9px;color:var(--muted);font-weight:650}td.money{text-align:right;font-variant-numeric:tabular-nums}td.actions{text-align:right}.pill{display:inline-block;padding:4px 7px;border-radius:6px;background:#1a2a32;color:#b4c8d0;font-size:9px}
-.toast{position:fixed;bottom:20px;right:20px;z-index:9;background:#e4f8f2;color:#0b2823;padding:10px 14px;border-radius:10px;font-weight:700;font-size:11px;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);transition:.2s;pointer-events:none}.toast.show{opacity:1;transform:translateY(0)}
-.modal-backdrop{position:fixed;inset:0;background:#0009;display:none;place-items:center;z-index:8;padding:20px}.modal-backdrop.open{display:grid}.modal{width:min(420px,100%);background:#14212a;border:1px solid var(--line);border-radius:16px;padding:19px;box-shadow:var(--shadow)}.modal h3{margin:0 0 7px;font-size:15px}.modal p{font-size:11px;color:var(--muted);margin:0 0 14px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}.muted{color:var(--muted)}
-.shell.sidebar-collapsed{grid-template-columns:72px minmax(0,1fr)}.sidebar-collapsed aside{padding:18px 8px}.sidebar-collapsed .brand{padding:2px 9px;flex-wrap:wrap;justify-content:center}.sidebar-collapsed .brand-copy,.sidebar-collapsed .nav-label,.sidebar-collapsed .nav button .nav-text,.sidebar-collapsed .side-bottom{display:none}.sidebar-collapsed .sidebar-toggle{margin:0 auto}.sidebar-collapsed .nav button{justify-content:center;padding:11px 8px}.sidebar-collapsed .nav-icon{width:auto}
-@media(max-width:1180px){.layout-main{grid-template-columns:minmax(0,1.4fr) minmax(275px,.9fr)}}
-@media(max-width:900px){.layout-main{grid-template-columns:1fr}.donut-layout{min-height:180px}.chart-wrap{height:265px}}
+.goal-detail-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,.85fr);gap:16px;margin-bottom:16px}
+.goal-detail-chart{height:320px;position:relative}.goal-detail-chart svg{width:100%;height:100%;display:block}
+.goal-stat-grid,.goal-pace-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.goal-pace-grid{margin-top:14px}
+.goal-stat,.goal-kpi,.goal-pace-card{border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:13px;min-width:0}
+.goal-stat-label,.goal-kpi span,.goal-kpi small,.goal-pace-card span,.goal-pace-card small{display:block;color:var(--muted);font-size:10.5px}
+.goal-stat-value{font-size:15px;font-weight:700;margin-top:6px;overflow-wrap:anywhere}
+.goal-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.goal-kpi strong{display:block;font-size:clamp(15px,1.6vw,21px);margin:6px 0;overflow-wrap:anywhere}
+.goal-kpi-main{border-color:rgba(62,230,181,.35);background:linear-gradient(150deg,rgba(62,230,181,.12),transparent)}.goal-kpi-main strong{color:var(--teal)}
+.goal-kpi-target{border-color:rgba(138,180,255,.3)}.goal-kpi-target strong{color:var(--blue)}
+.goal-kpi-remain{border-color:rgba(230,197,135,.35);background:linear-gradient(150deg,rgba(230,197,135,.12),transparent)}.goal-kpi-remain strong{color:var(--gold)}
+.goal-pace-card strong{display:block;font-size:14px;margin:5px 0}
+.goal-pace-status{grid-column:1/-1;font-size:11.5px;padding:10px 13px;border-radius:11px;background:rgba(255,255,255,.04)}
+.goal-pace-status.ahead{color:#8ff0cf;background:rgba(62,230,181,.1)}
+.goal-pace-status.behind{color:var(--gold);background:rgba(230,197,135,.1)}
+.goal-detail-progress{margin-top:14px}.goal-detail-progress .goal-progress-track{height:12px}
+.goal-detail-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.65}
+.goal-editor{border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
+.goal-editor-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
+.goal-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end}
+.goal-fields .field{margin:0}
+.goal-actions{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.goal-deadline{font-size:11px;color:var(--muted)}
+
+/* Forms */
+.section-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr);gap:16px}
+.form-card{padding:22px}
+.field{display:grid;gap:7px;margin-bottom:14px}
+.field label{font-size:11px;color:var(--soft);font-weight:600}
+.field input,.field select,.select,.value-row input,.inline-form input{width:100%;border:1px solid var(--line2);background:rgba(0,0,0,.3);border-radius:11px;padding:11px 12px;outline:0;transition:.2s}
+.field input:focus,.field select:focus,.value-row input:focus,.inline-form input:focus{border-color:var(--teal);box-shadow:0 0 0 4px rgba(62,230,181,.12)}
+.field select option,.select option{background:var(--panel)}
+.field input[type="date"],.field input[type="month"]{color-scheme:dark;min-height:44px}
+.field input::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.7;cursor:pointer}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.helper{font-size:11px;color:var(--muted);margin:-4px 0 14px;line-height:1.6}
+.values-list{border-top:1px solid var(--line);margin:16px 0;padding-top:16px}
+.value-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(140px,.55fr);align-items:center;gap:12px;margin-bottom:10px}
+.value-row label{font-size:12px;color:var(--soft);overflow-wrap:anywhere}
+.info-list{display:grid;gap:10px;margin-top:14px}
+.structure-list{display:grid;gap:12px}
+.structure-area{padding:15px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02)}
+.structure-area-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.structure-area-head strong,.structure-area strong{font-size:12.5px}
+.sublist{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.subtag{font-size:11px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--soft)}
+.inline-form{display:flex;gap:8px;margin-top:12px}.inline-form input{flex:1;min-width:0}
+
+/* History */
+.history-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:620px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-size:12px}
+th{position:sticky;top:0;background:var(--panel2);font-size:10.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+tbody tr{transition:background .15s}tbody tr:hover{background:rgba(255,255,255,.025)}
+tr:last-child td{border-bottom:0}
+td.money{text-align:right}td.actions{text-align:right}
+.pill{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(62,230,181,.1);color:#9ff0d6;font-size:11px}
+.variation.positive{color:var(--teal)}.variation.negative{color:var(--red)}.variation.neutral{color:var(--muted)}
+
+.empty-box{padding:36px 18px;text-align:center;color:var(--muted)}
+.empty-box .empty-icon{font-size:30px;color:var(--teal);margin-bottom:8px}
+.empty-box h3{color:var(--text);font-size:16px;margin:0 0 6px}.empty-box p{font-size:12px;max-width:460px;margin:0 auto 14px}
+.muted{color:var(--muted)}
+
+/* Toast & modal */
+.toast{position:fixed;bottom:24px;right:24px;z-index:20;padding:12px 18px;border-radius:14px;font-weight:600;font-size:12.5px;color:#04140f;background:linear-gradient(135deg,#bff8e6,#6ff3cc);box-shadow:0 20px 40px -10px rgba(0,0,0,.6);opacity:0;transform:translateY(14px);transition:.3s var(--ease);pointer-events:none}
+.toast.show{opacity:1;transform:none}
+.modal-backdrop{position:fixed;inset:0;z-index:15;display:none;place-items:center;padding:20px;background:rgba(3,5,8,.7);backdrop-filter:blur(6px)}
+.modal-backdrop.open{display:grid}
+.modal{width:min(440px,100%);padding:24px;border-radius:20px;border:1px solid var(--line2);background:linear-gradient(160deg,#171e29,#0f141b);box-shadow:var(--shadow);animation:fade .25s var(--ease)}
+.modal h3{margin:0 0 8px;font-size:17px}.modal p{font-size:12.5px;color:var(--muted);margin:0}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+
+/* Sidebar recolhida */
+.shell.sidebar-collapsed{grid-template-columns:76px minmax(0,1fr)}
+.sidebar-collapsed aside{padding:20px 10px}
+.sidebar-collapsed .brand{flex-direction:column;padding:0;gap:10px}
+.sidebar-collapsed .brand-copy,.sidebar-collapsed .nav-label,.sidebar-collapsed .nav-text,.sidebar-collapsed .side-bottom{display:none}
+.sidebar-collapsed .sidebar-toggle{margin:0}
+.sidebar-collapsed .nav button{justify-content:center;padding:11px}
+
+/* Responsivo */
+@media(max-width:1180px){.layout-main{grid-template-columns:minmax(0,1.4fr) minmax(290px,.9fr)}}
+@media(max-width:900px){.layout-main,.goal-detail-grid{grid-template-columns:1fr}.chart-wrap{height:270px}}
 @media(max-width:680px){
-.shell,.shell.sidebar-collapsed{display:block}
-aside,.sidebar-collapsed aside{position:sticky;top:0;z-index:5;padding:8px 10px;border-right:0;border-bottom:1px solid var(--line);display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:7px}
-.brand,.sidebar-collapsed .brand{padding:0;flex-wrap:nowrap;justify-content:flex-start}.brand-mark{width:32px;height:32px}
-.brand-copy,.sidebar-collapsed .brand-copy{display:block}.brand-sub{display:none}.sidebar-toggle,.sidebar-collapsed .sidebar-toggle{margin-left:0}
-aside>div:nth-child(2){flex:1;min-width:0}.nav-label,.sidebar-collapsed .nav-label,.side-bottom,.sidebar-collapsed .side-bottom{display:none}
-.nav,.sidebar-collapsed .nav{display:flex;justify-content:flex-end;gap:3px}.nav button,.sidebar-collapsed .nav button{width:42px;height:44px;padding:8px;justify-content:center;flex:none}.nav button .nav-text,.sidebar-collapsed .nav button .nav-text{display:none}.nav-icon{font-size:20px;width:24px}
-.top-actions .btn{min-height:44px}
-main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column;margin-bottom:16px}.top-actions{width:100%}
-.scope-cards{grid-template-columns:repeat(auto-fit,minmax(min(100%,145px),1fr));gap:8px}.scope-card{padding:11px}.scope-card-value{font-size:15px}
-.summary-grid{gap:8px}.metric{padding:12px;min-height:108px}.metric-value{font-size:18px}.section-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}
-.donut-layout{grid-template-columns:112px minmax(0,1fr);gap:10px}.donut{width:112px;height:112px}.panel{padding:14px}.chart-wrap{height:245px}.chart-select{max-width:145px}
-.subarea-bar-row{grid-template-columns:minmax(85px,130px) minmax(35px,1fr) minmax(72px,95px);gap:6px}
+  .shell,.shell.sidebar-collapsed{display:block}
+  aside,.sidebar-collapsed aside{position:sticky;top:0;z-index:10;height:auto;flex-direction:row;align-items:center;padding:8px 12px;border-right:0;border-bottom:1px solid var(--line)}
+  .brand,.sidebar-collapsed .brand{flex-direction:row;padding:0}.brand-sub,.sidebar-toggle,.nav-label,.side-bottom{display:none!important}
+  .brand-copy,.sidebar-collapsed .brand-copy{display:block}
+  aside>div:nth-child(2){flex:1}
+  .nav,.sidebar-collapsed .nav{display:flex;justify-content:flex-end;gap:2px}
+  .nav button{width:44px;height:44px;padding:0;justify-content:center}.nav-text{display:none}
+  .nav button.active::before{left:12px;right:12px;top:auto;bottom:4px;width:auto;height:2px}
+  main{padding:20px 14px 34px}
+  .topbar{flex-direction:column;align-items:flex-start}.top-actions,.top-actions .btn{width:100%;justify-content:center;min-height:46px}
+  .summary-grid{gap:10px}.metric{padding:16px}
+  .section-grid,.form-row{grid-template-columns:1fr}
+  .donut-layout{grid-template-columns:120px 1fr}.donut{width:120px;height:120px}
+  .goal-kpi-grid,.goal-pace-grid{grid-template-columns:1fr}.goal-fields{grid-template-columns:1fr 1fr}.goal-fields .field:first-child{grid-column:1/-1}
+  .subarea-bar-row{grid-template-columns:minmax(85px,130px) 1fr minmax(78px,100px);gap:8px}
 }
 </style>
 </head>
@@ -166,25 +262,27 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
   <aside>
     <div class="brand">
       <div class="brand-mark">A</div>
-      <div class="brand-copy"><div class="brand-name">ATLAS</div><div class="brand-sub">Painel financeiro</div></div>
+      <div class="brand-copy"><div class="brand-name">ATLAS</div><div class="brand-sub">Wealth Panel</div></div>
       <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Recolher menu lateral" title="Recolher menu lateral" onclick="toggleSidebar()">‹</button>
     </div>
     <div>
-      <div class="nav-label">Espaço financeiro</div>
+      <div class="nav-label">Navegação</div>
       <nav class="nav">
         <button class="active" data-screen="dashboard" title="Painel geral"><span class="nav-icon">◫</span><span class="nav-text">Painel geral</span></button>
         <button data-screen="updates" title="Atualizar valores"><span class="nav-icon">＋</span><span class="nav-text">Atualizar valores</span></button>
-        <button data-screen="structure" title="Áreas e subáreas"><span class="nav-icon">▤</span><span class="nav-text">Áreas e subáreas</span></button>
+        <button data-screen="structure" title="Áreas e metas"><span class="nav-icon">▤</span><span class="nav-text">Áreas e metas</span></button>
         <button data-screen="history" title="Histórico"><span class="nav-icon">◷</span><span class="nav-text">Histórico</span></button>
       </nav>
     </div>
     <div class="side-bottom">
-      <strong>Seus dados, sob seu controle</strong>
-      <p>Exporte um arquivo JSON para guardar uma cópia do histórico.</p>
-      <button class="btn small" onclick="exportJSON()">Exportar dados</button>
-      <button class="btn small danger" style="margin-top:7px;width:100%" onclick="clearAllData()">Apagar todos os dados</button>
+      <strong>Dados</strong>
+      <button class="btn small" onclick="document.getElementById('import-file').click()">↥ Importar</button>
+      <button class="btn small" onclick="exportJSON()">↧ Exportar</button>
+      <button class="btn small danger" onclick="clearAllData()">✕ Apagar tudo</button>
+      <input id="import-file" type="file" accept=".json,application/json" hidden>
     </div>
   </aside>
+
   <main>
     <header class="topbar">
       <div>
@@ -192,56 +290,61 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
         <h1 id="page-title"></h1>
       </div>
       <div class="top-actions">
-        <button class="btn" onclick="document.getElementById('import-file').click()">Importar</button>
-        <button class="btn" onclick="exportJSON()">Exportar</button>
-        <button class="btn danger" onclick="clearAllData()">Apagar dados</button>
-        <input id="import-file" type="file" accept=".json,application/json" hidden>
         <button class="btn primary" onclick="showScreen('updates')">＋ Atualizar valores</button>
       </div>
     </header>
 
     <section id="screen-dashboard" class="screen active">
       <div id="dashboard-overview">
-      <div class="scope-cards" id="scope-cards" aria-label="Selecionar escopo do painel"></div>
-      <div class="summary-grid" id="summary-grid"></div>
-      <div class="layout-main">
-        <div class="card panel">
-          <div class="panel-head">
-            <div><h2 class="panel-title">Evolução patrimonial</h2><p class="panel-sub">Fotografia de referência do último mês disponível em cada período.</p></div>
-            <div class="chart-tools">
-              <div class="chart-tools" id="period-tools">
-                <button class="chip active" data-period="month">Mês</button><button class="chip" data-period="quarter">Trimestre</button><button class="chip" data-period="year">Ano</button>
+        <div class="scope-cards" id="scope-cards" aria-label="Selecionar escopo do painel"></div>
+        <div class="summary-grid" id="summary-grid"></div>
+
+        <div class="layout-main">
+          <div class="card panel">
+            <div class="panel-head">
+              <div><h2 class="panel-title">Evolução patrimonial</h2><p class="panel-sub">Último registro de cada período</p></div>
+              <div class="chart-tools">
+                <div class="chart-tools" id="period-tools">
+                  <button class="chip active" data-period="month">Mês</button><button class="chip" data-period="quarter">Trimestre</button><button class="chip" data-period="year">Ano</button>
+                </div>
+                <select class="chart-select" id="chart-range" aria-label="Filtrar período">
+                  <option value="all">Todo o histórico</option>
+                  <option value="year">Ano atual</option>
+                  <option value="recent">Últimos meses</option>
+                </select>
+                <input class="chart-select range-count" id="range-count" type="number" min="1" max="120" value="6" aria-label="Quantidade de meses" hidden>
               </div>
-              <select class="chart-select" id="chart-range" aria-label="Filtrar período do gráfico" title="Filtrar período do gráfico">
-                <option value="all">Todo o histórico</option>
-                <option value="year">Ano atual</option>
-                <option value="recent">Últimos meses</option>
-              </select>
-              <input class="chart-select range-count" id="range-count" type="number" min="1" max="120" value="6" aria-label="Quantidade de meses" title="Quantidade de meses" hidden>
             </div>
+            <div class="chart-wrap" id="trend-chart"></div>
+            <div class="chart-legend" id="trend-legend"></div>
           </div>
-          <div class="chart-wrap" id="trend-chart"></div>
-          <div class="chart-legend" id="trend-legend"></div>
+          <div class="card panel">
+            <div class="panel-head"><div><h2 class="panel-title" id="distribution-title">Distribuição por área</h2><p class="panel-sub" id="distribution-total">Total representado: —</p></div></div>
+            <div id="distribution"></div>
+          </div>
         </div>
-        <div class="card panel">
-          <div class="panel-head"><div><h2 class="panel-title" id="distribution-title">Distribuição por área</h2><p class="panel-sub" id="distribution-total">Total representado: —</p></div></div>
-          <div id="distribution"></div>
+
+        <div class="card panel subarea-panel">
+          <div class="panel-head"><div><h2 class="panel-title" id="subarea-chart-title">Valores por subárea</h2><p class="panel-sub">Valores atuais do escopo selecionado</p></div></div>
+          <div id="subarea-bars"></div>
+        </div>
+
+        <div class="card panel goal-panel">
+          <div class="panel-head">
+            <div><h2 class="panel-title">Metas</h2><p class="panel-sub">Progresso de cada área até o valor definido</p></div>
+            <button class="btn small" onclick="showScreen('structure')">Gerenciar áreas e metas</button>
+          </div>
+          <div id="goal-cards" class="goal-cards"></div>
         </div>
       </div>
-      <div class="card panel subarea-panel">
-        <div class="panel-head"><div><h2 class="panel-title" id="subarea-chart-title">Valores por subárea</h2><p class="panel-sub">Comparação dos valores atuais dentro do escopo selecionado.</p></div></div>
-        <div id="subarea-bars"></div>
-      </div>
-      <div class="card panel goal-panel">
-        <div class="panel-head"><div><h2 class="panel-title">Painel de metas</h2><p class="panel-sub">Acompanhe o progresso de cada área até o valor definido.</p></div><button class="btn small" onclick="showScreen('structure')">Gerenciar metas</button></div>
-        <div id="goal-cards" class="goal-cards"></div>
-      </div>
-      <div class="areas-heading"><h2>Áreas financeiras</h2><button class="btn small" onclick="showScreen('structure')">Gerenciar áreas</button></div>
-      </div>
+
       <div id="goal-detail" class="goal-detail">
         <div class="goal-detail-head">
-          <div><div class="eyebrow">Painel de metas · Detalhamento</div><h2 id="goal-detail-title" class="goal-detail-title"></h2></div>
-          <div class="goal-detail-actions"><button class="btn" onclick="closeGoalDetail()">← Voltar ao painel</button><button class="btn" onclick="showScreen('structure')">Editar meta</button></div>
+          <div><div class="eyebrow">Meta · Detalhamento</div><h2 id="goal-detail-title" class="goal-detail-title"></h2></div>
+          <div class="goal-detail-actions">
+            <button class="btn" onclick="closeGoalDetail()">← Voltar</button>
+            <button class="btn" onclick="showScreen('structure')">Editar meta</button>
+          </div>
         </div>
         <div id="goal-detail-content"></div>
       </div>
@@ -250,21 +353,23 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     <section id="screen-updates" class="screen">
       <div class="section-grid">
         <div class="card form-card">
-          <div class="panel-head"><div><h2 class="panel-title">Registrar fotografia</h2><p class="panel-sub">Informe os valores atuais dos subníveis de uma área.</p></div></div>
+          <div class="panel-head"><div><h2 class="panel-title">Registrar fotografia</h2><p class="panel-sub">Valores atuais das subáreas</p></div></div>
           <div class="form-row">
             <div class="field"><label for="update-area">Área</label><select id="update-area"></select></div>
             <div class="field"><label for="update-month">Mês de referência</label><input id="update-month" type="month"></div>
           </div>
-          <p class="helper">A data do registro será hoje. Para corrigir um mês anterior, selecione o mês correspondente: a fotografia mensal será substituída. Campos em branco mantêm o último valor conhecido.</p>
+          <p class="helper">Ao escolher um mês anterior, a fotografia daquele mês é substituída. Campos vazios mantêm o último valor.</p>
           <div id="update-values" class="values-list"></div>
           <button id="save-update" class="btn primary" onclick="saveUpdate()">Salvar fotografia</button>
         </div>
         <div class="card form-card">
           <h2 class="panel-title">Como funciona</h2>
-          <p class="panel-sub" style="line-height:1.7;margin:12px 0 16px">Cada atualização registra uma fotografia dos saldos, não compras, vendas ou movimentações. Dentro do mês, a última fotografia salva de cada área é a referência mensal.</p>
-          <div class="structure-area"><strong style="font-size:10px">Total geral</strong><p class="panel-sub">Soma das áreas. Calculado automaticamente.</p></div>
-          <div class="structure-area" style="margin-top:8px"><strong style="font-size:10px">Área</strong><p class="panel-sub">Soma dos seus subníveis.</p></div>
-          <div class="structure-area" style="margin-top:8px"><strong style="font-size:10px">Subárea</strong><p class="panel-sub">Item final, com nome único e valor atualizado.</p></div>
+          <p class="panel-sub" style="line-height:1.7;margin-top:10px">Cada registro é uma fotografia dos saldos. A última de cada mês é a referência.</p>
+          <div class="info-list">
+            <div class="structure-area"><strong>Total geral</strong><p class="panel-sub">Soma das áreas</p></div>
+            <div class="structure-area"><strong>Área</strong><p class="panel-sub">Soma das subáreas</p></div>
+            <div class="structure-area"><strong>Subárea</strong><p class="panel-sub">Item final com valor próprio</p></div>
+          </div>
         </div>
       </div>
     </section>
@@ -272,14 +377,16 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     <section id="screen-structure" class="screen">
       <div class="section-grid">
         <div class="card form-card">
-          <div class="panel-head"><div><h2 class="panel-title">Estrutura financeira</h2><p class="panel-sub">Cadastre as áreas e subníveis que compõem seu patrimônio.</p></div></div>
-          <div class="field"><label for="new-area-name">Nome da nova área</label><div class="inline-form" style="margin-top:0"><input id="new-area-name" placeholder="Ex.: Reserva de emergência"><button class="btn primary" onclick="addArea()">Adicionar área</button></div></div>
+          <div class="panel-head"><div><h2 class="panel-title">Estrutura financeira</h2><p class="panel-sub">Áreas, subáreas e metas</p></div></div>
+          <div class="field"><label for="new-area-name">Nova área</label>
+            <div class="inline-form" style="margin-top:0"><input id="new-area-name" placeholder="Ex.: Reserva de emergência"><button class="btn primary" onclick="addArea()">Adicionar</button></div>
+          </div>
           <div id="structure-list" class="structure-list"></div>
         </div>
         <div class="card form-card">
-          <h2 class="panel-title">Regras do cadastro</h2>
-          <p class="panel-sub" style="line-height:1.8;margin-top:10px">A hierarquia tem exatamente três níveis: Total, Área e Subárea. O total e os totais das áreas são calculados. Os nomes de áreas e subáreas devem ser únicos.</p>
-          <p class="panel-sub" style="line-height:1.8">Ao remover uma área ou subárea, os registros históricos associados também serão removidos. Exporte uma cópia antes de excluir dados que queira preservar.</p>
+          <h2 class="panel-title">Regras</h2>
+          <p class="panel-sub" style="line-height:1.8;margin-top:10px">Três níveis: Total, Área e Subárea, com nomes únicos.</p>
+          <p class="panel-sub" style="line-height:1.8">Excluir uma área ou subárea também apaga o histórico dela. Exporte os dados antes.</p>
         </div>
       </div>
     </section>
@@ -287,18 +394,23 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     <section id="screen-history" class="screen">
       <div class="card panel">
         <div class="history-toolbar">
-          <div><h2 class="panel-title">Histórico de fotografias</h2><p class="panel-sub">O gráfico mensal considera a última fotografia de cada área no mês.</p></div>
-          <select id="history-filter" class="select" style="width:auto;min-width:170px" onchange="renderHistory()"></select>
+          <div><h2 class="panel-title">Histórico</h2><p class="panel-sub">Última fotografia de cada área por mês</p></div>
+          <select id="history-filter" class="select" style="width:auto;min-width:180px" onchange="renderHistory()"></select>
         </div>
         <div class="table-wrap" id="history-table"></div>
       </div>
     </section>
   </main>
 </div>
+
 <div id="toast" class="toast"></div>
 <div id="modal-backdrop" class="modal-backdrop">
-  <div class="modal"><h3 id="modal-title">Confirmar exclusão</h3><p id="modal-text"></p><div class="modal-actions"><button class="btn" onclick="closeModal()">Cancelar</button><button id="modal-confirm" class="btn danger">Excluir</button></div></div>
+  <div class="modal">
+    <h3 id="modal-title">Confirmar exclusão</h3><p id="modal-text"></p>
+    <div class="modal-actions"><button class="btn" onclick="closeModal()">Cancelar</button><button id="modal-confirm" class="btn danger">Excluir</button></div>
+  </div>
 </div>
+
 
 <script>
 (function(){
@@ -340,7 +452,7 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
   }
   let db={version:1,areas:[],snapshots:[]};
   let activePeriod="month";
-  let activeScope="all";
+  let activeScope=[];
   let activeRange="all";
   let activeGoalAreaId=null;
 
@@ -413,8 +525,10 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
   function scopeMonthTotal(row){return selectedAreas().reduce((sum,area)=>sum+(Number(row?.byArea[area.id])||0),0)}
   function shortMoney(n){const abs=Math.abs(n);if(abs>=1000000)return (n/1000000).toLocaleString("pt-BR",{maximumFractionDigits:1})+" mi";if(abs>=1000)return (n/1000).toLocaleString("pt-BR",{maximumFractionDigits:0})+" mil";return n.toLocaleString("pt-BR",{maximumFractionDigits:0})}
   function selectScope(scope){
-    if(scope==="all")activeScope="all";
-    else if(db.areas.some(area=>area.id===scope)){
+    if(scope==="all"){
+      const allSelected=db.areas.length>0&&selectedAreas().length===db.areas.length;
+      activeScope=allSelected?[]:"all";
+    }else if(db.areas.some(area=>area.id===scope)){
       const selected=activeScope==="all"?db.areas.map(area=>area.id):(Array.isArray(activeScope)?[...activeScope]:[]);
       activeScope=selected.includes(scope)?selected.filter(id=>id!==scope):[...selected,scope];
     }
@@ -431,10 +545,11 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     $("scope-cards").innerHTML=cards.join("");
   }
   function renderChart(){
-    const el=$("trend-chart"),legend=$("trend-legend"),data=getGroupedData();
-    if(!data.length){el.innerHTML='<div class="chart-empty">O gráfico aparecerá após o primeiro registro mensal.</div>';legend.innerHTML="";return}
-    const areas=selectedAreas(),area=areas.length===1?areas[0]:null;
+    const el=$("trend-chart"),legend=$("trend-legend"),areas=selectedAreas();
     if(!areas.length){el.innerHTML='<div class="chart-empty">Selecione uma ou mais áreas para visualizar a evolução.</div>';legend.innerHTML="";return}
+    const data=getGroupedData();
+    if(!data.length){el.innerHTML='<div class="chart-empty">O gráfico aparecerá após o primeiro registro mensal.</div>';legend.innerHTML="";return}
+    const area=areas.length===1?areas[0]:null;
     let series=[];
     if(areas.length===1){
       series=[{id:area.id,name:area.name,color:areaColor(area.id),values:data.map(d=>Number(d.byArea[area.id])||0)}];
@@ -470,6 +585,7 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     else vals=areas.flatMap(item=>[{name:item.name,value:totalValues(currentValues(item)),color:areaColor(item.id)}]).filter(x=>x.value>0);
     const total=vals.reduce((sum,x)=>sum+x.value,0);
     $("distribution-title").textContent=area?`Distribuição — ${area.name}`:"Distribuição das áreas selecionadas";
+    if(!areas.length){$("distribution-total").textContent="Total representado: —";el.innerHTML='<div class="chart-empty">Selecione uma ou mais áreas para visualizar a distribuição.</div>';return}
     $("distribution-total").textContent=`Total representado: ${fmtMoney(total)}`;
     if(!vals.length){el.innerHTML='<div class="chart-empty">Não há valores registrados para este escopo.</div>';return}
     let cumulative=0;
@@ -485,6 +601,7 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     const holder=$("subarea-bars"),areas=selectedAreas(),area=areas.length===1?areas[0]:null;
     const groups=areas;
     $("subarea-chart-title").textContent=area?`Subáreas — ${area.name}`:"Subáreas das áreas selecionadas";
+    if(!areas.length){holder.innerHTML='<div class="chart-empty">Selecione uma ou mais áreas para visualizar os valores.</div>';return}
     const entries=groups.flatMap(a=>a.subareas.map(sub=>({area:a,sub,value:Number(currentValues(a)[sub.id])||0,color:subareaColor(sub.id)})));
     if(!entries.length){holder.innerHTML='<div class="chart-empty">Cadastre áreas e subáreas para visualizar este gráfico.</div>';return}
     const max=Math.max(0,...entries.map(x=>x.value));
@@ -499,11 +616,11 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     $("page-eyebrow").textContent="Visão consolidada";
     $("page-title").textContent=localNow().toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"});
     renderScopeCards();
-    const total=scopeCurrentTotal(),currentMonth=nowMonth(),prior=monthlyData().filter(x=>x.key<currentMonth).at(-1),priorTotal=prior?scopeMonthTotal(prior):null,delta=prior?variation(total,priorTotal):null,area=selectedArea();
+    const hasScope=selectedAreas().length>0,total=scopeCurrentTotal(),currentMonth=nowMonth(),prior=monthlyData().filter(x=>x.key<currentMonth).at(-1),priorTotal=prior?scopeMonthTotal(prior):null,delta=prior?variation(total,priorTotal):null,area=selectedArea();
     const scopeLabel=area?"Total da área selecionada":selectedAreas().length===db.areas.length?"Total geral atual":"Total das áreas selecionadas";
     $("summary-grid").innerHTML=`
-      <div class="card metric"><span class="metric-mark">◈</span><div class="metric-label">${scopeLabel}</div><div class="metric-value">${fmtMoney(total)}</div><div class="metric-foot">${area?esc(area.name):`${selectedAreas().length} áreas selecionadas`}</div></div>
-      <div class="card metric"><span class="metric-mark">⌁</span><div class="metric-label">Variação em relação ao mês anterior</div><div class="metric-value">${delta===null?"—":`${delta>0?"+":""}${delta.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`}</div><div class="metric-foot">${prior?"Comparação do escopo selecionado":"Registre mais de um mês"}</div></div>`;
+      <div class="card metric"><span class="metric-mark">◈</span><div class="metric-label">${hasScope?scopeLabel:"Selecione uma área"}</div><div class="metric-value">${hasScope?fmtMoney(total):"—"}</div><div class="metric-foot">${hasScope?(area?esc(area.name):`${selectedAreas().length} áreas selecionadas`):"Ative uma área para exibir os valores"}</div></div>
+      <div class="card metric"><span class="metric-mark">⌁</span><div class="metric-label">Variação em relação ao mês anterior</div><div class="metric-value">${!hasScope||delta===null?"—":`${delta>0?"+":""}${delta.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`}</div><div class="metric-foot">${hasScope?(prior?"Comparação do escopo selecionado":"Registre mais de um mês"):"Ative uma área para exibir os valores"}</div></div>`;
     renderChart();renderDistribution();renderSubareaBars();renderGoalPanel();
     if(activeGoalAreaId)renderGoalDetail();
   }
@@ -513,24 +630,29 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     const rows=monthlyData().filter(row=>row.key<=nowMonth()&&row.key>=startMonth&&row.byArea[area.id]!==undefined);
     const history=rows.length?rows:monthlyData().filter(row=>row.key<=nowMonth()&&row.byArea[area.id]!==undefined);
     const first=history[0],last=history.at(-1),previous=history.length>1?history.at(-2):null;
+    const firstValue=first?Number(first.byArea[area.id])||0:0;
     const [startYear,startMonthNum]=startMonth.split("-").map(Number),[currentYear,currentMonthNum]=nowMonth().split("-").map(Number);
     const elapsedMonths=Math.max(0,(currentYear-startYear)*12+currentMonthNum-startMonthNum);
     const remainingMonths=Math.max(0,duration-elapsedMonths);
     const progress=target>0?current/target*100:0;
     const expectedProgress=Math.min(100,elapsedMonths/duration*100);
     const requiredMonthlyPct=remainingMonths>0?Math.max(0,100-progress)/remainingMonths:0;
-    const actualMonthlyPct=progress/Math.max(1,elapsedMonths);
+    const plannedMonthlyAmount=Math.max(0,target-firstValue)/duration;
+    const actualMonthlyAmount=elapsedMonths>0?(current-firstValue)/elapsedMonths:0;
+    const actualMonthlyPct=plannedMonthlyAmount>0?actualMonthlyAmount/plannedMonthlyAmount*100:null;
     const monthlyRequiredAmount=remainingMonths>0?Math.max(0,target-current)/remainingMonths:0;
-    return {goal,target,current,progress,history,firstValue:first?Number(first.byArea[area.id])||0:0,lastValue:last?Number(last.byArea[area.id])||0:current,previousValue:previous?Number(previous.byArea[area.id])||0:null,elapsedMonths,remainingMonths,expectedProgress,requiredMonthlyPct,actualMonthlyPct,monthlyRequiredAmount};
+    return {goal,target,current,progress,history,firstValue,lastValue:last?Number(last.byArea[area.id])||0:current,previousValue:previous?Number(previous.byArea[area.id])||0:null,elapsedMonths,remainingMonths,expectedProgress,requiredMonthlyPct,plannedMonthlyAmount,actualMonthlyAmount,actualMonthlyPct,monthlyRequiredAmount};
   }
   function renderGoalPanel(){
-    const holder=$("goal-cards");
+    const holder=$("goal-cards"),areas=selectedAreas();
+    if(!areas.length){holder.innerHTML='<div class="empty-box"><p>Selecione uma ou mais áreas para visualizar as metas.</p></div>';return}
     if(!db.areas.length){holder.innerHTML='<div class="empty-box"><p>Cadastre uma área para acompanhar suas metas.</p></div>';return}
-    holder.innerHTML=db.areas.map(area=>{
+    holder.innerHTML=areas.map(area=>{
       const stats=goalStats(area),color=areaColor(area.id);
       if(!stats.target)return `<button type="button" class="goal-card" style="--area-color:${color}" onclick="openGoalDetail('${esc(area.id)}')"><span class="goal-card-head"><span>${esc(area.name)}</span><i class="scope-card-mark"></i></span><div class="goal-card-empty">Meta não cadastrada · Clique para configurar</div></button>`;
       const pct=stats.progress,bar=Math.max(0,Math.min(100,pct));
-      return `<button type="button" class="goal-card" style="--area-color:${color}" onclick="openGoalDetail('${esc(area.id)}')"><span class="goal-card-head"><span>${esc(area.name)}</span><i class="scope-card-mark"></i></span><div class="goal-card-value">${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%</div><div class="goal-card-meta">${fmtMoney(stats.current)} de ${fmtMoney(stats.target)}</div><div class="goal-progress-track"><div class="goal-progress-fill" style="width:${bar}%"></div></div><div class="goal-card-foot"><span>${pct>=100?"Meta atingida":`Faltam ${fmtMoney(Math.max(0,stats.target-stats.current))}`}</span><span>${stats.goal.durationMonths} meses</span></div></button>`;
+      const actualPct=stats.actualMonthlyPct===null?"—":`${stats.actualMonthlyPct>0?"+":""}${stats.actualMonthlyPct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`;
+      return `<button type="button" class="goal-card" style="--area-color:${color}" onclick="openGoalDetail('${esc(area.id)}')"><span class="goal-card-head"><span>${esc(area.name)}</span><i class="scope-card-mark"></i></span><div class="goal-card-value">${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%</div><div class="goal-card-meta">${fmtMoney(stats.current)} de ${fmtMoney(stats.target)}</div><div class="goal-card-meta">Ritmo real: ${fmtMoney(stats.actualMonthlyAmount)}/mês · ${actualPct} do planejado</div><div class="goal-progress-track"><div class="goal-progress-fill" style="width:${bar}%"></div></div><div class="goal-card-foot"><span>${pct>=100?"Meta atingida":`Faltam ${fmtMoney(Math.max(0,stats.target-stats.current))}`}</span><span>${stats.goal.durationMonths} meses</span></div></button>`;
     }).join("");
   }
   function openGoalDetail(areaId){
@@ -559,12 +681,16 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
     for(let i=0;i<5;i++){const value=max*i/4,yy=y(value);grid+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#263640"/><text x="${L-8}" y="${yy+4}" text-anchor="end" fill="#80939f" font-size="10">${shortMoney(value)}</text>`}
     const labels=points.map((point,index)=>index===0||index===points.length-1||index%Math.ceil(points.length/6)===0?`<text x="${point.x}" y="${H-9}" text-anchor="middle" fill="#81939f" font-size="10">${esc(point.label)}</text>`:"").join("");
     const linePoints=points.map(point=>`${point.x},${y(point.value)}`).join(" ");
+    const baseMonth=stats.history[0]?.key||goal.startDate.slice(0,7);
+    const [baseYear,baseMonthNum]=baseMonth.split("-").map(Number);
+    const plannedLinePoints=points.map((point,index)=>{const [year,month]=stats.history[index].key.split("-").map(Number),elapsed=Math.max(0,(year-baseYear)*12+month-baseMonthNum);return `${point.x},${y(stats.firstValue+elapsed*stats.plannedMonthlyAmount)}`}).join(" ");
     const dots=points.map(point=>`<circle cx="${point.x}" cy="${y(point.value)}" r="3.5" fill="${areaColor(area.id)}"><title>${esc(point.label)}: ${fmtMoney(point.value)}</title></circle>`).join("");
-    const chart=points.length?`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Evolução da área ${esc(area.name)} em relação à meta">${grid}<line x1="${L}" y1="${y(stats.target)}" x2="${W-R}" y2="${y(stats.target)}" stroke="${areaColor(area.id)}" stroke-width="2.5" stroke-dasharray="7 5"/><polyline points="${linePoints}" fill="none" stroke="${areaColor(area.id)}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${dots}${labels}</svg>`:'<div class="chart-empty">Ainda não há registros históricos para exibir a evolução.</div>';
-    const paceGap=stats.actualMonthlyPct-stats.requiredMonthlyPct;
-    const paceStatus=stats.progress>=100?"Meta atingida.":stats.remainingMonths===0?"Prazo encerrado; a meta ainda não foi atingida.":paceGap>=0?"O ritmo médio observado está no ritmo necessário ou acima.":"O ritmo médio observado está abaixo do necessário.";
+    const chart=points.length?`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Evolução da área ${esc(area.name)} em relação à meta">${grid}<line x1="${L}" y1="${y(stats.target)}" x2="${W-R}" y2="${y(stats.target)}" stroke="${areaColor(area.id)}" stroke-width="2.5" stroke-dasharray="7 5"/><polyline points="${plannedLinePoints}" fill="none" stroke="#e7bb72" stroke-width="2.5" stroke-dasharray="7 5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="${linePoints}" fill="none" stroke="${areaColor(area.id)}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${dots}${labels}</svg>`:'<div class="chart-empty">Ainda não há registros históricos para exibir a evolução.</div>';
+    const plannedPct=stats.plannedMonthlyAmount>0?100:null,requiredPct=stats.plannedMonthlyAmount>0?stats.monthlyRequiredAmount/stats.plannedMonthlyAmount*100:null,actualPct=stats.actualMonthlyPct;
+    const paceGap=stats.actualMonthlyAmount-stats.monthlyRequiredAmount;
+    const paceStatus=stats.progress>=100?"Meta atingida.":stats.remainingMonths===0?"Prazo encerrado; a meta ainda não foi atingida.":paceGap>=0?"O ritmo real até o mês atual está no ritmo necessário ou acima.":"O ritmo real até o mês atual está abaixo do necessário.";
     const paceClass=stats.progress>=100||paceGap>=0?"ahead":"behind";
-    $("goal-detail-content").innerHTML=`<div class="goal-detail-grid"><div class="card panel"><div class="panel-head"><div><h3 class="panel-title">Evolução da área e linha da meta</h3><p class="panel-sub">Início da meta: ${fmtDate(goal.startDate)} · Prazo estimado: ${goalDeadline(goal.startDate,goal.durationMonths)}</p></div></div><div class="goal-detail-chart">${chart}</div><div class="chart-legend"><span class="chart-legend-item"><i class="chart-legend-line" style="background:${areaColor(area.id)}"></i>Valor da área</span><span class="chart-legend-item"><i class="goal-legend-line" style="border-top-color:${areaColor(area.id)}"></i>Meta: ${fmtMoney(stats.target)}</span></div></div><div class="card panel"><h3 class="panel-title">Evolução rumo à meta</h3><div class="goal-kpi-grid"><div class="goal-kpi goal-kpi-main"><span>Acumulados</span><strong>${fmtMoney(stats.current)}</strong><small>${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}% da meta</small></div><div class="goal-kpi goal-kpi-target"><span>Meta</span><strong>${fmtMoney(stats.target)}</strong><small>Valor-alvo definido</small></div><div class="goal-kpi goal-kpi-remain"><span>Faltam</span><strong>${fmtMoney(remaining)}</strong><small>${Math.max(0,100-pct).toLocaleString("pt-BR",{maximumFractionDigits:1})}% da meta</small></div></div><div class="goal-detail-progress"><div class="goal-card-foot"><span>Progresso atual</span><strong>${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%</strong></div><div class="goal-progress-track"><div class="goal-progress-fill" style="width:${bar}%;--area-color:${areaColor(area.id)};background:${areaColor(area.id)}"></div></div><div class="goal-card-foot"><span>Início: ${fmtMoney(stats.firstValue)}</span><span>${stats.remainingMonths} meses restantes</span></div></div><div class="goal-pace-grid"><div class="goal-pace-card"><span>Ritmo necessário daqui em diante</span><strong>${stats.requiredMonthlyPct.toLocaleString("pt-BR",{maximumFractionDigits:2})}% da meta/mês</strong><small>${fmtMoney(stats.monthlyRequiredAmount)} por mês, em média</small></div><div class="goal-pace-card"><span>Ritmo real médio até hoje</span><strong>${stats.actualMonthlyPct.toLocaleString("pt-BR",{maximumFractionDigits:2})}% da meta/mês</strong><small>Progresso acumulado dividido pelos meses transcorridos</small></div><div class="goal-pace-status ${paceClass}">${paceStatus} Trajetória prevista até hoje: ${stats.expectedProgress.toLocaleString("pt-BR",{maximumFractionDigits:1})}% · Real: ${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%.</div></div><div class="goal-stat-grid" style="margin-top:12px"><div class="goal-stat"><div class="goal-stat-label">Valor no início do histórico disponível</div><div class="goal-stat-value">${fmtMoney(stats.firstValue)}</div></div><div class="goal-stat"><div class="goal-stat-label">Prazo total</div><div class="goal-stat-value">${goal.durationMonths} meses</div></div></div><p class="goal-detail-note">Os ritmos mensais são expressos como percentual do valor-alvo por mês. A projeção compara o progresso real com uma trajetória linear; os valores históricos dependem das fotografias registradas.</p></div></div>`;
+    $("goal-detail-content").innerHTML=`<div class="goal-detail-grid"><div class="card panel"><div class="panel-head"><div><h3 class="panel-title">Evolução da área e linha da meta</h3><p class="panel-sub">Início da meta: ${fmtDate(goal.startDate)} · Prazo estimado: ${goalDeadline(goal.startDate,goal.durationMonths)}</p></div></div><div class="goal-detail-chart">${chart}</div><div class="chart-legend"><span class="chart-legend-item"><i class="chart-legend-line" style="background:${areaColor(area.id)}"></i>Valor real da área</span><span class="chart-legend-item"><i class="goal-legend-line" style="border-top-color:#e7bb72"></i>Ritmo planejado fixo</span><span class="chart-legend-item"><i class="goal-legend-line" style="border-top-color:${areaColor(area.id)}"></i>Meta: ${fmtMoney(stats.target)}</span></div></div><div class="card panel"><h3 class="panel-title">Evolução rumo à meta</h3><div class="goal-kpi-grid"><div class="goal-kpi goal-kpi-main"><span>Acumulados</span><strong>${fmtMoney(stats.current)}</strong><small>${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}% da meta</small></div><div class="goal-kpi goal-kpi-target"><span>Meta</span><strong>${fmtMoney(stats.target)}</strong><small>Valor-alvo definido</small></div><div class="goal-kpi goal-kpi-remain"><span>Faltam</span><strong>${fmtMoney(remaining)}</strong><small>${Math.max(0,100-pct).toLocaleString("pt-BR",{maximumFractionDigits:1})}% da meta</small></div></div><div class="goal-detail-progress"><div class="goal-card-foot"><span>Progresso atual</span><strong>${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%</strong></div><div class="goal-progress-track"><div class="goal-progress-fill" style="width:${bar}%;--area-color:${areaColor(area.id)};background:${areaColor(area.id)}"></div></div><div class="goal-card-foot"><span>Início: ${fmtMoney(stats.firstValue)}</span><span>${stats.remainingMonths} meses restantes</span></div></div><div class="goal-pace-grid"><div class="goal-pace-card"><span>Ritmo planejado fixo</span><div class="goal-pace-values"><strong>${fmtMoney(stats.plannedMonthlyAmount)}/mês</strong><strong class="goal-pace-percent planned">${plannedPct===null?"—":`${plannedPct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`}</strong></div><small>Referência mensal planejada</small></div><div class="goal-pace-card"><span>Ritmo real até mês atual</span><div class="goal-pace-values"><strong>${fmtMoney(stats.actualMonthlyAmount)}/mês</strong><strong class="goal-pace-percent actual">${actualPct===null?"—":`${actualPct>0?"+":""}${actualPct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`}</strong></div><small>Percentual do ritmo planejado fixo</small></div><div class="goal-pace-card"><span>Ritmo necessário daqui em diante</span><div class="goal-pace-values"><strong>${fmtMoney(stats.monthlyRequiredAmount)}/mês</strong><strong class="goal-pace-percent required">${requiredPct===null?"—":`${requiredPct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`}</strong></div><small>Percentual do ritmo planejado fixo</small></div><div class="goal-pace-status ${paceClass}">${paceStatus} Trajetória prevista até hoje: ${stats.expectedProgress.toLocaleString("pt-BR",{maximumFractionDigits:1})}% · Real: ${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%.</div></div><div class="goal-stat-grid" style="margin-top:12px"><div class="goal-stat"><div class="goal-stat-label">Valor no início do histórico disponível</div><div class="goal-stat-value">${fmtMoney(stats.firstValue)}</div></div><div class="goal-stat"><div class="goal-stat-label">Prazo total</div><div class="goal-stat-value">${goal.durationMonths} meses</div></div></div><p class="goal-detail-note">Os ritmos mensais são expressos como percentual do valor-alvo por mês. A projeção compara o progresso real com uma trajetória linear; os valores históricos dependem das fotografias registradas.</p></div></div>`;
   }
   function renderUpdate(){
     const sel=$("update-area"),previous=sel.value;
@@ -721,5 +847,7 @@ main{padding:18px 13px 30px}.topbar{align-items:flex-start;flex-direction:column
   renderAll();
 })();
 </script>
+
+
 </body>
 </html>
