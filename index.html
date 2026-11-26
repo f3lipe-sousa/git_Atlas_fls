@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<script src="https://myhub.ia.br/canvas-vendor/tailwind.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07090d">
@@ -450,7 +449,11 @@ td.money{text-align:right}td.actions{text-align:right}
     });
     return {version:1,areas:structuredClone(areas),snapshots};
   }
-  let db={version:1,areas:[],snapshots:[]};
+  const STORAGE_KEY="atlas-db-v1";
+  function saveDB(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(db))}catch(e){console.warn("Falha ao salvar",e)}}
+  function loadDB(){try{const s=localStorage.getItem(STORAGE_KEY);if(s){const d=JSON.parse(s);if(d&&Array.isArray(d.areas)&&Array.isArray(d.snapshots))return d}}catch(e){}return null}
+  let db=loadDB()||{version:1,areas:[],snapshots:[]};
+
   let activePeriod="month";
   let activeScope=[];
   let activeRange="all";
@@ -723,7 +726,7 @@ td.money{text-align:right}td.actions{text-align:right}
       if(parsed!==null)values[input.dataset.subarea]=parsed;
     }
     if(!Object.keys(values).length){toast("Informe ao menos um valor.");return}
-    const date=localNow().toISOString().slice(0,10);
+    const date=todayDate();
     if(existing){existing.date=date;existing.values=values;existing.editedAt=Date.now()}
     else db.snapshots.push({id:makeId(),areaId:area.id,date,month,values,createdAt:Date.now()});
     renderAll();renderUpdate();toast(existing?"Fotografia do mês substituída.":"Fotografia registrada.");
@@ -830,7 +833,7 @@ td.money{text-align:right}td.actions{text-align:right}
     button.title=collapsed?"Expandir menu lateral":"Recolher menu lateral";
     requestAnimationFrame(()=>renderChart());
   }
-  function renderAll(){renderDashboard();renderUpdate();renderStructure();renderHistory()}
+  function renderAll(){saveDB();renderDashboard();renderUpdate();renderStructure();renderHistory()}
   document.querySelectorAll(".nav button").forEach(button=>button.addEventListener("click",()=>showScreen(button.dataset.screen)));
   document.querySelectorAll("#period-tools .chip").forEach(button=>button.addEventListener("click",()=>{
     activePeriod=button.dataset.period;
