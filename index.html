@@ -3,34 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07090d">
+<meta name="theme-color" content="#07090d" id="meta-theme">
 <link rel="manifest" href="./manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <title>Atlas — Painel Financeiro</title>
+<script>
+(function(){try{var t=localStorage.getItem("atlas-theme");if(t==="graphite"||t==="pearl"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}})();
+</script>
 <style>
 :root{
-  --bg:#07090d;--bg2:#0c1016;--panel:#10151d;--panel2:#141a24;
+  --bg:#07090d;--panel:#10151d;--panel2:#141a24;
   --line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.12);
-  --text:#eef1f5;--muted:#8a94a6;--soft:#c3cad6;
+  --text:#eef1f5;--muted:#8a94a6;--soft:#c3cad6;--nav-label:#5d6778;
   --teal:#3ee6b5;--gold:#e6c587;--red:#ff7a85;--blue:#8ab4ff;
+  --card1:rgba(22,28,38,.9);--card2:rgba(14,18,25,.9);
+  --side1:rgba(16,21,29,.85);--side2:rgba(10,13,18,.85);
+  --sel-base:#141a24;--sel-end:#0e1219;
+  --modal1:#171e29;--modal2:#0f141b;
+  --input:rgba(0,0,0,.3);--tint:rgba(255,255,255,.03);--tint2:rgba(255,255,255,.06);--chip-bg:rgba(0,0,0,.25);
+  --scroll:#1f2733;--glow1:rgba(62,230,181,.09);--glow2:rgba(230,197,135,.06);
+  --accent-grad:linear-gradient(135deg,#6ff3cc,#22c495);--on-accent:#04140f;
+  --chart-grid:#263640;--chart-axis:#80939f;--chart-total:#edf3f6;--chart-dot:#14232b;
+  --picker:invert(1);--scheme:dark;
   --radius:18px;--shadow:0 1px 0 rgba(255,255,255,.04) inset,0 20px 50px -20px rgba(0,0,0,.7);
   --ease:cubic-bezier(.2,.8,.2,1)
 }
+[data-theme="graphite"]{
+  --bg:#1a1f27;--panel:#222833;--panel2:#272e3a;
+  --line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);
+  --text:#f1f3f6;--muted:#9aa4b5;--soft:#cfd5df;--nav-label:#7a8496;
+  --teal:#4fd8b0;--gold:#e3c48c;--red:#ff8a93;--blue:#9dbcff;
+  --card1:rgba(42,49,61,.92);--card2:rgba(32,38,48,.92);
+  --side1:rgba(36,42,53,.92);--side2:rgba(28,33,42,.92);
+  --sel-base:#2a313d;--sel-end:#20262f;
+  --modal1:#2a313d;--modal2:#20262f;
+  --input:rgba(0,0,0,.2);--tint:rgba(255,255,255,.035);--tint2:rgba(255,255,255,.07);--chip-bg:rgba(0,0,0,.18);
+  --scroll:#3a4352;--glow1:rgba(79,216,176,.08);--glow2:rgba(227,196,140,.06);
+  --chart-grid:#3a4352;--chart-axis:#9aa4b5;--chart-total:#f1f3f6;--chart-dot:#222833;
+  --shadow:0 1px 0 rgba(255,255,255,.05) inset,0 20px 45px -22px rgba(0,0,0,.55)
+}
+[data-theme="pearl"]{
+  --bg:#f5f2ec;--panel:#ffffff;--panel2:#f7f4ee;
+  --line:rgba(28,32,40,.08);--line2:rgba(28,32,40,.14);
+  --text:#1a1f29;--muted:#6b7280;--soft:#3f4653;--nav-label:#9aa0aa;
+  --teal:#0e9f7a;--gold:#a87a2c;--red:#d64555;--blue:#3b6fd8;
+  --card1:rgba(255,255,255,.96);--card2:rgba(251,249,245,.96);
+  --side1:rgba(255,255,255,.88);--side2:rgba(249,246,240,.88);
+  --sel-base:#ffffff;--sel-end:#faf7f1;
+  --modal1:#ffffff;--modal2:#f8f5ef;
+  --input:#ffffff;--tint:rgba(28,32,40,.03);--tint2:rgba(28,32,40,.06);--chip-bg:rgba(28,32,40,.04);
+  --scroll:#d6d0c4;--glow1:rgba(14,159,122,.07);--glow2:rgba(168,122,44,.07);
+  --accent-grad:linear-gradient(135deg,#17b98e,#0b8566);--on-accent:#ffffff;
+  --chart-grid:#e8e3da;--chart-axis:#8a8f98;--chart-total:#1a1f29;--chart-dot:#ffffff;
+  --picker:none;--scheme:light;
+  --shadow:0 1px 0 rgba(255,255,255,.8) inset,0 18px 40px -24px rgba(60,50,30,.28)
+}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;color:var(--text);font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;
-  background:
-   radial-gradient(900px 500px at 85% -10%,rgba(62,230,181,.09),transparent 60%),
-   radial-gradient(700px 400px at 0% 100%,rgba(230,197,135,.06),transparent 60%),var(--bg)}
+body{margin:0;color:var(--text);font:14px/1.55 Inter,ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;transition:background-color .3s,color .3s;
+  background:radial-gradient(900px 500px at 85% -10%,var(--glow1),transparent 60%),radial-gradient(700px 400px at 0% 100%,var(--glow2),transparent 60%),var(--bg);background-attachment:fixed}
 button,input,select{font:inherit;color:inherit}button{cursor:pointer}
-::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#1f2733;border-radius:8px}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:var(--scroll);border-radius:8px}
 .num,.metric-value,.scope-card-value,.legend-value,.subarea-bar-value,td.money,.goal-card-value,.goal-kpi strong{font-variant-numeric:tabular-nums}
 
 /* ===== Shell ===== */
 .shell{min-height:100vh;display:grid;grid-template-columns:248px minmax(0,1fr);transition:grid-template-columns .3s var(--ease)}
-aside{position:sticky;top:0;height:100vh;padding:22px 14px;display:flex;flex-direction:column;gap:26px;min-width:0;
-  background:linear-gradient(180deg,rgba(16,21,29,.85),rgba(10,13,18,.85));backdrop-filter:blur(18px);border-right:1px solid var(--line)}
+aside{position:sticky;top:0;height:100vh;padding:22px 14px;display:flex;flex-direction:column;gap:26px;min-width:0;z-index:10;
+  background:linear-gradient(180deg,var(--side1),var(--side2));backdrop-filter:blur(18px);border-right:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:12px;padding:0 6px;min-height:42px}
 .brand-mark{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;flex:none;font-weight:800;font-size:18px;color:#04140f;
   background:linear-gradient(140deg,#7ff5d2,#1fb58a 55%,#c9a86a);box-shadow:0 10px 30px -8px rgba(62,230,181,.55)}
@@ -38,16 +78,27 @@ aside{position:sticky;top:0;height:100vh;padding:22px 14px;display:flex;flex-dir
 .brand-sub{font-size:10px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
 .sidebar-toggle{margin-left:auto;width:30px;height:30px;flex:none;border:1px solid var(--line2);background:transparent;border-radius:9px;color:var(--muted);transition:.2s}
 .sidebar-toggle:hover{color:var(--text);border-color:var(--teal)}
-.nav-label{font-size:10px;color:#5d6778;text-transform:uppercase;letter-spacing:.18em;padding:0 12px;margin-bottom:8px;white-space:nowrap}
+.nav-label{font-size:10px;color:var(--nav-label);text-transform:uppercase;letter-spacing:.18em;padding:0 12px;margin-bottom:8px;white-space:nowrap}
 .nav{display:grid;gap:4px}
 .nav button{position:relative;display:flex;align-items:center;gap:12px;min-height:44px;padding:10px 12px;border:0;border-radius:12px;background:transparent;color:var(--muted);text-align:left;white-space:nowrap;overflow:hidden;font-weight:500;transition:.2s var(--ease)}
-.nav button:hover{background:rgba(255,255,255,.04);color:var(--text)}
-.nav button.active{background:linear-gradient(90deg,rgba(62,230,181,.14),rgba(62,230,181,.02));color:var(--text)}
+.nav button:hover{background:var(--tint2);color:var(--text)}
+.nav button.active{background:linear-gradient(90deg,color-mix(in srgb,var(--teal) 16%,transparent),color-mix(in srgb,var(--teal) 2%,transparent));color:var(--text)}
 .nav button.active::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:var(--teal);box-shadow:0 0 12px var(--teal)}
+.nav .data-toggle{display:none}
+.shell.data-open .nav .data-toggle{background:var(--tint2);color:var(--text)}
 .nav-icon{font-size:17px;width:22px;text-align:center;flex:none}
-.side-bottom{margin-top:auto;display:grid;gap:6px;padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.02)}
+.side-bottom{margin-top:auto;display:grid;gap:6px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--tint)}
 .side-bottom strong{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
 .side-bottom .btn{width:100%;justify-content:flex-start}
+.side-sep{height:1px;background:var(--line);margin:8px 0 4px}
+.theme-switch{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.theme-opt{display:grid;justify-items:center;gap:5px;padding:8px 4px;border:1px solid var(--line2);border-radius:11px;background:transparent;font-size:10px;font-weight:600;color:var(--muted);transition:.2s var(--ease)}
+.theme-opt:hover{color:var(--text);border-color:color-mix(in srgb,var(--teal) 50%,transparent)}
+.theme-opt.active{color:var(--text);border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 15%,transparent)}
+.theme-swatch{width:22px;height:22px;border-radius:50%;border:1px solid rgba(128,128,128,.35)}
+.sw-dark{background:linear-gradient(135deg,#07090d 50%,#3ee6b5 50%)}
+.sw-graphite{background:linear-gradient(135deg,#2a313d 50%,#4fd8b0 50%)}
+.sw-pearl{background:linear-gradient(135deg,#f5f2ec 50%,#0e9f7a 50%)}
 
 /* ===== Main ===== */
 main{padding:30px clamp(18px,3vw,48px) 48px;max-width:1680px;width:100%;margin:0 auto;min-width:0}
@@ -57,17 +108,17 @@ h1{font-size:clamp(22px,2.4vw,30px);font-weight:700;letter-spacing:-.03em;margin
 .top-actions{display:flex;gap:8px;align-items:center}
 
 /* ===== Buttons ===== */
-.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:rgba(255,255,255,.03);padding:10px 15px;border-radius:12px;font-size:12px;font-weight:600;transition:.2s var(--ease)}
-.btn:hover{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.2)}
-.btn.primary{border:0;color:#04140f;background:linear-gradient(135deg,#6ff3cc,#22c495);box-shadow:0 10px 28px -10px rgba(62,230,181,.7)}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);background:var(--tint);padding:10px 15px;border-radius:12px;font-size:12px;font-weight:600;transition:.2s var(--ease)}
+.btn:hover{background:var(--tint2);border-color:color-mix(in srgb,var(--text) 22%,transparent)}
+.btn.primary{border:0;color:var(--on-accent);background:var(--accent-grad);box-shadow:0 10px 28px -10px color-mix(in srgb,var(--teal) 70%,transparent)}
 .btn.primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
-.btn.danger{color:var(--red)}.btn.danger:hover{border-color:rgba(255,122,133,.5);background:rgba(255,122,133,.08)}
+.btn.danger{color:var(--red)}.btn.danger:hover{border-color:color-mix(in srgb,var(--red) 50%,transparent);background:color-mix(in srgb,var(--red) 8%,transparent)}
 .btn.small{padding:7px 11px;font-size:11px;border-radius:10px}
 .screen{display:none;animation:fade .35s var(--ease)}.screen.active{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 /* ===== Cards ===== */
-.card{background:linear-gradient(160deg,rgba(22,28,38,.9),rgba(14,18,25,.9));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(10px)}
+.card{background:linear-gradient(160deg,var(--card1),var(--card2));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(10px)}
 .panel{padding:20px;min-width:0}
 .panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px;flex-wrap:wrap}
 .panel-title{font-size:14px;font-weight:700;letter-spacing:-.01em;margin:0}
@@ -75,24 +126,24 @@ h1{font-size:clamp(22px,2.4vw,30px);font-weight:700;letter-spacing:-.03em;margin
 
 /* Scope cards */
 .scope-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px;margin-bottom:16px}
-.scope-card{--area-color:var(--teal);position:relative;min-height:78px;padding:15px 16px;text-align:left;border:1px solid var(--line);border-radius:16px;background:linear-gradient(160deg,rgba(22,28,38,.9),rgba(14,18,25,.9));transition:.25s var(--ease);overflow:hidden}
+.scope-card{--area-color:var(--teal);position:relative;min-height:78px;padding:15px 16px;text-align:left;border:1px solid var(--line);border-radius:16px;background:linear-gradient(160deg,var(--card1),var(--card2));box-shadow:var(--shadow);transition:.25s var(--ease);overflow:hidden}
 .scope-card::after{content:"";position:absolute;inset:auto -30% -60% auto;width:120px;height:120px;border-radius:50%;background:var(--area-color);opacity:0;filter:blur(40px);transition:.3s}
 .scope-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--area-color) 50%,transparent)}
-.scope-card.selected{border-color:color-mix(in srgb,var(--area-color) 70%,transparent);background:linear-gradient(160deg,color-mix(in srgb,var(--area-color) 14%,#141a24),#0e1219)}
+.scope-card.selected{border-color:color-mix(in srgb,var(--area-color) 70%,transparent);background:linear-gradient(160deg,color-mix(in srgb,var(--area-color) 14%,var(--sel-base)),var(--sel-end))}
 .scope-card.selected::after{opacity:.25}
 .scope-card-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .scope-card-name{font-size:12.5px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .scope-card-mark{width:9px;height:9px;border-radius:50%;background:var(--area-color);box-shadow:0 0 10px var(--area-color);flex:none}
 .scope-card-value{font-size:18px;font-weight:700;margin-top:10px;white-space:nowrap}
 .scope-card-foot{display:flex;justify-content:space-between;margin-top:6px;color:var(--muted);font-size:11px}
-.scope-card-action{position:absolute;right:12px;bottom:11px;z-index:1;padding:4px 8px;border-radius:8px;border:1px solid var(--line2);background:rgba(0,0,0,.25);font-size:10px;font-weight:700;letter-spacing:.06em;transition:.2s}
+.scope-card-action{position:absolute;right:12px;bottom:11px;z-index:1;padding:4px 8px;border-radius:8px;border:1px solid var(--line2);background:var(--chip-bg);font-size:10px;font-weight:700;letter-spacing:.06em;transition:.2s}
 .scope-card-action:hover{color:var(--area-color);border-color:var(--area-color)}
 
 /* Metrics */
 .summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:16px}
 .metric{padding:20px 22px;min-height:124px;position:relative;overflow:hidden}
-.metric::before{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(62,230,181,.16),transparent 70%)}
-.metric:nth-child(2)::before{background:radial-gradient(circle,rgba(230,197,135,.16),transparent 70%)}
+.metric::before{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--teal) 16%,transparent),transparent 70%)}
+.metric:nth-child(2)::before{background:radial-gradient(circle,color-mix(in srgb,var(--gold) 16%,transparent),transparent 70%)}
 .metric-label{color:var(--muted);font-size:11.5px;font-weight:500}
 .metric-value{font-size:clamp(24px,2.4vw,34px);font-weight:750;letter-spacing:-.035em;margin:10px 0 4px}
 .metric-foot{font-size:11px;color:var(--soft)}
@@ -101,10 +152,10 @@ h1{font-size:clamp(22px,2.4vw,30px);font-weight:700;letter-spacing:-.03em;margin
 /* Layout */
 .layout-main{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(320px,.9fr);gap:16px;margin-bottom:16px}
 .chart-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-#period-tools{padding:3px;border:1px solid var(--line);border-radius:11px;background:rgba(0,0,0,.25);gap:2px}
+#period-tools{padding:3px;border:1px solid var(--line);border-radius:11px;background:var(--chip-bg);gap:2px}
 .chip{border:0;background:transparent;color:var(--muted);border-radius:8px;padding:6px 11px;font-size:11px;font-weight:600;transition:.2s}
-.chip:hover{color:var(--text)}.chip.active{background:var(--teal);color:#04140f}
-.chart-select{border:1px solid var(--line);background:rgba(0,0,0,.25);border-radius:10px;padding:7px 10px;font-size:11px;max-width:180px;outline:0}
+.chip:hover{color:var(--text)}.chip.active{background:var(--teal);color:var(--on-accent)}
+.chart-select{border:1px solid var(--line);background:var(--chip-bg);border-radius:10px;padding:7px 10px;font-size:11px;max-width:180px;outline:0;color-scheme:var(--scheme)}
 .chart-select option{background:var(--panel)}
 .chart-wrap{height:300px;position:relative}
 svg.chart{width:100%;height:100%;overflow:visible;display:block}
@@ -116,7 +167,7 @@ svg.chart{width:100%;height:100%;overflow:visible;display:block}
 
 /* Donut */
 .donut-layout{display:grid;grid-template-columns:160px minmax(0,1fr);align-items:center;gap:18px;min-height:220px}
-.donut{width:160px;height:160px;position:relative;border-radius:50%;filter:drop-shadow(0 10px 25px rgba(0,0,0,.4))}
+.donut{width:160px;height:160px;position:relative;border-radius:50%;filter:drop-shadow(0 10px 25px rgba(0,0,0,.25))}
 .donut-center{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
 .donut-center strong{font-size:19px;letter-spacing:-.03em}.donut-center span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
 .legend{display:grid;gap:10px;max-height:240px;overflow:auto;padding-right:4px}
@@ -132,725 +183,15 @@ svg.chart{width:100%;height:100%;overflow:visible;display:block}
 .subarea-group-title{display:flex;justify-content:space-between;font-size:12px;font-weight:650;padding-bottom:7px;border-bottom:1px solid var(--line)}
 .subarea-bar-row{display:grid;grid-template-columns:minmax(110px,200px) minmax(50px,1fr) minmax(90px,130px);gap:12px;align-items:center;font-size:11.5px}
 .subarea-bar-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--soft)}
-.subarea-bar-track{height:8px;background:rgba(255,255,255,.05);border-radius:10px;overflow:hidden}
+.subarea-bar-track{height:8px;background:var(--tint2);border-radius:10px;overflow:hidden}
 .subarea-bar-fill{height:100%;border-radius:10px;transition:width .6s var(--ease)}
 .subarea-bar-value{text-align:right;white-space:nowrap}
 
 /* Goals */
 .goal-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
-.goal-card{--area-color:var(--teal);padding:16px;text-align:left;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.02);transition:.25s var(--ease);min-width:0}
+.goal-card{--area-color:var(--teal);padding:16px;text-align:left;border:1px solid var(--line);border-radius:16px;background:var(--tint);transition:.25s var(--ease);min-width:0}
 .goal-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--area-color) 60%,transparent)}
 .goal-card-head{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px;font-weight:650}
 .goal-card-head span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .goal-card-value{font-size:18px;font-weight:750;margin:12px 0 2px}
 .goal-card-meta,.goal-card-empty{color:var(--muted);font-size:11px}.goal-card-empty{margin-top:12px}
-.goal-progress-track{height:8px;background:rgba(255,255,255,.05);border-radius:9px;overflow:hidden;margin:12px 0 8px}
-.goal-progress-fill{height:100%;border-radius:9px;background:linear-gradient(90deg,color-mix(in srgb,var(--area-color) 60%,transparent),var(--area-color));box-shadow:0 0 12px var(--area-color)}
-.goal-card-foot{display:flex;justify-content:space-between;gap:8px;color:var(--soft);font-size:11px}
-.goal-detail{display:none}.goal-detail.active{display:block;animation:fade .35s var(--ease)}
-.goal-detail-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:18px;flex-wrap:wrap}
-.goal-detail-title{font-size:22px;font-weight:750;letter-spacing:-.02em;margin:6px 0 0}
-.goal-detail-actions{display:flex;gap:8px;flex-wrap:wrap}
-.goal-detail-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,.85fr);gap:16px;margin-bottom:16px}
-.goal-detail-chart{height:320px;position:relative}.goal-detail-chart svg{width:100%;height:100%;display:block}
-.goal-stat-grid,.goal-pace-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.goal-pace-grid{margin-top:14px}
-.goal-stat,.goal-kpi,.goal-pace-card{border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:13px;min-width:0}
-.goal-stat-label,.goal-kpi span,.goal-kpi small,.goal-pace-card span,.goal-pace-card small{display:block;color:var(--muted);font-size:10.5px}
-.goal-stat-value{font-size:15px;font-weight:700;margin-top:6px;overflow-wrap:anywhere}
-.goal-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
-.goal-kpi strong{display:block;font-size:clamp(15px,1.6vw,21px);margin:6px 0;overflow-wrap:anywhere}
-.goal-kpi-main{border-color:rgba(62,230,181,.35);background:linear-gradient(150deg,rgba(62,230,181,.12),transparent)}.goal-kpi-main strong{color:var(--teal)}
-.goal-kpi-target{border-color:rgba(138,180,255,.3)}.goal-kpi-target strong{color:var(--blue)}
-.goal-kpi-remain{border-color:rgba(230,197,135,.35);background:linear-gradient(150deg,rgba(230,197,135,.12),transparent)}.goal-kpi-remain strong{color:var(--gold)}
-.goal-pace-card strong{display:block;font-size:14px;margin:5px 0}
-.goal-pace-status{grid-column:1/-1;font-size:11.5px;padding:10px 13px;border-radius:11px;background:rgba(255,255,255,.04)}
-.goal-pace-status.ahead{color:#8ff0cf;background:rgba(62,230,181,.1)}
-.goal-pace-status.behind{color:var(--gold);background:rgba(230,197,135,.1)}
-.goal-detail-progress{margin-top:14px}.goal-detail-progress .goal-progress-track{height:12px}
-.goal-detail-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.65}
-.goal-editor{border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
-.goal-editor-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
-.goal-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end}
-.goal-fields .field{margin:0}
-.goal-actions{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
-.goal-deadline{font-size:11px;color:var(--muted)}
-
-/* Forms */
-.section-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr);gap:16px}
-.form-card{padding:22px}
-.field{display:grid;gap:7px;margin-bottom:14px}
-.field label{font-size:11px;color:var(--soft);font-weight:600}
-.field input,.field select,.select,.value-row input,.inline-form input{width:100%;border:1px solid var(--line2);background:rgba(0,0,0,.3);border-radius:11px;padding:11px 12px;outline:0;transition:.2s}
-.field input:focus,.field select:focus,.value-row input:focus,.inline-form input:focus{border-color:var(--teal);box-shadow:0 0 0 4px rgba(62,230,181,.12)}
-.field select option,.select option{background:var(--panel)}
-.field input[type="date"],.field input[type="month"]{color-scheme:dark;min-height:44px}
-.field input::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.7;cursor:pointer}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.helper{font-size:11px;color:var(--muted);margin:-4px 0 14px;line-height:1.6}
-.values-list{border-top:1px solid var(--line);margin:16px 0;padding-top:16px}
-.value-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(140px,.55fr);align-items:center;gap:12px;margin-bottom:10px}
-.value-row label{font-size:12px;color:var(--soft);overflow-wrap:anywhere}
-.info-list{display:grid;gap:10px;margin-top:14px}
-.structure-list{display:grid;gap:12px}
-.structure-area{padding:15px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02)}
-.structure-area-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.structure-area-head strong,.structure-area strong{font-size:12.5px}
-.sublist{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-.subtag{font-size:11px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--soft)}
-.inline-form{display:flex;gap:8px;margin-top:12px}.inline-form input{flex:1;min-width:0}
-
-/* History */
-.history-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
-.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}
-table{border-collapse:collapse;width:100%;min-width:620px}
-th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-size:12px}
-th{position:sticky;top:0;background:var(--panel2);font-size:10.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.08em}
-tbody tr{transition:background .15s}tbody tr:hover{background:rgba(255,255,255,.025)}
-tr:last-child td{border-bottom:0}
-td.money{text-align:right}td.actions{text-align:right}
-.pill{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(62,230,181,.1);color:#9ff0d6;font-size:11px}
-.variation.positive{color:var(--teal)}.variation.negative{color:var(--red)}.variation.neutral{color:var(--muted)}
-
-.empty-box{padding:36px 18px;text-align:center;color:var(--muted)}
-.empty-box .empty-icon{font-size:30px;color:var(--teal);margin-bottom:8px}
-.empty-box h3{color:var(--text);font-size:16px;margin:0 0 6px}.empty-box p{font-size:12px;max-width:460px;margin:0 auto 14px}
-.muted{color:var(--muted)}
-
-/* Toast & modal */
-.toast{position:fixed;bottom:24px;right:24px;z-index:20;padding:12px 18px;border-radius:14px;font-weight:600;font-size:12.5px;color:#04140f;background:linear-gradient(135deg,#bff8e6,#6ff3cc);box-shadow:0 20px 40px -10px rgba(0,0,0,.6);opacity:0;transform:translateY(14px);transition:.3s var(--ease);pointer-events:none}
-.toast.show{opacity:1;transform:none}
-.modal-backdrop{position:fixed;inset:0;z-index:15;display:none;place-items:center;padding:20px;background:rgba(3,5,8,.7);backdrop-filter:blur(6px)}
-.modal-backdrop.open{display:grid}
-.modal{width:min(440px,100%);padding:24px;border-radius:20px;border:1px solid var(--line2);background:linear-gradient(160deg,#171e29,#0f141b);box-shadow:var(--shadow);animation:fade .25s var(--ease)}
-.modal h3{margin:0 0 8px;font-size:17px}.modal p{font-size:12.5px;color:var(--muted);margin:0}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
-
-/* Sidebar recolhida */
-.shell.sidebar-collapsed{grid-template-columns:76px minmax(0,1fr)}
-.sidebar-collapsed aside{padding:20px 10px}
-.sidebar-collapsed .brand{flex-direction:column;padding:0;gap:10px}
-.sidebar-collapsed .brand-copy,.sidebar-collapsed .nav-label,.sidebar-collapsed .nav-text,.sidebar-collapsed .side-bottom{display:none}
-.sidebar-collapsed .sidebar-toggle{margin:0}
-.sidebar-collapsed .nav button{justify-content:center;padding:11px}
-
-/* Responsivo */
-@media(max-width:1180px){.layout-main{grid-template-columns:minmax(0,1.4fr) minmax(290px,.9fr)}}
-@media(max-width:900px){.layout-main,.goal-detail-grid{grid-template-columns:1fr}.chart-wrap{height:270px}}
-@media(max-width:680px){
-  .shell,.shell.sidebar-collapsed{display:block}
-  aside,.sidebar-collapsed aside{position:sticky;top:0;z-index:10;height:auto;flex-direction:row;align-items:center;padding:8px 12px;border-right:0;border-bottom:1px solid var(--line)}
-  .brand,.sidebar-collapsed .brand{flex-direction:row;padding:0}.brand-sub,.sidebar-toggle,.nav-label,.side-bottom{display:none!important}
-  .brand-copy,.sidebar-collapsed .brand-copy{display:block}
-  aside>div:nth-child(2){flex:1}
-  .nav,.sidebar-collapsed .nav{display:flex;justify-content:flex-end;gap:2px}
-  .nav button{width:44px;height:44px;padding:0;justify-content:center}.nav-text{display:none}
-  .nav button.active::before{left:12px;right:12px;top:auto;bottom:4px;width:auto;height:2px}
-  main{padding:20px 14px 34px}
-  .topbar{flex-direction:column;align-items:flex-start}.top-actions,.top-actions .btn{width:100%;justify-content:center;min-height:46px}
-  .summary-grid{gap:10px}.metric{padding:16px}
-  .section-grid,.form-row{grid-template-columns:1fr}
-  .donut-layout{grid-template-columns:120px 1fr}.donut{width:120px;height:120px}
-  .goal-kpi-grid,.goal-pace-grid{grid-template-columns:1fr}.goal-fields{grid-template-columns:1fr 1fr}.goal-fields .field:first-child{grid-column:1/-1}
-  .subarea-bar-row{grid-template-columns:minmax(85px,130px) 1fr minmax(78px,100px);gap:8px}
-}
-</style>
-</head>
-<body>
-<div class="shell" id="app-shell">
-  <aside>
-    <div class="brand">
-      <div class="brand-mark">A</div>
-      <div class="brand-copy"><div class="brand-name">ATLAS</div><div class="brand-sub">Wealth Panel</div></div>
-      <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Recolher menu lateral" title="Recolher menu lateral" onclick="toggleSidebar()">‹</button>
-    </div>
-    <div>
-      <div class="nav-label">Navegação</div>
-      <nav class="nav">
-        <button class="active" data-screen="dashboard" title="Painel geral"><span class="nav-icon">◫</span><span class="nav-text">Painel geral</span></button>
-        <button data-screen="updates" title="Atualizar valores"><span class="nav-icon">＋</span><span class="nav-text">Atualizar valores</span></button>
-        <button data-screen="structure" title="Áreas e metas"><span class="nav-icon">▤</span><span class="nav-text">Áreas e metas</span></button>
-        <button data-screen="history" title="Histórico"><span class="nav-icon">◷</span><span class="nav-text">Histórico</span></button>
-      </nav>
-    </div>
-    <div class="side-bottom">
-      <strong>Dados</strong>
-      <button class="btn small" onclick="document.getElementById('import-file').click()">↥ Importar</button>
-      <button class="btn small" onclick="exportJSON()">↧ Exportar</button>
-      <button class="btn small danger" onclick="clearAllData()">✕ Apagar tudo</button>
-      <input id="import-file" type="file" accept=".json,application/json" hidden>
-    </div>
-  </aside>
-
-  <main>
-    <header class="topbar">
-      <div>
-        <div class="eyebrow" id="page-eyebrow">Visão consolidada</div>
-        <h1 id="page-title"></h1>
-      </div>
-      <div class="top-actions">
-        <button class="btn primary" onclick="showScreen('updates')">＋ Atualizar valores</button>
-      </div>
-    </header>
-
-    <section id="screen-dashboard" class="screen active">
-      <div id="dashboard-overview">
-        <div class="scope-cards" id="scope-cards" aria-label="Selecionar escopo do painel"></div>
-        <div class="summary-grid" id="summary-grid"></div>
-
-        <div class="layout-main">
-          <div class="card panel">
-            <div class="panel-head">
-              <div><h2 class="panel-title">Evolução patrimonial</h2><p class="panel-sub">Último registro de cada período</p></div>
-              <div class="chart-tools">
-                <div class="chart-tools" id="period-tools">
-                  <button class="chip active" data-period="month">Mês</button><button class="chip" data-period="quarter">Trimestre</button><button class="chip" data-period="year">Ano</button>
-                </div>
-                <select class="chart-select" id="chart-range" aria-label="Filtrar período">
-                  <option value="all">Todo o histórico</option>
-                  <option value="year">Ano atual</option>
-                  <option value="recent">Últimos meses</option>
-                </select>
-                <input class="chart-select range-count" id="range-count" type="number" min="1" max="120" value="6" aria-label="Quantidade de meses" hidden>
-              </div>
-            </div>
-            <div class="chart-wrap" id="trend-chart"></div>
-            <div class="chart-legend" id="trend-legend"></div>
-          </div>
-          <div class="card panel">
-            <div class="panel-head"><div><h2 class="panel-title" id="distribution-title">Distribuição por área</h2><p class="panel-sub" id="distribution-total">Total representado: —</p></div></div>
-            <div id="distribution"></div>
-          </div>
-        </div>
-
-        <div class="card panel subarea-panel">
-          <div class="panel-head"><div><h2 class="panel-title" id="subarea-chart-title">Valores por subárea</h2><p class="panel-sub">Valores atuais do escopo selecionado</p></div></div>
-          <div id="subarea-bars"></div>
-        </div>
-
-        <div class="card panel goal-panel">
-          <div class="panel-head">
-            <div><h2 class="panel-title">Metas</h2><p class="panel-sub">Progresso de cada área até o valor definido</p></div>
-            <button class="btn small" onclick="showScreen('structure')">Gerenciar áreas e metas</button>
-          </div>
-          <div id="goal-cards" class="goal-cards"></div>
-        </div>
-      </div>
-
-      <div id="goal-detail" class="goal-detail">
-        <div class="goal-detail-head">
-          <div><div class="eyebrow">Meta · Detalhamento</div><h2 id="goal-detail-title" class="goal-detail-title"></h2></div>
-          <div class="goal-detail-actions">
-            <button class="btn" onclick="closeGoalDetail()">← Voltar</button>
-            <button class="btn" onclick="showScreen('structure')">Editar meta</button>
-          </div>
-        </div>
-        <div id="goal-detail-content"></div>
-      </div>
-    </section>
-
-    <section id="screen-updates" class="screen">
-      <div class="section-grid">
-        <div class="card form-card">
-          <div class="panel-head"><div><h2 class="panel-title">Registrar fotografia</h2><p class="panel-sub">Valores atuais das subáreas</p></div></div>
-          <div class="form-row">
-            <div class="field"><label for="update-area">Área</label><select id="update-area"></select></div>
-            <div class="field"><label for="update-month">Mês de referência</label><input id="update-month" type="month"></div>
-          </div>
-          <p class="helper">Ao escolher um mês anterior, a fotografia daquele mês é substituída. Campos vazios mantêm o último valor.</p>
-          <div id="update-values" class="values-list"></div>
-          <button id="save-update" class="btn primary" onclick="saveUpdate()">Salvar fotografia</button>
-        </div>
-        <div class="card form-card">
-          <h2 class="panel-title">Como funciona</h2>
-          <p class="panel-sub" style="line-height:1.7;margin-top:10px">Cada registro é uma fotografia dos saldos. A última de cada mês é a referência.</p>
-          <div class="info-list">
-            <div class="structure-area"><strong>Total geral</strong><p class="panel-sub">Soma das áreas</p></div>
-            <div class="structure-area"><strong>Área</strong><p class="panel-sub">Soma das subáreas</p></div>
-            <div class="structure-area"><strong>Subárea</strong><p class="panel-sub">Item final com valor próprio</p></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="screen-structure" class="screen">
-      <div class="section-grid">
-        <div class="card form-card">
-          <div class="panel-head"><div><h2 class="panel-title">Estrutura financeira</h2><p class="panel-sub">Áreas, subáreas e metas</p></div></div>
-          <div class="field"><label for="new-area-name">Nova área</label>
-            <div class="inline-form" style="margin-top:0"><input id="new-area-name" placeholder="Ex.: Reserva de emergência"><button class="btn primary" onclick="addArea()">Adicionar</button></div>
-          </div>
-          <div id="structure-list" class="structure-list"></div>
-        </div>
-        <div class="card form-card">
-          <h2 class="panel-title">Regras</h2>
-          <p class="panel-sub" style="line-height:1.8;margin-top:10px">Três níveis: Total, Área e Subárea, com nomes únicos.</p>
-          <p class="panel-sub" style="line-height:1.8">Excluir uma área ou subárea também apaga o histórico dela. Exporte os dados antes.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="screen-history" class="screen">
-      <div class="card panel">
-        <div class="history-toolbar">
-          <div><h2 class="panel-title">Histórico</h2><p class="panel-sub">Última fotografia de cada área por mês</p></div>
-          <select id="history-filter" class="select" style="width:auto;min-width:180px" onchange="renderHistory()"></select>
-        </div>
-        <div class="table-wrap" id="history-table"></div>
-      </div>
-    </section>
-  </main>
-</div>
-
-<div id="toast" class="toast"></div>
-<div id="modal-backdrop" class="modal-backdrop">
-  <div class="modal">
-    <h3 id="modal-title">Confirmar exclusão</h3><p id="modal-text"></p>
-    <div class="modal-actions"><button class="btn" onclick="closeModal()">Cancelar</button><button id="modal-confirm" class="btn danger">Excluir</button></div>
-  </div>
-</div>
-
-
-<script>
-(function(){
-  const COLORS=["#5dd6c0","#e7bb72","#84b9ff","#d38bea","#f18e78","#8fd27d","#ed789b","#65c0e5","#c3ab70","#8d9cff"];
-  const SUBAREA_COLORS=["#f2b84b","#4ea8de","#c77dff","#ef6f6c","#52b788","#f28482","#72ddf7","#e5989b","#a3c14a","#ff9f1c","#9b8afb","#f4a261"];
-  const $=id=>document.getElementById(id);
-  const makeId=()=>Math.random().toString(36).slice(2,10);
-  const localNow=()=>new Date();
-  const nowMonth=()=>{const d=localNow();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`};
-  const todayDate=()=>{const d=localNow();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`};
-  const fmtMoney=n=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(Number(n)||0);
-  const fmtDate=s=>{if(!s)return "—";const [y,m,d]=s.split("-");return `${d}/${m}/${y}`};
-  const monthLabel=m=>{if(!m)return "";const [y,mo]=m.split("-");return new Date(Number(y),Number(mo)-1,1).toLocaleDateString("pt-BR",{month:"short",year:"2-digit"}).replace(".","")};
-  const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2400)}
-  const areas=[
-    {id:"area-reserva",name:"Reserva de emergência",subareas:[{id:"sub-chaguinha",name:"99 Chaguinha"},{id:"sub-nu",name:"Conta NU 0%"},{id:"sub-bb",name:"Conta BB 0%"},{id:"sub-cx",name:"Conta CX 0%"}]},
-    {id:"area-gastos",name:"Gastos mensais",subareas:[{id:"sub-tesouro",name:"BB_TESOURO"},{id:"sub-alimento",name:"PAY_ALIMENTO"},{id:"sub-lazer",name:"LAZER"}]},
-    {id:"area-aplicacoes",name:"Aplicações",subareas:[{id:"sub-xp-fii",name:"XP FII"},{id:"sub-xp-rf",name:"XP R.FIX"},{id:"sub-rc-acoes",name:"RC AÇÕES"},{id:"sub-rc-rf",name:"RC R.FIX"}]},
-    {id:"area-patrimonio",name:"Patrimônio físico",subareas:[{id:"sub-imovel",name:"Imóvel"},{id:"sub-veiculo",name:"Veículo"},{id:"sub-bens",name:"Bens domésticos"}]}
-  ];
-  const months=[];
-  for(let y=2025,m=1;y<2026||(y===2026&&m<=11);){months.push(`${y}-${String(m).padStart(2,"0")}`);m++;if(m===13){m=1;y++}}
-  const totals=[105000,108000,111500,115000,119000,123000,127000,131500,136000,140000,145000,150000,155000,160000,165000,170000,175000,180000,185000,190000,196000,203000,210000];
-  const areaShares={"area-reserva":.12,"area-gastos":.04,"area-aplicacoes":.54,"area-patrimonio":.30};
-  const subShares={"area-reserva":[.40,.30,.20,.10],"area-gastos":[.60,.20,.20],"area-aplicacoes":[.30,.25,.30,.15],"area-patrimonio":[.70,.20,.10]};
-  function buildDemoDatabase(){
-    const snapshots=[];
-    months.forEach((month,mi)=>{
-      const total=totals[mi],[year,monthNum]=month.split("-").map(Number),lastDay=new Date(year,monthNum,0).getDate();
-      const date=`${year}-${String(monthNum).padStart(2,"0")}-${String(lastDay).padStart(2,"0")}`;
-      areas.forEach((area,ai)=>{
-        const areaTotal=total*areaShares[area.id];let used=0;const values={};
-        area.subareas.forEach((sub,si)=>{const amount=si===area.subareas.length-1?Math.round((areaTotal-used)*100)/100:Math.round(areaTotal*subShares[area.id][si]*100)/100;values[sub.id]=amount;used+=amount});
-        snapshots.push({id:`demo-${month}-${area.id}`,areaId:area.id,date,month,createdAt:Date.parse(`${date}T12:${String(ai*7).padStart(2,"0")}:00`),values});
-      });
-    });
-    return {version:1,areas:structuredClone(areas),snapshots};
-  }
-  const STORAGE_KEY="atlas-db-v1";
-  function saveDB(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(db))}catch(e){console.warn("Falha ao salvar",e)}}
-  function loadDB(){try{const s=localStorage.getItem(STORAGE_KEY);if(s){const d=JSON.parse(s);if(d&&Array.isArray(d.areas)&&Array.isArray(d.snapshots))return d}}catch(e){}return null}
-  let db=loadDB()||{version:1,areas:[],snapshots:[]};
-
-  let activePeriod="month";
-  let activeScope=[];
-  let activeRange="all";
-  let activeGoalAreaId=null;
-
-  function areaName(aid){return db.areas.find(a=>a.id===aid)?.name||"Área removida"}
-  function goalDeadline(startDate,durationMonths){
-    if(!startDate||!durationMonths)return "";
-    const [year,month,day]=startDate.split("-").map(Number);
-    const targetIndex=month-1+Number(durationMonths),targetYear=year+Math.floor(targetIndex/12),targetMonth=targetIndex%12;
-    const lastDay=new Date(targetYear,targetMonth+1,0).getDate();
-    const date=new Date(targetYear,targetMonth,Math.min(day,lastDay));
-    return `${String(date.getDate()).padStart(2,"0")}/${String(date.getMonth()+1).padStart(2,"0")}/${date.getFullYear()}`;
-  }
-  function renderGoalEditor(area){
-    const goal=area.goal||{};
-    return `<div class="goal-editor"><h3 class="goal-editor-title">Meta financeira</h3><div class="goal-fields"><div class="field"><label for="goal-amount-${esc(area.id)}">Valor da meta (R$)</label><input id="goal-amount-${esc(area.id)}" type="number" min="0.01" step="0.01" placeholder="Ex.: 50000" value="${goal.amount??""}"></div><div class="field"><label for="goal-start-${esc(area.id)}">Data de início</label><input id="goal-start-${esc(area.id)}" type="date" value="${esc(goal.startDate||todayDate())}"></div><div class="field"><label for="goal-duration-${esc(area.id)}">Prazo (meses)</label><input id="goal-duration-${esc(area.id)}" type="number" min="1" max="1200" step="1" placeholder="Ex.: 12" value="${goal.durationMonths??12}"></div></div><div class="goal-actions"><button class="btn small" onclick="saveAreaGoal('${esc(area.id)}')">${goal.amount?"Salvar alterações":"Cadastrar meta"}</button>${goal.amount&&goal.startDate&&goal.durationMonths?`<span class="goal-deadline">Prazo final estimado: ${goalDeadline(goal.startDate,goal.durationMonths)}</span>`:""}</div></div>`;
-  }
-  function saveAreaGoal(areaId){
-    const area=db.areas.find(item=>item.id===areaId);if(!area)return;
-    const amount=Number($(`goal-amount-${areaId}`).value),startDate=$(`goal-start-${areaId}`).value,durationMonths=Number($(`goal-duration-${areaId}`).value);
-    if(!Number.isFinite(amount)||amount<=0){toast("Informe um valor de meta maior que zero.");return}
-    if(!startDate||Number.isNaN(new Date(`${startDate}T00:00:00`).getTime())){toast("Escolha a data de início da meta.");return}
-    if(!Number.isInteger(durationMonths)||durationMonths<1||durationMonths>1200){toast("Informe um prazo inteiro entre 1 e 1200 meses.");return}
-    area.goal={amount,startDate,durationMonths};
-    renderAll();renderStructure();toast("Meta salva.");
-  }
-  function areaColor(areaId){const index=db.areas.findIndex(a=>a.id===areaId);return COLORS[(index<0?0:index)%COLORS.length]}
-  function subareaColor(subareaId){
-    const index=db.areas.flatMap(area=>area.subareas).findIndex(sub=>sub.id===subareaId);
-    return SUBAREA_COLORS[(index<0?0:index)%SUBAREA_COLORS.length];
-  }
-  function getLatest(areaId,month=null){return db.snapshots.filter(s=>s.areaId===areaId&&(!month||s.month===month)).sort((a,b)=>a.date.localeCompare(b.date)||a.createdAt-b.createdAt).at(-1)||null}
-  function latestSnapshotForArea(areaId,beforeMonth=null){return db.snapshots.filter(s=>s.areaId===areaId&&(!beforeMonth||s.month<beforeMonth)).sort((a,b)=>a.month.localeCompare(b.month)||a.date.localeCompare(b.date)||a.createdAt-b.createdAt).at(-1)||null}
-  function currentValues(area){const s=getLatest(area.id);return s?s.values:{}}
-  function totalValues(values){return Object.values(values||{}).reduce((a,b)=>a+(Number(b)||0),0)}
-  function currentTotal(){return db.areas.reduce((sum,a)=>sum+totalValues(currentValues(a)),0)}
-  function variation(a,b){if(b===0)return a===0?null:100;return (a-b)/Math.abs(b)*100}
-  function variationHTML(v){if(v===null||!Number.isFinite(v))return '<span class="variation neutral">Sem comparação</span>';const cls=v>0?"positive":v<0?"negative":"neutral",sign=v>0?"+":"";return `<span class="variation ${cls}">${sign}${v.toLocaleString("pt-BR",{maximumFractionDigits:1})}%</span>`}
-  function valuesForMonth(areaId,month){const s=getLatest(areaId,month);return s?s.values:null}
-  function monthlyData(){
-    const monthKeys=[...new Set(db.snapshots.map(s=>s.month))].sort();
-    return monthKeys.map(month=>{
-      const byArea={},bySubarea={};let total=0,found=false;
-      db.areas.forEach(a=>{
-        const values=valuesForMonth(a.id,month);
-        if(values){const amount=totalValues(values);byArea[a.id]=amount;total+=amount;found=true;a.subareas.forEach(sub=>{bySubarea[sub.id]=Number(values[sub.id])||0})}
-      });
-      return {key:month,total,byArea,bySubarea,found};
-    }).filter(x=>x.found);
-  }
-  function filterChartRange(data){
-    if(activeRange==="year"){const year=String(localNow().getFullYear());return data.filter(row=>row.key.startsWith(`${year}-`))}
-    if(activeRange==="recent"){const count=Math.max(1,Math.min(120,Number($("range-count").value)||6)),now=localNow(),startDate=new Date(now.getFullYear(),now.getMonth()-count+1,1),start=`${startDate.getFullYear()}-${String(startDate.getMonth()+1).padStart(2,"0")}`;return data.filter(row=>row.key>=start)}
-    return data;
-  }
-  function getGroupedData(){
-    const data=filterChartRange(monthlyData());
-    if(activePeriod==="month")return data.map(x=>({...x,label:monthLabel(x.key)}));
-    const groups=new Map();
-    data.forEach(row=>{
-      const [year,month]=row.key.split("-").map(Number),key=activePeriod==="year"?String(year):`${year}-T${Math.ceil(month/3)}`,current=groups.get(key);
-      if(!current||row.key>current.key)groups.set(key,{...row,label:activePeriod==="year"?String(year):`T${Math.ceil(month/3)} ${year}`});
-    });
-    return [...groups.values()];
-  }
-  function selectedAreas(){
-    return activeScope==="all"?db.areas:(Array.isArray(activeScope)?db.areas.filter(area=>activeScope.includes(area.id)):[]);
-  }
-  function selectedArea(){const areas=selectedAreas();return areas.length===1?areas[0]:null}
-  function scopeCurrentTotal(){return selectedAreas().reduce((sum,area)=>sum+totalValues(currentValues(area)),0)}
-  function scopeMonthTotal(row){return selectedAreas().reduce((sum,area)=>sum+(Number(row?.byArea[area.id])||0),0)}
-  function shortMoney(n){const abs=Math.abs(n);if(abs>=1000000)return (n/1000000).toLocaleString("pt-BR",{maximumFractionDigits:1})+" mi";if(abs>=1000)return (n/1000).toLocaleString("pt-BR",{maximumFractionDigits:0})+" mil";return n.toLocaleString("pt-BR",{maximumFractionDigits:0})}
-  function selectScope(scope){
-    if(scope==="all"){
-      const allSelected=db.areas.length>0&&selectedAreas().length===db.areas.length;
-      activeScope=allSelected?[]:"all";
-    }else if(db.areas.some(area=>area.id===scope)){
-      const selected=activeScope==="all"?db.areas.map(area=>area.id):(Array.isArray(activeScope)?[...activeScope]:[]);
-      activeScope=selected.includes(scope)?selected.filter(id=>id!==scope):[...selected,scope];
-    }
-    renderDashboard();
-  }
-  function renderScopeCards(){
-    if(Array.isArray(activeScope))activeScope=activeScope.filter(id=>db.areas.some(area=>area.id===id));
-    const selected=selectedAreas(),allSelected=db.areas.length>0&&selected.length===db.areas.length;
-    const cards=[`<button type="button" class="scope-card ${allSelected?"selected":""}" style="--area-color:var(--teal)" onclick="selectScope('all')" aria-pressed="${allSelected}"><span class="scope-card-top"><span class="scope-card-name">Geral</span><i class="scope-card-mark"></i></span><span class="scope-card-foot"><span>Selecionar todas</span></span></button>`];
-    db.areas.forEach(a=>{
-      const color=areaColor(a.id),isSelected=selected.some(area=>area.id===a.id);
-      cards.push(`<button type="button" class="scope-card ${isSelected?"selected":""}" style="--area-color:${color}" onclick="selectScope('${esc(a.id)}')" aria-pressed="${isSelected}"><span class="scope-card-top"><span class="scope-card-name">${esc(a.name)}</span><i class="scope-card-mark"></i></span><span class="scope-card-foot"><span>${a.subareas.length} subárea${a.subareas.length===1?"":"s"}</span></span><span class="scope-card-action" role="button" tabindex="0" title="Atualizar valores desta área" onclick="event.stopPropagation();openAreaUpdate('${esc(a.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();openAreaUpdate('${esc(a.id)}')}">AV</span></button>`);
-    });
-    $("scope-cards").innerHTML=cards.join("");
-  }
-  function renderChart(){
-    const el=$("trend-chart"),legend=$("trend-legend"),areas=selectedAreas();
-    if(!areas.length){el.innerHTML='<div class="chart-empty">Selecione uma ou mais áreas para visualizar a evolução.</div>';legend.innerHTML="";return}
-    const data=getGroupedData();
-    if(!data.length){el.innerHTML='<div class="chart-empty">O gráfico aparecerá após o primeiro registro mensal.</div>';legend.innerHTML="";return}
-    const area=areas.length===1?areas[0]:null;
-    let series=[];
-    if(areas.length===1){
-      series=[{id:area.id,name:area.name,color:areaColor(area.id),values:data.map(d=>Number(d.byArea[area.id])||0)}];
-      area.subareas.forEach(sub=>series.push({id:sub.id,name:sub.name,color:subareaColor(sub.id),values:data.map(d=>Number(d.bySubarea[sub.id])||0)}));
-    }else{
-      series=[{id:"scope-total",name:"Total selecionado",color:"#edf3f6",values:data.map(d=>areas.reduce((sum,item)=>sum+(Number(d.byArea[item.id])||0),0))}];
-      areas.forEach(item=>series.push({id:item.id,name:item.name,color:areaColor(item.id),values:data.map(d=>Number(d.byArea[item.id])||0)}));
-    }
-    const W=840,H=270,L=58,R=18,T=18,B=36,innerW=W-L-R,innerH=H-T-B;
-    areas.filter(item=>item.goal&&Number(item.goal.amount)>0).forEach(item=>{
-      series.push({id:`goal-${item.id}`,type:"goal",name:`Meta — ${item.name}`,color:areaColor(item.id),values:data.map(()=>Number(item.goal.amount))});
-    });
-    const allValues=series.flatMap(s=>s.values),max=Math.max(0,...allValues),min=Math.min(0,...allValues),range=max-min||1;
-    const x=i=>data.length===1?L+innerW/2:L+i*innerW/(data.length-1),y=v=>T+innerH-(v-min)/range*innerH;
-    let grid="";
-    for(let i=0;i<5;i++){const value=min+range*i/4,yy=y(value);grid+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#263640" stroke-width="1"/><text x="${L-8}" y="${yy+4}" text-anchor="end" fill="#80939f" font-size="10">${shortMoney(value)}</text>`}
-    const labels=data.map((d,i)=>`<text x="${x(i)}" y="${H-8}" text-anchor="middle" fill="#81939f" font-size="10">${esc(d.label)}</text>`).join("");
-    const lines=series.map(s=>{
-      const points=s.values.map((v,i)=>`${x(i)},${y(v)}`).join(" ");
-      const dots=s.values.map((v,i)=>`<circle cx="${x(i)}" cy="${y(v)}" r="3.2" fill="${s.color}" stroke="#14232b" stroke-width="1.5"><title>${esc(s.name)} — ${esc(data[i].label)}: ${fmtMoney(v)}</title></circle>`).join("");
-      const linePoints=s.type==="goal"?`${L},${y(s.values[0])} ${W-R},${y(s.values[0])}`:points;
-      const dash=s.type==="goal"?' stroke-dasharray="7 5"':"";
-      const lineDots=s.type==="goal"?"":dots;
-      return `<polyline points="${linePoints}" fill="none" stroke="${s.color}" stroke-width="${s.type==="goal"?2.5:s.id==="total"||s.id==="scope-total"||s.id===area?.id?3:2.3}"${dash} stroke-linecap="round" stroke-linejoin="round"/>${lineDots}`;
-    }).join("");
-    el.innerHTML=`<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Gráfico de evolução patrimonial">${grid}${lines}${labels}</svg>`;
-    legend.innerHTML=series.map(s=>`<span class="chart-legend-item"><i class="${s.type==="goal"?"goal-legend-line":"chart-legend-line"}" style="${s.type==="goal"?`border-top-color:${s.color}`:`background:${s.color}`}"></i>${esc(s.name)}</span>`).join("");
-  }
-  function renderDistribution(){
-    const el=$("distribution"),areas=selectedAreas(),area=areas.length===1?areas[0]:null;
-    let vals;
-    if(area)vals=area.subareas.map(sub=>({name:sub.name,value:Number(currentValues(area)[sub.id])||0,color:subareaColor(sub.id)})).filter(x=>x.value>0);
-    else vals=areas.flatMap(item=>[{name:item.name,value:totalValues(currentValues(item)),color:areaColor(item.id)}]).filter(x=>x.value>0);
-    const total=vals.reduce((sum,x)=>sum+x.value,0);
-    $("distribution-title").textContent=area?`Distribuição — ${area.name}`:"Distribuição das áreas selecionadas";
-    if(!areas.length){$("distribution-total").textContent="Total representado: —";el.innerHTML='<div class="chart-empty">Selecione uma ou mais áreas para visualizar a distribuição.</div>';return}
-    $("distribution-total").textContent=`Total representado: ${fmtMoney(total)}`;
-    if(!vals.length){el.innerHTML='<div class="chart-empty">Não há valores registrados para este escopo.</div>';return}
-    let cumulative=0;
-    const ring=vals.map(v=>{const start=cumulative/total*100;cumulative+=v.value;return `${v.color} ${start}% ${cumulative/total*100}%`}).join(",");
-    const legend=vals.map(v=>`<div class="legend-row"><div class="legend-name"><i class="dot" style="background:${v.color}"></i><span>${esc(v.name)}</span></div><span class="legend-value">${fmtMoney(v.value)}<small>${(v.value/total*100).toLocaleString("pt-BR",{maximumFractionDigits:1})}%</small></span></div>`).join("");
-    el.innerHTML=`<div class="donut-layout"><div class="donut" role="img" aria-label="${esc($("distribution-title").textContent)}"><div class="donut-center"><strong>${shortMoney(total)}</strong><span>${area?"Total da área":"Total geral"}</span></div></div><div class="legend">${legend}</div></div>`;
-    const donut=el.querySelector(".donut");
-    donut.style.background=`conic-gradient(${ring})`;
-    donut.style.mask="radial-gradient(farthest-side,transparent calc(100% - 16px),#000 calc(100% - 15px))";
-    donut.style.webkitMask="radial-gradient(farthest-side,transparent calc(100% - 16px),#000 calc(100% - 15px))";
-  }
-  function renderSubareaBars(){
-    const holder=$("subarea-bars"),areas=selectedAreas(),area=areas.length===1?areas[0]:null;
-    const groups=areas;
-    $("subarea-chart-title").textContent=area?`Subáreas — ${area.name}`:"Subáreas das áreas selecionadas";
-    if(!areas.length){holder.innerHTML='<div class="chart-empty">Selecione uma ou mais áreas para visualizar os valores.</div>';return}
-    const entries=groups.flatMap(a=>a.subareas.map(sub=>({area:a,sub,value:Number(currentValues(a)[sub.id])||0,color:subareaColor(sub.id)})));
-    if(!entries.length){holder.innerHTML='<div class="chart-empty">Cadastre áreas e subáreas para visualizar este gráfico.</div>';return}
-    const max=Math.max(0,...entries.map(x=>x.value));
-    if(max===0){holder.innerHTML='<div class="chart-empty">Não há valores registrados nas subáreas deste escopo.</div>';return}
-    holder.innerHTML=`<div class="subarea-bars">${groups.map(a=>{
-      const rows=entries.filter(x=>x.area.id===a.id);
-      if(!rows.length)return "";
-      return `<div class="subarea-group"><div class="subarea-group-title"><span>${esc(a.name)}</span><span>${fmtMoney(rows.reduce((sum,x)=>sum+x.value,0))}</span></div>${rows.map(x=>`<div class="subarea-bar-row"><span class="subarea-bar-name" title="${esc(x.sub.name)}">${esc(x.sub.name)}</span><div class="subarea-bar-track" role="img" aria-label="${esc(x.sub.name)}: ${fmtMoney(x.value)}"><div class="subarea-bar-fill" style="width:${Math.max(0,x.value/max*100)}%;background:${x.color}"></div></div><span class="subarea-bar-value">${fmtMoney(x.value)}</span></div>`).join("")}</div>`;
-    }).join("")}</div>`;
-  }
-  function renderDashboard(){
-    $("page-eyebrow").textContent="Visão consolidada";
-    $("page-title").textContent=localNow().toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"});
-    renderScopeCards();
-    const hasScope=selectedAreas().length>0,total=scopeCurrentTotal(),currentMonth=nowMonth(),prior=monthlyData().filter(x=>x.key<currentMonth).at(-1),priorTotal=prior?scopeMonthTotal(prior):null,delta=prior?variation(total,priorTotal):null,area=selectedArea();
-    const scopeLabel=area?"Total da área selecionada":selectedAreas().length===db.areas.length?"Total geral atual":"Total das áreas selecionadas";
-    $("summary-grid").innerHTML=`
-      <div class="card metric"><span class="metric-mark">◈</span><div class="metric-label">${hasScope?scopeLabel:"Selecione uma área"}</div><div class="metric-value">${hasScope?fmtMoney(total):"—"}</div><div class="metric-foot">${hasScope?(area?esc(area.name):`${selectedAreas().length} áreas selecionadas`):"Ative uma área para exibir os valores"}</div></div>
-      <div class="card metric"><span class="metric-mark">⌁</span><div class="metric-label">Variação em relação ao mês anterior</div><div class="metric-value">${!hasScope||delta===null?"—":`${delta>0?"+":""}${delta.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`}</div><div class="metric-foot">${hasScope?(prior?"Comparação do escopo selecionado":"Registre mais de um mês"):"Ative uma área para exibir os valores"}</div></div>`;
-    renderChart();renderDistribution();renderSubareaBars();renderGoalPanel();
-    if(activeGoalAreaId)renderGoalDetail();
-  }
-  function goalStats(area){
-    const goal=area.goal||{},target=Number(goal.amount)||0,current=totalValues(currentValues(area));
-    const startDate=goal.startDate||todayDate(),startMonth=startDate.slice(0,7),duration=Math.max(1,Number(goal.durationMonths)||12);
-    const rows=monthlyData().filter(row=>row.key<=nowMonth()&&row.key>=startMonth&&row.byArea[area.id]!==undefined);
-    const history=rows.length?rows:monthlyData().filter(row=>row.key<=nowMonth()&&row.byArea[area.id]!==undefined);
-    const first=history[0],last=history.at(-1),previous=history.length>1?history.at(-2):null;
-    const firstValue=first?Number(first.byArea[area.id])||0:0;
-    const [startYear,startMonthNum]=startMonth.split("-").map(Number),[currentYear,currentMonthNum]=nowMonth().split("-").map(Number);
-    const elapsedMonths=Math.max(0,(currentYear-startYear)*12+currentMonthNum-startMonthNum);
-    const remainingMonths=Math.max(0,duration-elapsedMonths);
-    const progress=target>0?current/target*100:0;
-    const expectedProgress=Math.min(100,elapsedMonths/duration*100);
-    const requiredMonthlyPct=remainingMonths>0?Math.max(0,100-progress)/remainingMonths:0;
-    const plannedMonthlyAmount=Math.max(0,target-firstValue)/duration;
-    const actualMonthlyAmount=elapsedMonths>0?(current-firstValue)/elapsedMonths:0;
-    const actualMonthlyPct=plannedMonthlyAmount>0?actualMonthlyAmount/plannedMonthlyAmount*100:null;
-    const monthlyRequiredAmount=remainingMonths>0?Math.max(0,target-current)/remainingMonths:0;
-    return {goal,target,current,progress,history,firstValue,lastValue:last?Number(last.byArea[area.id])||0:current,previousValue:previous?Number(previous.byArea[area.id])||0:null,elapsedMonths,remainingMonths,expectedProgress,requiredMonthlyPct,plannedMonthlyAmount,actualMonthlyAmount,actualMonthlyPct,monthlyRequiredAmount};
-  }
-  function renderGoalPanel(){
-    const holder=$("goal-cards"),areas=selectedAreas();
-    if(!areas.length){holder.innerHTML='<div class="empty-box"><p>Selecione uma ou mais áreas para visualizar as metas.</p></div>';return}
-    if(!db.areas.length){holder.innerHTML='<div class="empty-box"><p>Cadastre uma área para acompanhar suas metas.</p></div>';return}
-    holder.innerHTML=areas.map(area=>{
-      const stats=goalStats(area),color=areaColor(area.id);
-      if(!stats.target)return `<button type="button" class="goal-card" style="--area-color:${color}" onclick="openGoalDetail('${esc(area.id)}')"><span class="goal-card-head"><span>${esc(area.name)}</span><i class="scope-card-mark"></i></span><div class="goal-card-empty">Meta não cadastrada · Clique para configurar</div></button>`;
-      const pct=stats.progress,bar=Math.max(0,Math.min(100,pct));
-      const actualPct=stats.actualMonthlyPct===null?"—":`${stats.actualMonthlyPct>0?"+":""}${stats.actualMonthlyPct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`;
-      return `<button type="button" class="goal-card" style="--area-color:${color}" onclick="openGoalDetail('${esc(area.id)}')"><span class="goal-card-head"><span>${esc(area.name)}</span><i class="scope-card-mark"></i></span><div class="goal-card-value">${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%</div><div class="goal-card-meta">${fmtMoney(stats.current)} de ${fmtMoney(stats.target)}</div><div class="goal-card-meta">Ritmo real: ${fmtMoney(stats.actualMonthlyAmount)}/mês · ${actualPct} do planejado</div><div class="goal-progress-track"><div class="goal-progress-fill" style="width:${bar}%"></div></div><div class="goal-card-foot"><span>${pct>=100?"Meta atingida":`Faltam ${fmtMoney(Math.max(0,stats.target-stats.current))}`}</span><span>${stats.goal.durationMonths} meses</span></div></button>`;
-    }).join("");
-  }
-  function openGoalDetail(areaId){
-    const area=db.areas.find(item=>item.id===areaId);if(!area)return;
-    if(!area.goal||!Number(area.goal.amount)){showScreen("structure");toast("Cadastre a meta desta área para ver o detalhamento.");return}
-    activeGoalAreaId=areaId;$("dashboard-overview").style.display="none";$("goal-detail").classList.add("active");
-    $("page-eyebrow").textContent="Painel de metas";$("page-title").textContent=area.name;
-    renderGoalDetail();
-  }
-  function closeGoalDetail(){
-    activeGoalAreaId=null;$("dashboard-overview").style.display="";$("goal-detail").classList.remove("active");
-    const title=localNow().toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"});
-    $("page-eyebrow").textContent="Visão consolidada";$("page-title").textContent=title;
-  }
-  function renderGoalDetail(){
-    const area=db.areas.find(item=>item.id===activeGoalAreaId);if(!area||!area.goal)return;
-    const stats=goalStats(area),goal=stats.goal,pct=stats.progress,bar=Math.max(0,Math.min(100,pct));
-    const previous=stats.previousValue,trend=previous===null?null:variation(stats.lastValue,previous);
-    const change=stats.firstValue?variation(stats.current,stats.firstValue):null;
-    const remaining=Math.max(0,stats.target-stats.current);
-    $("goal-detail-title").textContent=area.name;
-    const W=840,H=280,L=68,R=20,T=20,B=40,innerW=W-L-R,innerH=H-T-B;
-    const points=stats.history.map((row,index)=>({x:stats.history.length===1?L+innerW/2:L+index*innerW/(stats.history.length-1),value:Number(row.byArea[area.id])||0,label:monthLabel(row.key)}));
-    const max=Math.max(stats.target,...points.map(point=>point.value),1)*1.08,y=value=>T+innerH-(value/max)*innerH;
-    let grid="";
-    for(let i=0;i<5;i++){const value=max*i/4,yy=y(value);grid+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#263640"/><text x="${L-8}" y="${yy+4}" text-anchor="end" fill="#80939f" font-size="10">${shortMoney(value)}</text>`}
-    const labels=points.map((point,index)=>index===0||index===points.length-1||index%Math.ceil(points.length/6)===0?`<text x="${point.x}" y="${H-9}" text-anchor="middle" fill="#81939f" font-size="10">${esc(point.label)}</text>`:"").join("");
-    const linePoints=points.map(point=>`${point.x},${y(point.value)}`).join(" ");
-    const baseMonth=stats.history[0]?.key||goal.startDate.slice(0,7);
-    const [baseYear,baseMonthNum]=baseMonth.split("-").map(Number);
-    const plannedLinePoints=points.map((point,index)=>{const [year,month]=stats.history[index].key.split("-").map(Number),elapsed=Math.max(0,(year-baseYear)*12+month-baseMonthNum);return `${point.x},${y(stats.firstValue+elapsed*stats.plannedMonthlyAmount)}`}).join(" ");
-    const dots=points.map(point=>`<circle cx="${point.x}" cy="${y(point.value)}" r="3.5" fill="${areaColor(area.id)}"><title>${esc(point.label)}: ${fmtMoney(point.value)}</title></circle>`).join("");
-    const chart=points.length?`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Evolução da área ${esc(area.name)} em relação à meta">${grid}<line x1="${L}" y1="${y(stats.target)}" x2="${W-R}" y2="${y(stats.target)}" stroke="${areaColor(area.id)}" stroke-width="2.5" stroke-dasharray="7 5"/><polyline points="${plannedLinePoints}" fill="none" stroke="#e7bb72" stroke-width="2.5" stroke-dasharray="7 5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="${linePoints}" fill="none" stroke="${areaColor(area.id)}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${dots}${labels}</svg>`:'<div class="chart-empty">Ainda não há registros históricos para exibir a evolução.</div>';
-    const plannedPct=stats.plannedMonthlyAmount>0?100:null,requiredPct=stats.plannedMonthlyAmount>0?stats.monthlyRequiredAmount/stats.plannedMonthlyAmount*100:null,actualPct=stats.actualMonthlyPct;
-    const paceGap=stats.actualMonthlyAmount-stats.monthlyRequiredAmount;
-    const paceStatus=stats.progress>=100?"Meta atingida.":stats.remainingMonths===0?"Prazo encerrado; a meta ainda não foi atingida.":paceGap>=0?"O ritmo real até o mês atual está no ritmo necessário ou acima.":"O ritmo real até o mês atual está abaixo do necessário.";
-    const paceClass=stats.progress>=100||paceGap>=0?"ahead":"behind";
-    $("goal-detail-content").innerHTML=`<div class="goal-detail-grid"><div class="card panel"><div class="panel-head"><div><h3 class="panel-title">Evolução da área e linha da meta</h3><p class="panel-sub">Início da meta: ${fmtDate(goal.startDate)} · Prazo estimado: ${goalDeadline(goal.startDate,goal.durationMonths)}</p></div></div><div class="goal-detail-chart">${chart}</div><div class="chart-legend"><span class="chart-legend-item"><i class="chart-legend-line" style="background:${areaColor(area.id)}"></i>Valor real da área</span><span class="chart-legend-item"><i class="goal-legend-line" style="border-top-color:#e7bb72"></i>Ritmo planejado fixo</span><span class="chart-legend-item"><i class="goal-legend-line" style="border-top-color:${areaColor(area.id)}"></i>Meta: ${fmtMoney(stats.target)}</span></div></div><div class="card panel"><h3 class="panel-title">Evolução rumo à meta</h3><div class="goal-kpi-grid"><div class="goal-kpi goal-kpi-main"><span>Acumulados</span><strong>${fmtMoney(stats.current)}</strong><small>${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}% da meta</small></div><div class="goal-kpi goal-kpi-target"><span>Meta</span><strong>${fmtMoney(stats.target)}</strong><small>Valor-alvo definido</small></div><div class="goal-kpi goal-kpi-remain"><span>Faltam</span><strong>${fmtMoney(remaining)}</strong><small>${Math.max(0,100-pct).toLocaleString("pt-BR",{maximumFractionDigits:1})}% da meta</small></div></div><div class="goal-detail-progress"><div class="goal-card-foot"><span>Progresso atual</span><strong>${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%</strong></div><div class="goal-progress-track"><div class="goal-progress-fill" style="width:${bar}%;--area-color:${areaColor(area.id)};background:${areaColor(area.id)}"></div></div><div class="goal-card-foot"><span>Início: ${fmtMoney(stats.firstValue)}</span><span>${stats.remainingMonths} meses restantes</span></div></div><div class="goal-pace-grid"><div class="goal-pace-card"><span>Ritmo planejado fixo</span><div class="goal-pace-values"><strong>${fmtMoney(stats.plannedMonthlyAmount)}/mês</strong><strong class="goal-pace-percent planned">${plannedPct===null?"—":`${plannedPct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`}</strong></div><small>Referência mensal planejada</small></div><div class="goal-pace-card"><span>Ritmo real até mês atual</span><div class="goal-pace-values"><strong>${fmtMoney(stats.actualMonthlyAmount)}/mês</strong><strong class="goal-pace-percent actual">${actualPct===null?"—":`${actualPct>0?"+":""}${actualPct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`}</strong></div><small>Percentual do ritmo planejado fixo</small></div><div class="goal-pace-card"><span>Ritmo necessário daqui em diante</span><div class="goal-pace-values"><strong>${fmtMoney(stats.monthlyRequiredAmount)}/mês</strong><strong class="goal-pace-percent required">${requiredPct===null?"—":`${requiredPct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%`}</strong></div><small>Percentual do ritmo planejado fixo</small></div><div class="goal-pace-status ${paceClass}">${paceStatus} Trajetória prevista até hoje: ${stats.expectedProgress.toLocaleString("pt-BR",{maximumFractionDigits:1})}% · Real: ${pct.toLocaleString("pt-BR",{maximumFractionDigits:1})}%.</div></div><div class="goal-stat-grid" style="margin-top:12px"><div class="goal-stat"><div class="goal-stat-label">Valor no início do histórico disponível</div><div class="goal-stat-value">${fmtMoney(stats.firstValue)}</div></div><div class="goal-stat"><div class="goal-stat-label">Prazo total</div><div class="goal-stat-value">${goal.durationMonths} meses</div></div></div><p class="goal-detail-note">Os ritmos mensais são expressos como percentual do valor-alvo por mês. A projeção compara o progresso real com uma trajetória linear; os valores históricos dependem das fotografias registradas.</p></div></div>`;
-  }
-  function renderUpdate(){
-    const sel=$("update-area"),previous=sel.value;
-    sel.innerHTML=db.areas.length?db.areas.map(a=>`<option value="${esc(a.id)}">${esc(a.name)}</option>`).join(""):'<option value="">Cadastre uma área primeiro</option>';
-    if(db.areas.some(a=>a.id===previous))sel.value=previous;
-    $("update-month").value=$("update-month").value||nowMonth();renderUpdateValues();
-  }
-  function renderUpdateValues(){
-    const area=db.areas.find(a=>a.id===$("update-area").value),month=$("update-month").value,holder=$("update-values");
-    if(!area){holder.innerHTML='<div class="empty-box"><p>Cadastre uma área e seus subníveis antes de registrar valores.</p><button class="btn" onclick="showScreen(\'structure\')">Ir para áreas e subáreas</button></div>';return}
-    const existing=getLatest(area.id,month),prior=latestSnapshotForArea(area.id,month),base=existing?existing.values:(prior?prior.values:{});
-    if(!area.subareas.length){holder.innerHTML='<div class="empty-box"><p>Esta área ainda não tem subáreas cadastradas.</p><button class="btn" onclick="showScreen(\'structure\')">Adicionar subáreas</button></div>';return}
-    holder.innerHTML=`<div class="panel-title" style="font-size:11px;margin-bottom:5px">${existing?"Editar fotografia de "+monthLabel(month):"Valores da área"}</div>${area.subareas.map(s=>`<div class="value-row"><label for="value-${esc(s.id)}">${esc(s.name)}</label><input id="value-${esc(s.id)}" data-subarea="${esc(s.id)}" inputmode="decimal" placeholder="R$ 0,00" value="${base[s.id]!==undefined?fmtMoney(base[s.id]):""}"></div>`).join("")}`;
-  }
-  function parseMoney(value){
-    if(typeof value==="number")return value;
-    let text=String(value||"").trim().replace(/\s/g,"").replace(/^R\$/i,"");
-    if(!text)return null;
-    if(text.includes(","))text=text.replace(/\./g,"").replace(",",".");
-    const number=Number(text);return Number.isFinite(number)?number:NaN;
-  }
-  function saveUpdate(){
-    const area=db.areas.find(a=>a.id===$("update-area").value),month=$("update-month").value;
-    if(!area){toast("Cadastre uma área primeiro.");return}
-    if(!month){toast("Escolha o mês de referência.");return}
-    const existing=getLatest(area.id,month),prior=latestSnapshotForArea(area.id,month),values={...(existing?existing.values:(prior?prior.values:{}))};
-    for(const input of $("update-values").querySelectorAll("[data-subarea]")){
-      const parsed=parseMoney(input.value);
-      if(Number.isNaN(parsed)){toast("Confira o formato dos valores.");input.focus();return}
-      if(parsed!==null)values[input.dataset.subarea]=parsed;
-    }
-    if(!Object.keys(values).length){toast("Informe ao menos um valor.");return}
-    const date=todayDate();
-    if(existing){existing.date=date;existing.values=values;existing.editedAt=Date.now()}
-    else db.snapshots.push({id:makeId(),areaId:area.id,date,month,values,createdAt:Date.now()});
-    renderAll();renderUpdate();toast(existing?"Fotografia do mês substituída.":"Fotografia registrada.");
-  }
-  function nameExists(name,excludeId=null){
-    const norm=name.trim().toLocaleLowerCase("pt-BR");
-    return db.areas.some(a=>a.id!==excludeId&&(a.name.toLocaleLowerCase("pt-BR")===norm||a.subareas.some(s=>s.id!==excludeId&&s.name.toLocaleLowerCase("pt-BR")===norm)));
-  }
-  function addArea(){
-    const input=$("new-area-name"),name=input.value.trim();
-    if(!name){toast("Informe o nome da área.");input.focus();return}
-    if(nameExists(name)){toast("Esse nome já está em uso.");input.focus();return}
-    db.areas.push({id:makeId(),name,subareas:[]});input.value="";renderAll();renderStructure();toast("Área adicionada.");
-  }
-  function addSubarea(areaId,inputId){
-    const input=$(inputId),name=input.value.trim(),area=db.areas.find(a=>a.id===areaId);
-    if(!area)return;
-    if(!name){toast("Informe o nome da subárea.");return}
-    if(nameExists(name)){toast("Os nomes devem ser únicos.");return}
-    area.subareas.push({id:makeId(),name});input.value="";renderAll();renderStructure();renderUpdate();toast("Subárea adicionada.");
-  }
-  function renameArea(areaId){
-    const area=db.areas.find(a=>a.id===areaId);if(!area)return;
-    const name=prompt("Novo nome da área:",area.name);if(name===null)return;
-    if(!name.trim()||nameExists(name,areaId)){toast("Nome vazio ou já utilizado.");return}
-    area.name=name.trim();renderAll();renderStructure();toast("Área renomeada.");
-  }
-  function confirmAction(title,text,fn,confirmLabel="Excluir"){
-    $("modal-title").textContent=title;$("modal-text").textContent=text;$("modal-confirm").textContent=confirmLabel;$("modal-backdrop").classList.add("open");
-    $("modal-confirm").onclick=()=>{closeModal();fn()};
-  }
-  function closeModal(){$("modal-backdrop").classList.remove("open")}
-  function clearAllData(){
-    confirmAction("Apagar todos os dados?","Esta ação é irreversível. Todas as áreas, subáreas e fotografias históricas serão apagadas. Deseja continuar?",()=>{
-      db={version:1,areas:[],snapshots:[]};activeScope="all";renderAll();toast("Todos os dados foram apagados.");
-    },"Apagar tudo");
-  }
-  function deleteArea(areaId){
-    const area=db.areas.find(a=>a.id===areaId);if(!area)return;
-    confirmAction("Excluir área?",`A área “${area.name}”, suas subáreas e todos os registros históricos associados serão removidos.`,()=>{
-      db.areas=db.areas.filter(a=>a.id!==areaId);db.snapshots=db.snapshots.filter(s=>s.areaId!==areaId);
-      if(Array.isArray(activeScope))activeScope=activeScope.filter(id=>id!==areaId);
-      renderAll();renderStructure();renderUpdate();toast("Área removida.");
-    });
-  }
-  function deleteSubarea(areaId,subId){
-    const area=db.areas.find(a=>a.id===areaId),sub=area?.subareas.find(s=>s.id===subId);if(!sub)return;
-    confirmAction("Excluir subárea?",`A subárea “${sub.name}” e seus valores em todos os registros serão removidos.`,()=>{
-      area.subareas=area.subareas.filter(s=>s.id!==subId);db.snapshots.forEach(s=>{delete s.values[subId]});
-      renderAll();renderStructure();renderUpdate();toast("Subárea removida.");
-    });
-  }
-  function renderStructure(){
-    const holder=$("structure-list");
-    if(!db.areas.length){holder.innerHTML='<div class="empty-box"><p>Nenhuma área cadastrada.</p></div>';return}
-    holder.innerHTML=db.areas.map(a=>`<div class="structure-area"><div class="structure-area-head"><strong>${esc(a.name)}</strong><div><button class="btn small" onclick="renameArea('${esc(a.id)}')">Renomear</button> <button class="btn small danger" onclick="deleteArea('${esc(a.id)}')">Excluir</button></div></div>${renderGoalEditor(a)}<div class="sublist">${a.subareas.map(s=>`<span class="subtag">${esc(s.name)} <button aria-label="Excluir ${esc(s.name)}" onclick="deleteSubarea('${esc(a.id)}','${esc(s.id)}')" style="border:0;background:none;color:#f08e8e;padding:0 0 0 5px">×</button></span>`).join("")||'<span class="muted" style="font-size:9px">Ainda sem subáreas</span>'}</div><div class="inline-form"><input id="sub-${esc(a.id)}" placeholder="Nome da subárea"><button class="btn small" onclick="addSubarea('${esc(a.id)}','sub-${esc(a.id)}')">Adicionar subárea</button></div></div>`).join("");
-  }
-  function renderHistory(){
-    const filter=$("history-filter"),chosen=filter.value||"all";
-    filter.innerHTML=`<option value="all">Todas as áreas</option>${db.areas.map(a=>`<option value="${esc(a.id)}">${esc(a.name)}</option>`).join("")}`;
-    filter.value=db.areas.some(a=>a.id===chosen)?chosen:"all";
-    const records=db.snapshots.filter(s=>filter.value==="all"||s.areaId===filter.value).sort((a,b)=>b.date.localeCompare(a.date)||b.createdAt-a.createdAt),holder=$("history-table");
-    if(!records.length){holder.innerHTML='<div class="empty-box"><div class="empty-icon">◷</div><h3>Seu histórico aparecerá aqui</h3><p>Registre uma fotografia para começar a acompanhar a evolução mensal.</p></div>';return}
-    holder.innerHTML=`<table><thead><tr><th>Data do registro</th><th>Mês de referência</th><th>Área</th><th>Subníveis registrados</th><th style="text-align:right">Total da área</th><th></th></tr></thead><tbody>${records.map(s=>{
-      const area=db.areas.find(a=>a.id===s.areaId),count=area?area.subareas.filter(sub=>s.values[sub.id]!==undefined).length:Object.keys(s.values).length;
-      return `<tr><td>${fmtDate(s.date)}</td><td><span class="pill">${monthLabel(s.month)}</span></td><td>${esc(areaName(s.areaId))}</td><td>${count}</td><td class="money">${fmtMoney(totalValues(s.values))}</td><td class="actions"><button class="btn small" onclick="editRecord('${esc(s.areaId)}','${esc(s.month)}')">Editar mês</button></td></tr>`;
-    }).join("")}</tbody></table>`;
-  }
-  function editRecord(areaId,month){showScreen("updates");$("update-area").value=areaId;$("update-month").value=month;renderUpdateValues()}
-  function openAreaUpdate(areaId){showScreen("updates");$("update-area").value=areaId;renderUpdateValues()}
-  function showScreen(name){
-    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-    $("screen-"+name).classList.add("active");
-    document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.screen===name));
-    const meta={dashboard:["Visão consolidada",localNow().toLocaleDateString("pt-BR",{day:"2-digit",month:"long",year:"numeric"})],updates:["Registro de valores","Atualizar valores"],structure:["Organização","Áreas e subáreas"],history:["Registros anteriores","Histórico"]}[name];
-    $("page-eyebrow").textContent=meta[0];$("page-title").textContent=meta[1];
-    if(name==="updates")renderUpdate();if(name==="structure")renderStructure();if(name==="history")renderHistory();
-  }
-  function exportJSON(){
-    const content=JSON.stringify({...db,exportedAt:new Date().toISOString()},null,2),blob=new Blob([content],{type:"application/json"}),url=URL.createObjectURL(blob);
-    const link=document.createElement("a");link.href=url;link.download=`atlas-financeiro-${nowMonth()}.json`;link.click();
-    setTimeout(()=>URL.revokeObjectURL(url),1000);toast("Arquivo JSON exportado.");
-  }
-  function importJSON(file){
-    const reader=new FileReader();
-    reader.onload=()=>{
-      try{
-        const data=JSON.parse(reader.result);
-        if(!data||!Array.isArray(data.areas)||!Array.isArray(data.snapshots))throw new Error("Formato inválido");
-        const validAreas=data.areas.every(a=>a&&typeof a.id==="string"&&typeof a.name==="string"&&Array.isArray(a.subareas));
-        const validSnaps=data.snapshots.every(s=>s&&typeof s.areaId==="string"&&typeof s.month==="string"&&s.values&&typeof s.values==="object");
-        if(!validAreas||!validSnaps)throw new Error("Estrutura inválida");
-        db={version:1,areas:data.areas,snapshots:data.snapshots};
-        if(Array.isArray(activeScope))activeScope=activeScope.filter(id=>data.areas.some(area=>area.id===id));
-        renderAll();toast("Dados importados com sucesso.");
-      }catch(e){toast("Não foi possível importar: verifique o arquivo JSON.")}
-    };
-    reader.readAsText(file);
-  }
-  function toggleSidebar(){
-    const shell=$("app-shell"),collapsed=shell.classList.toggle("sidebar-collapsed"),button=$("sidebar-toggle");
-    button.textContent=collapsed?"›":"‹";
-    button.setAttribute("aria-label",collapsed?"Expandir menu lateral":"Recolher menu lateral");
-    button.title=collapsed?"Expandir menu lateral":"Recolher menu lateral";
-    requestAnimationFrame(()=>renderChart());
-  }
-  function renderAll(){saveDB();renderDashboard();renderUpdate();renderStructure();renderHistory()}
-  document.querySelectorAll(".nav button").forEach(button=>button.addEventListener("click",()=>showScreen(button.dataset.screen)));
-  document.querySelectorAll("#period-tools .chip").forEach(button=>button.addEventListener("click",()=>{
-    activePeriod=button.dataset.period;
-    document.querySelectorAll("#period-tools .chip").forEach(item=>item.classList.toggle("active",item===button));
-    renderChart();
-  }));
-  $("chart-range").addEventListener("change",event=>{activeRange=event.target.value;$("range-count").hidden=activeRange!=="recent";renderChart()});
-  $("range-count").addEventListener("input",renderChart);
-  $("update-area").addEventListener("change",renderUpdateValues);
-  $("update-month").addEventListener("change",renderUpdateValues);
-  $("import-file").addEventListener("change",event=>{if(event.target.files[0])importJSON(event.target.files[0]);event.target.value=""});
-  if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(error=>console.error("Falha ao registrar service worker:",error)));
-  window.showScreen=showScreen;window.closeGoalDetail=closeGoalDetail;window.openGoalDetail=openGoalDetail;window.exportJSON=exportJSON;window.addArea=addArea;window.addSubarea=addSubarea;window.renameArea=renameArea;window.deleteArea=deleteArea;window.deleteSubarea=deleteSubarea;window.clearAllData=clearAllData;window.saveUpdate=saveUpdate;window.renderHistory=renderHistory;window.editRecord=editRecord;window.openAreaUpdate=openAreaUpdate;window.closeModal=closeModal;window.toggleSidebar=toggleSidebar;window.selectScope=selectScope;window.saveAreaGoal=saveAreaGoal;
-  renderAll();
-})();
-</script>
-
-
-</body>
-</html>
